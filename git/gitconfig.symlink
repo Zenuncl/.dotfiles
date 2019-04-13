@@ -1,0 +1,48 @@
+# Git config
+
+[hub]
+  protocol = ssh
+
+[user]
+  name = $USER
+  email = SharkIng@Shacas.com
+  signingkey = 0417D91D14E51DA5
+[alias]
+  last = log -l HEAD
+  logg = log --pretty=format:\"%C(auto)%h %C(magenta)<%ad> %C(green)[%an] %C(blue normal bold)| %Creset%s%C(auto)%d\" --graph --date=short
+  sign = commit -S
+  co = checkout
+  count = shortlog -sn
+
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
+
+[core]
+  excludesfile = !$HOME/.gitignore
+  editor = vim
+
+[apply]
+  whitespace = nowarn
+
+[mergetool]
+  keepBackup = false
+
+[difftool]
+  prompt = false
+
+[push]
+  default = matching
+
+[help]
+  autocorrect = 1
+
+[filter "lfs"]
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
