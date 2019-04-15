@@ -42,18 +42,18 @@ apt-get -y update && \
 apt-get -y autoremove && \
   apt-get -y autoclean
 
-read -p "Please choose your username" USERNAME
-read -p "Please choose your home directory" HOMEDIR
-read -p "Please choose your UID" UID
+read -p "Please choose your username: " USERNAME
+read -p "Please choose your home directory: " HOMEDIR
+read -p "Please choose your UID: " SETUID
 
 # Add Users
 adduser \
-  --uid ${UID} \
+  --uid ${SETUID} \
   --shell /bin/zsh \
   --gecos '${USERNAME}' \
   --disabled-password \
   --home ${HOMEDIR:-/home/s} \
-  $USERNAME
+  ${USERNAME}
 
 usermod -aG sudo ${USERNAME}
 
