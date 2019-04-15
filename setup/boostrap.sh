@@ -100,3 +100,8 @@ install_ruby
 ${DOTFILES}/setup/system/plugins.sh $USERNAME
 ${DOTFILES}/setup/system/vim.sh $USERNAME
 ${DOTFILES}/setup/system/tmux.sh $USERNAME
+${DOTFILES}/setup/system/docker.sh
+
+
+# Mike Directory
+mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
