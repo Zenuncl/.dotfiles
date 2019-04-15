@@ -5,7 +5,7 @@
 
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}
-ln -s ${PWD}/deb/stables.sources.list /etc/apt/sources.list
+ln -s ${PWD}/setup/deb/stables.sources.list /etc/apt/sources.list
 
 # Install necessary system level dependency
 # Upgrade and dist-upgrade
