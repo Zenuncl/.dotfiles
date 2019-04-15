@@ -12,8 +12,11 @@ mkdir -p $HOME/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 # change working dir
 cd $DOTFILES
 
-# Install oh-my-zsh
-$DOTFILES/setup/system/zsh.sh
+# Symlink custome zsh files
+ln -fs $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
+
+ln -fs $DOTFILES/zsh/plugins/skywalker ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/
+ln -fs $DOTFILES/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/
 
 # Install dependency language
 $DOTFILES/setup/lang/python.sh

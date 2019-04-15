@@ -12,6 +12,3 @@ ln -s -f $HOME/.tmux/.tmux.conf $HOME
 
 # Symlink custom file
 ln -fs $HOME/.dotfiles/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local # use dotfiles local
-
-# Install tmuxinator (Optional, need ruby-gem)
-gem install tmuxinator
