@@ -9,8 +9,21 @@ fi
 # Mike Directory
 mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,venv}
 
-source ${DOTFILES}/bin/install_pkg.sh
-source ${DOTFILES}/bin/is_command.sh
+is_command() { command -v $@ &> /dev/null; }
+
+install_via_manager() {
+  local packages=( $@ )
+  local package
+
+  for package in ${packages[@]}; do
+    brew install ${package} || \
+      apt install -y ${package} || \
+      apt-get install -y ${package} || \
+      yum -y install ${package} || \
+      pacman -S --noconfirm ${package} ||
+      true
+  done
+}
 
 install_zsh() {
     # other ref: https://unix.stackexchange.com/questions/136423/making-zsh-default-shell-without-root-access?answertab=active#tab-top
@@ -88,6 +101,3 @@ install_ruby
 ${DOTFILES}/setup/system/plugins.sh
 ${DOTFILES}/setup/system/vim.sh
 ${DOTFILES}/setup/system/tmux.sh
-
-# Install applications (using apt-get need sudo)
-${DOTFILES}/setup/docker/docker.sh
