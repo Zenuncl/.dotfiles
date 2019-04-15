@@ -11,8 +11,7 @@ git clone \
 ln -s -f $HOME/.tmux/.tmux.conf $HOME/
 
 # Symlink custom file
-#cp .tmux/.tmux.conf.local . # use dotfile local
-
+ln -fs $HOME/.dotfiles/tmux/tmux.conf.local.symlink $HOME/.tmux.conf.local # use dotfiles local
 
 # Install tmuxinator (Optional, need ruby-gem)
 gem install tmuxinator

@@ -11,7 +11,7 @@ git clone \
 ln -s $HOME/.vim/.vimrc $HOME
 
 # Symlink custom file
-#cp .vim/.vimrc.local . # use dotfiles local
+ln -fs $HOME/.dotfiles/vim/vimrc.local.symlink $HOME/.vimrc.local # use dotfiles local
 
 # Use heavenly branch with add-ons
 cd $HOME/.vim && \
