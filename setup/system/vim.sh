@@ -1,7 +1,5 @@
 #!/bin/bash
 
-chsh $1 -s `command -v zsh`
-
 # Remove .vim folder
 rm -rf $HOME/.vim
 

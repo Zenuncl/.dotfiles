@@ -1,43 +1,13 @@
 #/usr/bin/env zsh
 set -e
 
-USERNAME=$1
 DOTFILES=${HOME}/.dotfiles
 
 is_command() { command -v $@ &> /dev/null; }
 
-install_via_manager() {
-    local packages=( $@ )
-    local package
-
-    for package in ${packages[@]}; do
-        brew install ${package} || \
-            apt install -y ${package} || \
-            apt-get install -y ${package} || \
-            yum -y install ${package} || \
-            pacman -S --noconfirm ${package} ||
-            true
-    done
-}
-
-install_zsh() {
-    # other ref: https://unix.stackexchange.com/questions/136423/making-zsh-default-shell-without-root-access?answertab=active#tab-top
-    local UNAME="$1"
-    if [ -z "${ZSH_VERSION}" ]; then
-        if is_command zsh || install_via_manager zsh; then
-            chsh $UNAME -s `command -v zsh`
-            return 0
-        else
-            echo "ERROR, plz install zsh manual."
-            return 1
-        fi
-    fi
-}
-
 install_ohmyzsh() {
   if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     echo "Installing oh-my-zsh..." >&2
-    install_via_manager git
     curl -fsSL install.ohmyz.sh | sh
   fi
 }
@@ -48,7 +18,7 @@ check_dotfile() {
   fi
 }
 
-(install_zsh "$USERNAME" && check_dotfile && install_ohmyzsh) || exit 1
+(check_dotfile && install_ohmyzsh) || exit 1
 
 symlink_dotfiles() {
   # Symlink custome zsh files
@@ -97,11 +67,12 @@ install_ruby() {
 install_ruby
 
 # Install system configs
-${DOTFILES}/setup/system/plugins.sh $USERNAME
-${DOTFILES}/setup/system/vim.sh $USERNAME
-${DOTFILES}/setup/system/tmux.sh $USERNAME
-${DOTFILES}/setup/system/docker.sh
+${DOTFILES}/setup/system/plugins.sh
+${DOTFILES}/setup/system/vim.sh
+${DOTFILES}/setup/system/tmux.sh
 
+# Install docker need sudo
+sudo ${DOTFILES}/setup/system/docker.sh 
 
 # Mike Directory
 mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
