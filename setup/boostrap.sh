@@ -2,7 +2,7 @@
 
 export DOTFILES=$HOME/.dotfiles
 
-if [ ! -d $DOTFILES ]; do
+if [ ! -d $DOTFILES ]; then
   git clone git@github.com:SharkIng/.dotfiles.git
 fi
 
