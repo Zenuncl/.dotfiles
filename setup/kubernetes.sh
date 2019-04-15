@@ -2,7 +2,7 @@
 
 # Install kubernetes
 # Install dependency first
-apt-get -y upadte && \
+apt-get -y update && \
   apt-get -y install \
     apt-transport-https
 

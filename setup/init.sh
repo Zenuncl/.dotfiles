@@ -49,4 +49,3 @@ usermod -aG sudo sharking
 
 # Setup password for user
 passwd sharking
-
