@@ -11,10 +11,12 @@ gpg2 --recv-keys \
 # Install rvm
 \curl -sSL https://get.rvm.io | bash -s stable
 
+# Add rvm group to user
+usermod -aG rvm sharking
+
+# source rvm (debian)
+source /etc/profile.d/rvm.sh
+
 # Install ruby + gem
 rvm get stable --auto-dotfiles
 rvm use $RUBY_VERSION --install --default
-
-
-
-

@@ -5,7 +5,7 @@
 
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}
-ls -s ${PWD}/sources.list /etc/apt/sources.list
+ln -s ${PWD}/deb/stables.sources.list /etc/apt/sources.list
 
 # Install necessary system level dependency
 # Upgrade and dist-upgrade
@@ -27,6 +27,7 @@ apt-get -y install vim \
   sudo \
   net-tools \
   dnsutils
+  dirmngr
 
 # Remove uncessary software (optional)
 # apt-get -y purge
@@ -37,7 +38,7 @@ apt-get -y autoremove && \
 
 # Add Users
 adduser \
-  --uuid 1116 \
+  --uid 1116 \
   --shell /bin/zsh \
   --gecos 'SharkIng' \
   --disabled-password \
@@ -46,5 +47,6 @@ adduser \
 
 usermod -aG sudo sharking
 
-
+# Setup password for user
+passwd sharking
 
