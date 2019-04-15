@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chsh $1 -s `command -v zsh`
+
 # Remove old .tmux dotfiles
 rm -rf $HOME/.tmux
 

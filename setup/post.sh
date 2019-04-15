@@ -1,6 +1,3 @@
-# Install ruby + gem
-rvm use $RUBY_VERSION --install --default
-
 # Install tmuxinator (Optional, need ruby-gem)
 gem install tmuxinator
 

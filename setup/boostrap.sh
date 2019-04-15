@@ -90,11 +90,13 @@ install_ruby() {
 
   # update rvm
   rvm get stable --auto-dotfiles
+  # Install ruby + gem
+  rvm use $RUBY_VERSION --install --default
 }
 
 install_ruby
 
 # Install system configs
-${DOTFILES}/setup/system/plugins.sh
-${DOTFILES}/setup/system/vim.sh
-${DOTFILES}/setup/system/tmux.sh
+${DOTFILES}/setup/system/plugins.sh $USERNAME
+${DOTFILES}/setup/system/vim.sh $USERNAME
+${DOTFILES}/setup/system/tmux.sh $USERNAME

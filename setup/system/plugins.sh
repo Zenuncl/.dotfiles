@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chsh $1 -s `command -v zsh`
+
 # Install autojump
 git clone \
   git://github.com/wting/autojump.git \
