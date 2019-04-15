@@ -25,4 +25,4 @@ $DOTFILES/setup/system/vim.sh
 $DOTFILES/setup/system/tmux.sh
 
 # Install applications (using apt-get need sudo)
-sudo $DOTFILES/setup/applications/docker.sh
+sudo $DOTFILES/setup/application/docker.sh
