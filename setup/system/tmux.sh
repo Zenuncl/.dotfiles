@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Install tmux
-apt-get -y update \
-  apt-get -y install \
-    tmux
-
 # Remove old .tmux dotfiles
 rm -rf $HOME/.tmux
 

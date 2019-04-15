@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Install vim (optional)
-apt-get -y update \
-  apt-get -y install \
-    vim
-
 # Remove .vim folder
 rm -rf $HOME/.vim
 

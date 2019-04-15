@@ -28,8 +28,12 @@ apt-get -y update && \
     openssh-server \
     sudo \
     net-tools \
-    dnsutils
-    dirmngr
+    dnsutils \
+    dirmngr \
+    python \
+    python3 \
+    python-pip \
+    python3-pip
 
 # Remove uncessary software (optional)
 # apt-get -y purge

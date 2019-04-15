@@ -5,7 +5,9 @@ git clone \
   git://github.com/wting/autojump.git \
   /tmp/autojump/
 
-/tmp/autojump/install.py
+cd /tmp/autojump/ && \
+  ./install.py && \
+  cd -
 
 # Install auto-completions
 git clone \

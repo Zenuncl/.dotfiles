@@ -15,7 +15,7 @@ gpg2 --recv-keys \
 usermod -aG rvm sharking
 
 # source rvm (debian)
-source /etc/profile.d/rvm.sh
+source $HOME/.rvm/scripts/rvm
 
 # Install ruby + gem
 rvm get stable --auto-dotfiles
