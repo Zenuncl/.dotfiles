@@ -1,16 +1,16 @@
 #/usr/bin/env zsh
 
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES=${HOME}/.dotfiles
 
-if [ ! -d $DOTFILES ]; then
-  git clone git@github.com:SharkIng/.dotfiles.git $DOTFILES
+if [ ! -d ${DOTFILES} ]; then
+  git clone git@github.com:SharkIng/.dotfiles.git ${DOTFILES}
 fi
 
 # Mike Directory
-mkdir -p $HOME/dev/{$USER,repos,go,dockers,scripts,projects,venv}
+mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,venv}
 
-source $DOTFILES/bin/install_pkg.sh
-source $DOTFILES/bin/is_command.sh
+source ${DOTFILES}/bin/install_pkg.sh
+source ${DOTFILES}/bin/is_command.sh
 
 install_zsh() {
     # other ref: https://unix.stackexchange.com/questions/136423/making-zsh-default-shell-without-root-access?answertab=active#tab-top
@@ -38,15 +38,15 @@ install_ohmyzsh() {
 
 symlink_zsh_dotfiles() {
   # Symlink custome zsh files
-  ln -fs $DOTFILES/zsh/env.symlink $HOME/.env
-  ln -fs $DOTFILES/zsh/zshrc.symlink $HOME/.zshrc
+  ln -fs ${DOTFILES}/zsh/env.symlink ${HOME}/.env
+  ln -fs ${DOTFILES}/zsh/zshrc.symlink ${HOME}/.zshrc
 
-  ln -fs $DOTFILES/zsh/plugins/skywalker ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/
-  ln -fs $DOTFILES/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/
+  ln -fs ${DOTFILES}/zsh/plugins/skywalker ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/
+  ln -fs ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
 
   # Symlink git global configs
-  ln -fs $DOTFILES/git/gitconfig.symlink $HOME/.gitconfig
-  ln -fs $DOTFILES/git/gitignore.symlink $HOME/.gitignore
+  ln -fs ${DOTFILES}/git/gitconfig.symlink ${HOME}/.gitconfig
+  ln -fs ${DOTFILES}/git/gitignore.symlink ${HOME}/.gitignore
 }
 
 symlink_dotfiles
@@ -75,7 +75,7 @@ install_ruby() {
   usermod -aG rvm sharking
 
   # source rvm (debian)
-  source $HOME/.rvm/scripts/rvm
+  source ${HOME}/.rvm/scripts/rvm
 
   # Install ruby + gem
   rvm get stable --auto-dotfiles
@@ -85,9 +85,9 @@ install_ruby() {
 install_ruby
 
 # Install system configs
-$DOTFILES/setup/system/plugins.sh
-$DOTFILES/setup/system/vim.sh
-$DOTFILES/setup/system/tmux.sh
+${DOTFILES}/setup/system/plugins.sh
+${DOTFILES}/setup/system/vim.sh
+${DOTFILES}/setup/system/tmux.sh
 
 # Install applications (using apt-get need sudo)
-$DOTFILES/setup/docker/docker.sh
+${DOTFILES}/setup/docker/docker.sh
