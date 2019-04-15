@@ -1,24 +1,54 @@
 #/usr/bin/env zsh
+set -e
 
-export DOTFILES=${HOME}/.dotfiles
-
-if [ ! -d ${DOTFILES} ]; then
-  git clone git@github.com:SharkIng/.dotfiles.git ${DOTFILES}
-fi
-
-# Mike Directory
-mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,venv}
+USERNAME=$1
+DOTFILES=${HOME}/.dotfiles
 
 is_command() { command -v $@ &> /dev/null; }
 
+install_via_manager() {
+    local packages=( $@ )
+    local package
+
+    for package in ${packages[@]}; do
+        brew install ${package} || \
+            apt install -y ${package} || \
+            apt-get install -y ${package} || \
+            yum -y install ${package} || \
+            pacman -S --noconfirm ${package} ||
+            true
+    done
+}
+
+install_zsh() {
+    # other ref: https://unix.stackexchange.com/questions/136423/making-zsh-default-shell-without-root-access?answertab=active#tab-top
+    local UNAME="$1"
+    if [ -z "${ZSH_VERSION}" ]; then
+        if is_command zsh || install_via_manager zsh; then
+            chsh $UNAME -s `command -v zsh`
+            return 0
+        else
+            echo "ERROR, plz install zsh manual."
+            return 1
+        fi
+    fi
+}
+
 install_ohmyzsh() {
-  if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
+  if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     echo "Installing oh-my-zsh..." >&2
+    install_via_manager git
     curl -fsSL install.ohmyz.sh | sh
   fi
 }
 
-install_ohmyzsh || exit 1
+check_dotfile() {
+  if [ ! -d ${DOTFILES} ]; then
+    git clone git@github.com:SharkIng/.dotfiles.git ${DOTFILES}
+  fi
+}
+
+(install_zsh "$USERNAME" && check_dotfile && install_ohmyzsh) || exit 1
 
 symlink_dotfiles() {
   # Symlink custome zsh files
@@ -55,18 +85,14 @@ install_ruby() {
   # Install rvm
   \curl -sSL https://get.rvm.io | bash -s stable
 
-  # Add rvm group to user
-  usermod -aG rvm sharking
-
   # source rvm (debian)
   source ${HOME}/.rvm/scripts/rvm
 
-  # Install ruby + gem
+  # update rvm
   rvm get stable --auto-dotfiles
-  rvm use $RUBY_VERSION --install --default
 }
 
-install_ruby || exit 1
+install_ruby
 
 # Install system configs
 ${DOTFILES}/setup/system/plugins.sh

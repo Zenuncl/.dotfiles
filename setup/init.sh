@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Init setup to the machine, Default now is Debian 9
-
+set -e
 
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}

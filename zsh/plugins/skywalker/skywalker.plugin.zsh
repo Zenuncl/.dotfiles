@@ -36,7 +36,4 @@ source $HOME/.env
 # Autojump source
 [[ -s /home/s/.autojump/etc/profile.d/autojump.sh ]] && source /home/s/.autojump/etc/profile.d/autojump.sh
 
-# fzf source
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 autoload -U compinit && compinit -u
