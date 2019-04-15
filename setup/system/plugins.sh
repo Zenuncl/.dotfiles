@@ -9,6 +9,14 @@ cd /tmp/autojump/ && \
   ./install.py && \
   cd -
 
+# Install fzf
+git clone \
+  --depth 1 \
+  https://github.com/junegunn/fzf.git \
+  $HOME/.fzf
+
+$HOME/.fzf/install
+
 # Install auto-completions
 git clone \
   https://github.com/zsh-users/zsh-completions \
