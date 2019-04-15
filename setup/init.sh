@@ -42,16 +42,20 @@ apt-get -y update && \
 apt-get -y autoremove && \
   apt-get -y autoclean
 
+read -p "Please choose your username" USERNAME
+read -p "Please choose your home directory" HOMEDIR
+read -p "Please choose your UID" UID
+
 # Add Users
 adduser \
-  --uid 1116 \
+  --uid ${UID} \
   --shell /bin/zsh \
-  --gecos 'SharkIng' \
+  --gecos '${USERNAME}' \
   --disabled-password \
-  --home /home/s \
-  sharking
+  --home ${HOMEDIR:-/home/s} \
+  $USERNAME
 
-usermod -aG sudo sharking
+usermod -aG sudo ${USERNAME}
 
 # Setup password for user
-passwd sharking
+passwd ${USERNAME}
