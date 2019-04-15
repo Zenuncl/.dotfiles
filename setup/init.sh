@@ -5,7 +5,8 @@
 
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}
-ln -s ${PWD}/setup/deb/stables.sources.list /etc/apt/sources.list
+cp -rf $(dirname "$0")/deb/stable.sources.list \
+  /etc/apt/sources.list
 
 # Install necessary system level dependency
 # Upgrade and dist-upgrade
@@ -14,20 +15,21 @@ apt-get -y update && \
   apt-get -y dist-upgrade
 
 # Suck as: vim, tmux, git. zsh
-apt-get -y install vim \
-  tmux \
-  git \
-  zsh \
-  apt-transport-https \
-  ca-certificates \
-  curl \
-  wget \
-  gnupg2 \
-  openssh-server \
-  sudo \
-  net-tools \
-  dnsutils
-  dirmngr
+apt-get -y update && \
+  apt-get -y install vim \
+    tmux \
+    git \
+    zsh \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    wget \
+    gnupg2 \
+    openssh-server \
+    sudo \
+    net-tools \
+    dnsutils
+    dirmngr
 
 # Remove uncessary software (optional)
 # apt-get -y purge
