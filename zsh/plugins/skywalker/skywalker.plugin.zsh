@@ -7,6 +7,7 @@ SSH_AUTH_SOCK=$HOME/.gnupg/S.gpg-agent.ssh; export SSH_AUTH_SOCK;
 # Source plugin files
 source $ZSH_CUSTOM/plugins/skywalker/env.zsh
 source $ZSH_CUSTOM/plugins/skywalker/alias.zsh
+source $ZSH_CUSTOM/plugins/skywalker/tmuxinator.zsh
 
 # .nvm
 export NVM_DIR=$HOME/.nvm

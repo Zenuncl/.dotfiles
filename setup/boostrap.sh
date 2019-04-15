@@ -43,7 +43,7 @@ install_python_venv() {
 
 install_python_venv
 
-install_ruby() {
+install_rvm() {
   RUBY_VIERSION=2.6.2
 
   # Install RVM
@@ -54,17 +54,9 @@ install_ruby() {
 
   # Install rvm
   \curl -sSL https://get.rvm.io | bash -s stable
-
-  # source rvm (debian)
-  source ${HOME}/.rvm/scripts/rvm
-
-  # update rvm
-  rvm get stable --auto-dotfiles
-  # Install ruby + gem
-  rvm use $RUBY_VERSION --install --default
 }
 
-install_ruby
+install_rvm
 
 # Install system configs
 ${DOTFILES}/setup/system/plugins.sh
