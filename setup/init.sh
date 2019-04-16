@@ -5,8 +5,12 @@ set -e
 
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}
-cp -rf $(dirname "$0")/deb/stable.sources.list \
+mv /etc/motd{,.bak}
+curl -sSL -H 'Cache-Control: no-cache' \
+  https://github.com/SharkIng/.dotfiles/raw/master/setup/deb/stable.sources.list \
   /etc/apt/sources.list
+
+
 
 # Install necessary system level dependency
 # Upgrade and dist-upgrade
@@ -41,8 +45,6 @@ apt-get -y update && \
 # Cleanup
 apt-get -y autoremove && \
   apt-get -y autoclean
-
-ln -fs ${DOTFILES}/zsh/motd/motd /etc/motd
 
 read -p "Please choose your username: " USERNAME
 read -p "Please choose your home directory: " HOMEDIR
