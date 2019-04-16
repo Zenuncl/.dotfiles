@@ -7,10 +7,8 @@ set -e
 mv /etc/apt/sources.list{,.bak}
 mv /etc/motd{,.bak}
 curl -sSL -H 'Cache-Control: no-cache' \
-  https://github.com/SharkIng/.dotfiles/raw/master/setup/deb/stable.sources.list \
-  /etc/apt/sources.list
-
-
+  "https://github.com/SharkIng/.dotfiles/raw/master/setup/deb/stable.sources.list" \
+  -o /etc/apt/sources.list
 
 # Install necessary system level dependency
 # Upgrade and dist-upgrade
