@@ -62,8 +62,6 @@ symlink_dotfiles() {
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
 }
 
-symlink_dotfiles
-
 install_python_venv() {
   # Install virtualenv
   pip install virtualenv 1>&2
@@ -87,14 +85,16 @@ install_rvm() {
 
 install_rvm
 
-# Install system configs
-${DOTFILES}/setup/system/vim.sh
-${DOTFILES}/setup/system/tmux.sh
-${DOTFILES}/setup/system/plugins.sh
-
 # Install docker need sudo
 sudo ${DOTFILES}/setup/system/docker.sh $UNAME
 sudo ln -fs ${DOTFILES}/zsh/motd/motd /etc/motd
 
 # Mike Directory
 mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
+
+# Install system configs
+${DOTFILES}/setup/system/vim.sh
+${DOTFILES}/setup/system/tmux.sh
+#${DOTFILES}/setup/system/plugins.sh
+
+symlink_dotfiles
