@@ -88,9 +88,9 @@ install_rvm() {
 install_rvm
 
 # Install system configs
-${DOTFILES}/setup/system/plugins.sh
 ${DOTFILES}/setup/system/vim.sh
 ${DOTFILES}/setup/system/tmux.sh
+${DOTFILES}/setup/system/plugins.sh
 
 # Install docker need sudo
 sudo ${DOTFILES}/setup/system/docker.sh $UNAME

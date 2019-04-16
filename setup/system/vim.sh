@@ -5,7 +5,7 @@ rm -rf $HOME/.vim
 
 # Install .vim dotfile
 git clone \
-  https://github.com/gpakosz/.vim.git $HOME/.vim
+  git://github.com/gpakosz/.vim.git $HOME/.vim
 
 # Setup .vim
 ln -s $HOME/.vim/.vimrc $HOME
