@@ -22,8 +22,8 @@ fail () {
 
 install_ohmyzsh() {
   if [ ! -d "${HOME}/.oh-my-zsh" ]; then
-    echo "Installing oh-my-zsh..." >&2
-    curl -fsSL install.ohmyz.sh | sh
+    info "Installing oh-my-zsh..." >&2
+    curl -fsSL install.ohmyz.sh | sh 1>&2
   fi
 }
 
@@ -64,8 +64,8 @@ symlink_dotfiles
 
 install_python_venv() {
   # Install virtualenv
-  pip install virtualenv
-  pip3 install virtualenv
+  pip install virtualenv 1>&2
+  pip3 install virtualenv 1>&2
 }
 
 install_python_venv
@@ -80,7 +80,7 @@ install_rvm() {
     7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 
   # Install rvm
-  \curl -sSL https://get.rvm.io | bash -s stable
+  \curl -sSL https://get.rvm.io | bash -s stable 1>&2
 }
 
 install_rvm
