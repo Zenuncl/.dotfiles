@@ -55,6 +55,3 @@ adduser \
   ${USERNAME}
 
 usermod -aG sudo ${USERNAME}
-
-# Setup password for user
-passwd ${USERNAME}
