@@ -6,8 +6,9 @@ set -e
 USERNAME=$1
 
 # Use the generated debian 9 sources.list
-mv /etc/apt/sources.list{,.bak}
-mv /etc/motd{,.bak}
+if [ -f /etc/apt/sources.list ]; then
+  mv /etc/apt/sources.list{,.bak}
+fi
 curl -sSL -H 'Cache-Control: no-cache' -o /etc/apt/sources.list \
   "https://github.com/SharkIng/.dotfiles/raw/master/setup/deb/stable.sources.list"
 
@@ -39,7 +40,7 @@ apt-get -y update && \
     python3-pip
 
 # Remove uncessary software (optional)
-# apt-get -y purge
+apt-get -y purge unscd
 
 # Cleanup
 apt-get -y autoremove && \

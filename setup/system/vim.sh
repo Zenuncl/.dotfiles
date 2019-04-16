@@ -18,4 +18,3 @@ cd $HOME/.vim && \
   git checkout heavenly && \
   git submodule init && \
   git submodule update
-
