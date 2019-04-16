@@ -42,6 +42,8 @@ apt-get -y update && \
 apt-get -y autoremove && \
   apt-get -y autoclean
 
+ln -fs ${DOTFILES}/zsh/motd/motd /etc/motd
+
 read -p "Please choose your username: " USERNAME
 read -p "Please choose your home directory: " HOMEDIR
 read -p "Please choose your UID: " SETUID

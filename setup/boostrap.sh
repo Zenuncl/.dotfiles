@@ -60,8 +60,6 @@ symlink_dotfiles() {
   info "Symlinking oh-my-zsh custom files..."
   link_file ${DOTFILES}/zsh/plugins/skywalker ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
-  
-  link_file ${DOTFILES}/zsh/motd/motd /etc/motd
 }
 
 symlink_dotfiles
@@ -88,13 +86,6 @@ install_rvm() {
 }
 
 install_rvm
-
-# Install Ruby
-source ${HOME}/.rvm/scripts/rvm
-# update rvm
-rvm get stable --auto-dotfiles
-# Install ruby + gem
-rvm use $RUBY_VERSION --install --default
 
 # Install system configs
 ${DOTFILES}/setup/system/plugins.sh
