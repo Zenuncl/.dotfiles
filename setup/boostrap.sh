@@ -29,7 +29,7 @@ install_ohmyzsh() {
 
 check_dotfile() {
   if [ ! -d ${DOTFILES} ]; then
-    git clone https://github.com/SharkIng/.dotfiles.git ${DOTFILES}
+    git clone git://github.com/SharkIng/.dotfiles.git ${DOTFILES}
   fi
 }
 
