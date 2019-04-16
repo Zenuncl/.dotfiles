@@ -58,6 +58,8 @@ symlink_dotfiles() {
   info "Symlinking oh-my-zsh custom files..."
   link_file ${DOTFILES}/zsh/plugins/skywalker ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
+  
+  link_file ${DOTFILES}/zsh/motd/motd /etc/motd
 }
 
 symlink_dotfiles
