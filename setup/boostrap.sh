@@ -43,14 +43,16 @@ link_file() {
 symlink_dotfiles() {
   # Symlink original files.
   info "Symlinking dotfiles..."
-  for source in `find $DOTFILES -maxdepth 2 -name \*.symlink`
+  for source in `find ${DOTFILES} -maxdepth 2 -name \*.symlink`
   do
-    dest="$HOME/.`basename \"${source%.*}\"`"
+    dest="${HOME}/.`basename \"${source%.*}\"`"
     if [ -f $dest ] || [ -d $dest ]
     then
       info "Backing up original files..."
-      mv dest{,.original}
-      link_file $source $dest
+      mv $dest{,.original}
+      link_file ${source} ${dest}
+    else
+      link_file ${source} ${dest}
     fi
   done
 
