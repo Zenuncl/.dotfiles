@@ -95,6 +95,6 @@ mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 # Install system configs
 ${DOTFILES}/setup/system/vim.sh
 ${DOTFILES}/setup/system/tmux.sh
-#${DOTFILES}/setup/system/plugins.sh
+cat ${DOTFILES}/setup/system/plugins.sh | bash
 
 symlink_dotfiles

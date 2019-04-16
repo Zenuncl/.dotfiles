@@ -56,3 +56,5 @@ adduser \
   ${USERNAME}
 
 usermod -aG sudo ${USERNAME}
+
+echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
