@@ -4,7 +4,7 @@
   protocol = ssh
 
 [user]
-  name = $USER
+  name = SharkIng
   email = SharkIng@Shacas.com
   signingkey = 0417D91D14E51DA5
 [alias]

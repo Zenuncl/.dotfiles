@@ -34,5 +34,4 @@ apt-get -y update && \
     containerd.io
 
 # Post-setup: docker group for user to run none sudo docker
-addgroup docker && \
-  usermod -aG docker $USER
+usermod -aG docker $USERNAME
