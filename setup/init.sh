@@ -3,6 +3,8 @@
 # Init setup to the machine, Default now is Debian 9
 set -e
 
+USERNAME=$1
+
 # Use the generated debian 9 sources.list
 mv /etc/apt/sources.list{,.bak}
 mv /etc/motd{,.bak}
