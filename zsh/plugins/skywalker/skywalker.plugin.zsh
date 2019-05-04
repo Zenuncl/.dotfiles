@@ -22,13 +22,7 @@ export NVM_DIR=$HOME/.nvm
 export PATH="$PATH:$HOME/.rvm/bin"
 
 # GOPATH
-export GOPATH=$HOME/dev/go
 export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin" # Add Go lang PATH
-
-# Shortcut to projects
-export DOTFILES=$HOME/.dotfiles
-export WORKSPACE=$HOME/dev
-export PROJECT=$HOME/dev/projects
 
 # Go Version Manager
 #source $HOME/.gvm/scripts/gvm
