@@ -84,6 +84,7 @@ function pacman_install_dep() {
 		which \
 		rsync \
 		htop \
+		coreutils \
 		vim \
 		tmux \
 		ca-certificates \
