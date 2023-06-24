@@ -34,6 +34,7 @@ function apt_install_dep() {
 		sudo \
 		git \
 		zsh \
+		build-essential \
 		rsync \
 		vim \
 		tmux \
@@ -81,6 +82,7 @@ function pacman_install_dep() {
 		sudo \
 		git \
 		zsh \
+		base-devel \
 		which \
 		rsync \
 		htop \
@@ -90,6 +92,7 @@ function pacman_install_dep() {
 		ca-certificates \
 		curl \
 		fasd \
+		go \
 		wget \
 		gnupg \
 		openssh \

@@ -25,6 +25,8 @@
   # Pull the latest revision of all submodules in the repo
   subup = "!f() { git submodule sync; git submodule update --init --recursive; }; f"
 
+  wtf = !$HOME/.bin/git-wtf
+
 [color]
   diff = auto
   status = auto
