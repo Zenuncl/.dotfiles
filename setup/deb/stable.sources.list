@@ -1,16 +1,22 @@
 #------------------------------------------------------------------------------#
-#                   OFFICIAL DEBIAN REPOS                    
+#                   OFFICIAL DEBIAN REPOS     
+#   Current Stable version: Bookworm (12.0) - since 2023-06-10               
 #------------------------------------------------------------------------------#
 
-###### Debian Main Repos
-deb http://deb.debian.org/debian/ stable main contrib
-deb-src http://deb.debian.org/debian/ stable main contrib
+# Releases of the main packages.
+deb [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free
 
-deb http://deb.debian.org/debian/ stable-updates main contrib
-deb-src http://deb.debian.org/debian/ stable-updates main contrib
+# Updates that cannot wait for the next point release.
+deb [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free 
 
-deb http://deb.debian.org/debian-security stable/updates main
-deb-src http://deb.debian.org/debian-security stable/updates main
+# Security releases from the Debian Security Audit Team.
+deb [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free
+deb-src [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free
 
-deb http://ftp.debian.org/debian stretch-backports main
-deb-src http://ftp.debian.org/debian stretch-backports main
+# Backports brings newer software to stable releases.
+# Backports are disabled by default and are installed differently.
+# For instructions check https://backports.debian.org/Instructions/ .
+deb [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free
