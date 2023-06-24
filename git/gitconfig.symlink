@@ -4,9 +4,10 @@
   protocol = ssh
 
 [user]
-  name = David Jiang
+  name = Zavier Jiang
   email = SharkIng@Shacas.com
   signingkey = 0417D91D14E51DA5
+
 [alias]
   last = log -l HEAD
   logg = log --pretty=format:\"%C(auto)%h %C(magenta)<%ad> %C(green)[%an] %C(blue normal bold)| %Creset%s%C(auto)%d\" --graph --date=short
@@ -58,3 +59,6 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
+
+[url "git@github.com:"]
+  insteadOf = https://github.com
