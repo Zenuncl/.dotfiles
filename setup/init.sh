@@ -50,9 +50,7 @@ function apt_install_dep() {
 		dirmngr \
 		cifs-utils \
 		qemu-utils \
-		python \
 		python3 \
-		python-pip \
 		python3-pip \
 		python3-virtualenv
 
