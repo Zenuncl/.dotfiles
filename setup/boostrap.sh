@@ -4,30 +4,30 @@ set -e
 UNAME=`whoami`
 DOTFILES=${HOME}/.dotfiles
 
-is_command() { command -v $@ &> /dev/null; }
+function is_command() { command -v $@ &> /dev/null; }
 
-info () {
+function info () {
   printf "  [ \033[00;34m..\033[0m ] $1"
 }
 
-success () {
+function success () {
   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
 }
 
-fail () {
+function fail () {
   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
 }
 
-install_ohmyzsh() {
+function install_ohmyzsh() {
   if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     info "Installing oh-my-zsh..." >&2
     curl -fsSL install.ohmyz.sh | sh 1>&2
   fi
 }
 
-check_dotfile() {
+function check_dotfile() {
   if [ ! -d ${DOTFILES} ]; then
     git clone git://github.com/SharkIng/.dotfiles.git ${DOTFILES}
   fi
@@ -35,12 +35,25 @@ check_dotfile() {
 
 (check_dotfile && install_ohmyzsh) || exit 1
 
-link_file() {
+function is_correct_repo() {
+  CHECK_PATH=$1
+  USER_AND_REPO=$2
+
+  remote_url=$(git -C ${CHECK_PATH} remote get-url origin)
+  
+  if [[ $remote_url == "https://github.com/${USER_AND_REPO}.git" ]]; then
+    echo "The remote repo check passed. Continue..."
+  else
+    echo "The remote repo check failed. Reconfigure the dotfiles..."
+  fi  
+}
+
+function link_file() {
   ln -fs $1 $2
   success "Symlinked $1 to $2"
 }
 
-symlink_dotfiles() {
+function symlink_dotfiles() {
   # Symlink original files.
   info "Symlinking dotfiles..."
   for source in `find ${DOTFILES} -maxdepth 2 -name \*.symlink`
@@ -62,16 +75,8 @@ symlink_dotfiles() {
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
 }
 
-install_python_venv() {
-  # Install virtualenv
-  pip install virtualenv 1>&2
-  pip3 install virtualenv 1>&2
-}
-
-install_python_venv
-
-install_rvm() {
-  RUBY_VIERSION=2.6.2
+function install_rvm() {
+  RUBY_VIERSION=3.2.2
 
   # Install RVM
   # Add Repo Keys
@@ -83,7 +88,19 @@ install_rvm() {
   \curl -sSL https://get.rvm.io | bash -s stable 1>&2
 }
 
-install_rvm
+function install_nvm() {
+  NODE_VIERSION=18.16.1
+  NPM_VERSION=9.5.1
+
+  # Install nvm
+  \curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+}
+
+if ! [ -d ${HOME}/.rvm ]; then
+	install_rvm
+elif ! [ -d ${HOME}/.nvm ]; then
+	install_nvm
+fi
 
 # Install docker need sudo
 sudo ${DOTFILES}/setup/system/docker.sh $UNAME
@@ -93,8 +110,11 @@ sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
 mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 
 # Install system configs
-${DOTFILES}/setup/system/vim.sh
-${DOTFILES}/setup/system/tmux.sh
+if ! [ -d ${HOME}/.vim ]; then
+  ${DOTFILES}/setup/system/vim.sh
+elif ! [ -d ${HOME}/.tmux ]; then
+  ${DOTFILES}/setup/system/tmux.sh
+fi
 cat ${DOTFILES}/setup/system/plugins.sh | bash
 
 symlink_dotfiles

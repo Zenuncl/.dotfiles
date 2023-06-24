@@ -5,7 +5,8 @@ rm -rf $HOME/.tmux
 
 # Install .vim dotfiles
 git clone \
-  git://github.com/gpakosz/.tmux.git $HOME/.tmux
+  https://github.com/gpakosz/.tmux.git \
+  $HOME/.tmux
 
 # Setup .vim
 ln -s -f $HOME/.tmux/.tmux.conf $HOME
