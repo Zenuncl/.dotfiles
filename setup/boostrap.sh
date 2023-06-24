@@ -49,7 +49,14 @@ function is_correct_repo() {
 }
 
 function link_file() {
-  ln -fs $1 $2
+  dest=$2
+  if [ -f $dest ] || [ -d $dest ]
+  then
+    info "Backing up original files..."
+    mv $dest{,.original}
+  else
+    ln -fs $1 $2
+  fi
   success "Symlinked $1 to $2"
 }
 
@@ -59,20 +66,18 @@ function symlink_dotfiles() {
   for source in `find ${DOTFILES} -maxdepth 2 -name \*.symlink`
   do
     dest="${HOME}/.`basename \"${source%.*}\"`"
-    if [ -f $dest ] || [ -d $dest ]
-    then
-      info "Backing up original files..."
-      mv $dest{,.original}
-      link_file ${source} ${dest}
-    else
-      link_file ${source} ${dest}
-    fi
+    link_file ${source} ${dest}
   done
 
   # Symlink oh-my-zsh custom files
   info "Symlinking oh-my-zsh custom files..."
   link_file ${DOTFILES}/zsh/plugins/skywalker ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
+}
+
+function symlink_dotdir() {
+  link_file ${DOTFILES}/bin $HOME/.bin
+  link_file ${DOTFILES)/ssh $HOME/.ssh
 }
 
 function install_rvm() {
