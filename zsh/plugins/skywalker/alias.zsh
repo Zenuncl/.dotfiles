@@ -34,7 +34,7 @@ alias -s php=vim
 alias -s txt=vim
 
 # User configuration
-alias last.command='fc -ln -1 | pbcopy'
+alias last.command='fc -ln -1'
 alias ll="ls -l"
 alias la="ls -la"
 alias cp="cp -i"

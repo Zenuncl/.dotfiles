@@ -83,6 +83,7 @@ function pacman_install_dep() {
 		zsh \
 		which \
 		rsync \
+		htop \
 		vim \
 		tmux \
 		ca-certificates \
