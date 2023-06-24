@@ -12,6 +12,9 @@ alias ff="find . -type f -name" # Fast find
 alias du="du -h"
 alias df="df -h"
 alias javac="javac -J-Dfile.encoding=utf8"
+alias ls='ls --color=auto'
+alias free="free -h"
+alias top="htop"
 
 # File alias
 alias -s gz='tar -xzvf'
@@ -31,8 +34,14 @@ alias -s php=vim
 alias -s txt=vim
 
 # User configuration
-alias dnsmasq.load="sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-alias dnsmasq.unload="sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-alias dnscrypt.unload="sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist"
-alias dnscrypt.load="sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnscrypt-proxy.plist"
 alias last.command='fc -ln -1 | pbcopy'
+alias ll="ls -l"
+alias la="ls -la"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+alias mkdir="mkdir -p"
+alias ..="cd .."
+alias ...="cd ../../"
+alias vi="vim"
+
