@@ -20,16 +20,16 @@ function apt_install_dep() {
 	# Install necessary system level dependency
 	# Upgrade and dist-upgrade
 	apt-get -y update && apt-get -y -f \
-		-o Dpkg::Options::="--force-confdev" \
+		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
 		upgrade && apt-get -y -f \
-		-o Dpkg::Options::="--force-confdev" \
+		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
 		dist-upgrade
 
 	# Such as: vim, tmux, git. zsh
 	apt-get -y update && apt-get install -y -f \
-		-o Dpkg::Options::="--force-confdev" \
+		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
 		sudo \
 		git \
