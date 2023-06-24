@@ -4,19 +4,19 @@
 #------------------------------------------------------------------------------#
 
 # Releases of the main packages.
-deb [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free
-deb-src [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free
+deb [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free-firmware
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm main contrib non-free-firmware
 
 # Updates that cannot wait for the next point release.
-deb [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free
-deb-src [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free 
+deb [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free-firmware
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm-updates main contrib non-free-firmware 
 
 # Security releases from the Debian Security Audit Team.
-deb [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free
-deb-src [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free
+deb [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
+deb-src [arch=all] http://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
 
 # Backports brings newer software to stable releases.
 # Backports are disabled by default and are installed differently.
 # For instructions check https://backports.debian.org/Instructions/ .
-deb [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free
-deb-src [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free
+deb [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free-firmware
+deb-src [arch=all] http://deb.debian.org/debian/ bookworm-backports main contrib non-free-firmware
