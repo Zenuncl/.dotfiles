@@ -136,6 +136,8 @@ if [ -f "/etc/os-release" ]; then
 	    "debian")
 		    echo "Running command for Debian"
 		    # Command for Debian
+		    setup_static_sources_repo
+		    apt_install_dep
 		    ;;
 	    "arch")
 		    echo "Running command for Arch Linux"
