@@ -10,10 +10,23 @@
 
 [alias]
   last = log -l HEAD
-  logg = log --pretty=format:\"%C(auto)%h %C(magenta)<%ad> %C(green)[%an] %C(blue normal bold)| %Creset%s%C(auto)%d\" --graph --date=short
+  log = log --pretty=format:\"%C(auto)%h %C(magenta)<%ad> %C(green)[%an] %C(blue normal bold)| %Creset%s%C(auto)%d\" --graph --date=short
   sign = commit -S
   co = checkout
   count = shortlog -sn
+  
+  # List commits that are in the upstream branch but not local yet
+  incoming = "!(git fetch --quiet && git log --pretty=format:'%C(yellow)%h %C(white)- %C(red)%an %C(white)- %C(cyan)%d%Creset %s %C(white)- %ar%Creset' ..@{u})"
+  # List commits that are in the local branch but not upstream yet
+  outgoing = "!(git fetch --quiet && git log --pretty=format:'%C(yellow)%h %C(white)- %C(red)%an %C(white)- %C(cyan)%d%Creset %s %C(white)- %ar%Creset' @{u}..)"
+
+  # Show the whole git tree for this repo visually
+  l = "log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) %C(green)(%ar)%C(reset) - %s %C(italic)- %an%C(reset)%C(magenta bold)%d%C(reset)' --all"
+
+  # Reset all changes to all submodules in the repo
+  subreset = "submodule foreach 'git reset --hard HEAD'"
+  # Pull the latest revision of all submodules in the repo
+  subup = "!f() { git submodule sync; git submodule update --init --recursive; }; f"
 
 [color]
   diff = auto
