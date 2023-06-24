@@ -41,6 +41,9 @@ export PATH=$HOME/.bin:$PATH
 # Add all bin/sbin to PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
 
+# Project
+export PROJECTS=~/dev
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
@@ -53,8 +56,10 @@ else
   export EDITOR='vim'
 fi
 
-# ssh
-
+# term
+export TERM=screen-256color
+# go
+export GOPATH=$HOME/dev/go
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
