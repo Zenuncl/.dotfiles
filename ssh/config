@@ -1,0 +1,9 @@
+# Global Configs
+Host *
+  ForwardAgent yes
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+
+Host github.com
+  IdentityFile ~/.ssh/global/keys/github.pem
+
