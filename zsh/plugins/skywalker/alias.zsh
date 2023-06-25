@@ -35,8 +35,8 @@ alias -s txt=vim
 
 # User configuration
 alias last.command='fc -ln -1'
-alias ll="ls -l"
-alias la="ls -la"
+alias ll="ls -lh"
+alias la="ls -lha"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
