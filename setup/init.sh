@@ -103,6 +103,7 @@ function pacman_install_dep() {
 		python \
 		python3 \
 		python-pip \
+		python-pipx \
 		python-virtualenv
 
 	# Cleanup
