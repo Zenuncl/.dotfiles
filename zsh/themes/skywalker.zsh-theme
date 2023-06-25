@@ -45,7 +45,7 @@ get_date_time() {
 get_user_and_hostname() {
   # %n: username
   # %m: hostname
-  echo "%{$fg_bold[red]%}➜ %{$fg_bold[yellow]%}%n%{$fg[cyan]%}@%{$fg_bold[green]%}%m.dev%{$reset_color%}"
+  echo "%{$fg_bold[red]%}➜ %{$fg_bold[yellow]%}%n%{$fg[cyan]%}@%{$fg_bold[green]%}%M %{$reset_color%}"
 }
 
 # Get current directory
