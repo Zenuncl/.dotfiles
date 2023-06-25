@@ -15,6 +15,7 @@ alias javac="javac -J-Dfile.encoding=utf8"
 alias ls='ls --color=auto'
 alias free="free -h"
 alias top="htop"
+alias ps="ps auxf"
 
 # File alias
 alias -s gz='tar -xzvf'
