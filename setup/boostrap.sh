@@ -122,4 +122,5 @@ fi
 cat ${DOTFILES}/setup/system/plugins.sh | bash
 
 symlink_dotfiles
+symlink_dotdir
 
