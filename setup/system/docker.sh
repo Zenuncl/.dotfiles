@@ -6,7 +6,7 @@ USERNAME=$1
 
 function apt_install_docker() {
   # Remove old ocker version if any
-  apt-get -y purge \
+  apt-get -y purge --ignore-missing \
     docker \
     docker-compose \
     docker-doc \
