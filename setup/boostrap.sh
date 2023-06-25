@@ -108,7 +108,6 @@ elif ! [ -d ${HOME}/.nvm ]; then
 fi
 
 # Install docker need sudo
-sudo ${DOTFILES}/setup/system/docker.sh $UNAME
 sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
 
 # Mike Directory
