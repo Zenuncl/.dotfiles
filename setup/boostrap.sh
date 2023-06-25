@@ -1,33 +1,33 @@
-#/usr/bin/env zsh
+#/usr/bin/env bash
 set -e
 
 UNAME=`whoami`
 DOTFILES=${HOME}/.dotfiles
 
-function is_command() { command -v $@ &> /dev/null; }
+is_command() { command -v $@ &> /dev/null; }
 
-function info () {
+info () {
   printf "  [ \033[00;34m..\033[0m ] $1"
 }
 
-function success () {
+success () {
   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
 }
 
-function fail () {
+fail () {
   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
 }
 
-function install_ohmyzsh() {
+install_ohmyzsh() {
   if [ ! -d "${HOME}/.oh-my-zsh" ]; then
     info "Installing oh-my-zsh..." >&2
     curl -fsSL install.ohmyz.sh | sh 1>&2
   fi
 }
 
-function check_dotfile() {
+check_dotfile() {
   if [ ! -d ${DOTFILES} ]; then
     git clone git://github.com/SharkIng/.dotfiles.git ${DOTFILES}
   fi
@@ -35,7 +35,7 @@ function check_dotfile() {
 
 (check_dotfile && install_ohmyzsh) || exit 1
 
-function is_correct_repo() {
+is_correct_repo() {
   CHECK_PATH=$1
   USER_AND_REPO=$2
 
@@ -48,7 +48,7 @@ function is_correct_repo() {
   fi  
 }
 
-function link_file() {
+link_file() {
   dest=$2
   if [ -f $dest ] || [ -d $dest ]
   then
@@ -60,7 +60,7 @@ function link_file() {
   success "Symlinked $1 to $2"
 }
 
-function symlink_dotfiles() {
+symlink_dotfiles() {
   # Symlink original files.
   info "Symlinking dotfiles..."
   for source in `find ${DOTFILES} -maxdepth 2 -name \*.symlink`
@@ -75,12 +75,12 @@ function symlink_dotfiles() {
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/
 }
 
-function symlink_dotdir() {
+symlink_dotdir() {
   link_file ${DOTFILES}/bin $HOME/.bin
   link_file ${DOTFILES)/ssh $HOME/.ssh
 }
 
-function install_rvm() {
+install_rvm() {
   RUBY_VIERSION=3.2.2
 
   # Install RVM
@@ -93,7 +93,7 @@ function install_rvm() {
   \curl -sSL https://get.rvm.io | bash -s stable 1>&2
 }
 
-function install_nvm() {
+install_nvm() {
   NODE_VIERSION=18.16.1
   NPM_VERSION=9.5.1
 
