@@ -53,7 +53,7 @@ link_file() {
   if [ -f $dest ] || [ -d $dest ]
   then
     info "Backing up original files..."
-    mv $dest{,.original}
+    mv $dest $dest.original
   else
     ln -fs $1 $2
   fi
