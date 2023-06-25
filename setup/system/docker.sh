@@ -6,15 +6,15 @@ USERNAME=$1
 
 function apt_install_docker() {
   # Remove old ocker version if any
-  apt-get -y purge --ignore-missing \
-    docker \
-    docker-compose \
-    docker-doc \
-    podman-docker \
-    docker-engine \
-    docker.io \
-    containerd \
-    runc
+  # apt-get -y purge --ignore-missing \
+  #   docker \
+  #   docker-compose \
+  #   docker-doc \
+  #   podman-docker \
+  #   docker-engine \
+  #   docker.io \
+  #   containerd \
+  #   runc
 
   # Install docker dependency
   apt-get -y install \
