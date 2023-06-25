@@ -38,6 +38,7 @@ function apt_install_dep() {
 		rsync \
 		vim \
 		tmux \
+		fasd \
 		apt-transport-https \
 		ca-certificates \
 		curl \
