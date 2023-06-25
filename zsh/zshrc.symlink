@@ -73,4 +73,6 @@ export PATH="$PATH:$HOME/.rvm/bin"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+# ssh
+eval $(ssh-agent)
+ssh-add $HOME/.ssh/global/keys/github.pem

@@ -78,6 +78,7 @@ symlink_dotfiles() {
 symlink_dotdir() {
   link_file ${DOTFILES}/bin $HOME/.bin
   link_file ${DOTFILES}/ssh $HOME/.ssh
+  mv $HOME/.ssh.original $HOME/.ssh/
 }
 
 install_rvm() {
