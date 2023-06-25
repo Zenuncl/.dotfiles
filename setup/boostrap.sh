@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#/usr/bin/env zsh
 set -e
 
 UNAME=`whoami`
@@ -123,3 +123,4 @@ fi
 cat ${DOTFILES}/setup/system/plugins.sh | bash
 
 symlink_dotfiles
+
