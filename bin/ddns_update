@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# AWS CLI command to update the Route 53 record
+UPDATE_CMD="aws route53 change-resource-record-sets --hosted-zone-id YOUR_HOSTED_ZONE_ID --change-batch"
+
+# Fetch the current public IP address
+IP=$(curl -s https://api.ipify.org)
+
+# Create the change batch JSON file
+cat > change-batch.json << EOF
+{
+  "Changes": [
+  {
+    "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "yourdomain.com",
+        "Type": "A",
+        "TTL": 300,
+        "ResourceRecords": [
+        {
+          "Value": "$IP"
+        }
+        ]
+      }
+  }
+  ]
+}
+EOF
+
+# Update the Route 53 record
+$UPDATE_CMD file://change-batch.json
+
+# Clean up the temporary JSON file
+rm -f change-batch.json
