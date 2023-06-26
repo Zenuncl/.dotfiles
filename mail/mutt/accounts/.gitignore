@@ -1,0 +1,5 @@
+# Ignore all accounts
+*.muttrc
+
+# Exclude one sample
+!example_gmail_account.muttrc
