@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS=("hugo" "unzip")
+PKGS=("hugo" "unzip" "jq")
 
 function apt_install() {
         # Install docker dependency
