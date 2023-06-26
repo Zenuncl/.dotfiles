@@ -1,34 +1,58 @@
 #!/bin/bash
 
-# AWS CLI command to update the Route 53 record
-UPDATE_CMD="aws route53 change-resource-record-sets --hosted-zone-id YOUR_HOSTED_ZONE_ID --change-batch"
+ZONE_ID="$DDNS_HOSTED_ZONE_ID"
+TYPE="A"
+TTL=60
+
+# Load system hostname setting
+HOSTNAME=$(hostnamectl hostname)
 
 # Fetch the current public IP address
-IP=$(curl -s https://api.ipify.org)
+IPINFO=$(curl -s https://ipinfo.io/what-is-my-ip)
 
-# Create the change batch JSON file
-cat > change-batch.json << EOF
-{
-  "Changes": [
-  {
-    "Action": "UPSERT",
-      "ResourceRecordSet": {
-        "Name": "yourdomain.com",
+IP=$(echo $IPINFO | jq '.ip' | sed 's/"//g')
+
+#validate IP address (makes sure Route 53 doesn't get updated with a malformed payload)
+if [[ ! $IP =~ ^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$ ]]; then
+  echo "The DDNS Updater Script failed due to invalid IP address from result."
+  exit 1
+fi
+
+function get_current_ddns() {
+  # Get current DDNS
+  aws --profile ddns route53 list-resource-record-sets --hosted-zone-id $ZONE_ID  --output json | 
+    jq -r '.ResourceRecordSets[] | select (.Name == "'"$HOSTNAME."'") | select (.Type == "'"$TYPE"'") | .ResourceRecords[0].Value' > /tmp/current_route53_value
+
+  #check if IP is different from Route 53
+  if grep -Fxq "$IP" /tmp/current_route53_value; then
+    echo "IP $(cat /tmp/current_route53_value) Has Not Changed, Exiting"
+    exit 1
+  fi
+}
+
+function update_ddns() {
+  # Create the change batch JSON file
+  aws --profile ddns route53 change-resource-record-sets \
+    --hosted-zone-id "$ZONE_ID" \
+    --change-batch '{
+      "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+        "Name": "'$HOSTNAME'",
         "Type": "A",
-        "TTL": 300,
+        "TTL": '$TTL',
         "ResourceRecords": [
-        {
-          "Value": "$IP"
-        }
+          {
+            "Value": "'$IP'"
+          }
         ]
       }
-  }
-  ]
+    }
+    ]
+  }' > /tmp/updated_route53_changeinfo
+  echo "DNS record updated. Host: $HOSTNAME, IP: $IP"
 }
-EOF
 
-# Update the Route 53 record
-$UPDATE_CMD file://change-batch.json
-
-# Clean up the temporary JSON file
-rm -f change-batch.json
+get_current_ddns
+update_ddns
