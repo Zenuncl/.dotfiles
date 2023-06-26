@@ -2,16 +2,10 @@
 
 set -e
 
-PKGS="aws"
+PKGS="aws linode-cli"
 
-function apt_install() {
-        # Install docker dependency
-        apt-get -y update && \
-                apt-get -y install $PKGS
-}
-
-function pacman_install() {
-        pacman -S --noconfirm $PKGS
+function pipx_install() {
+        pipx install $PKGS
 }
 
 # Check the Linux distribution
@@ -24,12 +18,12 @@ if [ -f "/etc/os-release" ]; then
                             "debian")
                                     echo "Running command for Debian"
                                     # Command for Debian
-                                    apt_install
+                                    pipx_install
                                     ;;
                             "arch")
                                     echo "Running command for Arch Linux"
                                     # Command for Arch Linux
-                                    pacman_install
+                                    pipx_install
                                     ;;
                             *)
                                     echo "Unsupported distribution: $distribution"
