@@ -1,0 +1,22 @@
+
+
+# First 'subject line' - Should be as short as possible 
+# (Preferably less than 72 Characters)
+# 
+#
+# Second 'details line' - Should be as details as possible
+# About what was done and why it was done.
+# (Separated by a blank line form the first line)
+#
+# 72-character wrapped longer description. This should answer:
+# 
+# * What change you made?
+# * Why was this change necessary?
+# * How does it address the problem?
+# * Are there any side effects?
+# 
+# Include a link to the ticket, if any.
+# 
+# Add co-authors if you worked on this code with others:
+# 
+# Co-authored-by: Full Name <email@example.com>
