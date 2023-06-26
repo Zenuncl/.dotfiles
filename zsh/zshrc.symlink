@@ -31,8 +31,11 @@ plugins=(
   vi-mode
 )
 
+# Relocating some cache and history files.
 # Add CompDump file locations
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
+# Add ZSH History file locations
+export HISTFILE=$ZSH/cache/.zsh_history
 
 source $ZSH/oh-my-zsh.sh
 
@@ -51,6 +54,7 @@ export PROJECTS=~/dev
 
 # Load envorinment variable
 source $HOME/.env
+source $HOME/.env.secrets
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
