@@ -2,16 +2,16 @@
 
 set -e
 
-PKGS="hugo"
+PKGS=("hugo" "unzip")
 
 function apt_install() {
         # Install docker dependency
         apt-get -y update && \
-                apt-get -y install $PKGS
+                apt-get -y install ${PKGS}
 }
 
 function pacman_install() {
-        pacman -S --noconfirm $PKGS
+        pacman -S --noconfirm ${PKGS}
 }
 
 # Check the Linux distribution
