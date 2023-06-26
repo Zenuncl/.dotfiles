@@ -87,6 +87,7 @@ function pacman_install_dep() {
 		htop \
 		coreutils \
 		vim \
+		neovim \
 		tmux \
 		ca-certificates \
 		curl \
