@@ -16,3 +16,6 @@ endfor
 if hlID('CarriageReturn')
   match CarriageReturn /\r$/
 endif
+
+" Add vim info to .vim directory
+set viminfo+=n~/.vim/tmp/.viminfo
