@@ -13,8 +13,8 @@ set reverse_realname=no
 macro index o "<shell-escape>mutt-mailsync -V gmail<enter>" "run mbsync to sync gmail"
 
 # Create virtual mailboxes for all mail and all accounts
-virtual-mailboxes "All Accounts" "notmuch://?query=tag:inbox"
-virtual-mailboxes "All Mail" "notmuch://?query=tag:inbox%20and%20path:gmail%2F**"
+#virtual-mailboxes "All Accounts" "notmuch://?query=tag:inbox"
+#virtual-mailboxes "All Mail" "notmuch://?query=tag:inbox%20and%20path:gmail%2F**"
 
 set spoolfile = "+INBOX"
 set record = "+[Gmail].Sent Mail"
@@ -39,4 +39,4 @@ macro index Ma ";<save-message>=Archive<enter><enter>" "move mail to archive"
 macro index Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
 
 # C-f search with notmuch
-macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search: ' x; echo \$x >~/.cache/mutt_terms<enter><change-folder>All Mail<enter><limit>~i \"\`notmuch --config ~/.config/notmuch/notmuchrc search --output=messages \"\$(/bin/cat ~/.cache/mutt_terms) path:gmail/**\" | head -n 1000 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "Search all mail in this account"
+#macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search: ' x; echo \$x >~/.cache/mutt_terms<enter><change-folder>All Mail<enter><limit>~i \"\`notmuch --config ~/.config/notmuch/notmuchrc search --output=messages \"\$(/bin/cat ~/.cache/mutt_terms) path:gmail/**\" | head -n 1000 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "Search all mail in this account"

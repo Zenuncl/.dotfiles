@@ -12,7 +12,7 @@
 #
 
 [database]
-path=~/.local/share/mail
+path=.local/share/mail
 
 # User configuration
 #
@@ -32,8 +32,7 @@ path=~/.local/share/mail
 
 [user]
 name=Zavier Jiang
-primary_email=SharkIng@Shacas.com
-other_email=SharkIng@SharkIng.com
+primary_email=Mr.Jiang@sharking.com
 
 # Configuration for "notmuch new"
 #
