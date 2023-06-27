@@ -1,10 +1,10 @@
 # Ignore all accounts setting
-mutt/accounts/accounts-*
-isync/mbsyncrc
-msmtp/config
+mutt/accounts/*
+isync/*
+msmtp/*
 
 
 # Exclude all stub accounts example
-!mutt/accounts/*.stub
-!isync/mbsyncrc.stub
-!msmtp/config.stub
+!mutt/accounts/*.example
+!isync/*.example
+!msmtp/*.example

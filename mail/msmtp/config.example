@@ -1,0 +1,15 @@
+## Used to configure your SMTP settings
+defaults
+auth	on
+tls	on
+#tls_trust_file	~/.config/mail/gmail-cert.pem
+logfile	~/.config/msmtp/msmtp.log
+
+# SMTP
+account gmail
+host smtp.gmail.com
+port 587
+from sharking@gmail.com
+user sharking@gmail.com
+passwordeval "pass mail-gmail-passwd-sharking"
+
