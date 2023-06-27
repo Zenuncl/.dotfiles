@@ -12,7 +12,7 @@
 #
 
 [database]
-path=$HOME/.local/share/mail
+path=~/.local/share/mail
 
 # User configuration
 #

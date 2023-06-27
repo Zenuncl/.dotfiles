@@ -16,6 +16,10 @@ alias ls='ls --color=auto'
 alias free="free -h"
 alias top="htop"
 alias ps="ps auxf"
+alias vi="vim"
+alias nvi="nvim"
+alias email="neomutt"
+alias mutt="neomutt"
 
 # File alias
 alias -s gz='tar -xzvf'
