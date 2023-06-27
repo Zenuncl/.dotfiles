@@ -9,11 +9,8 @@ source $HOME/.config/mutt/keys/binds.muttrc
 
 #### Accounts
 # CHANGE THESE TO MATCH YOUR ACCOUNT CONFIG
-source $HOME/.config/mutt/accounts/example_gmail_account.muttrc  #default account
-macro index,pager i1 '<sync-mailbox><enter-command>source $HOME/.config/mutt/accounts/1-sampleaccount.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to sample account" 
-macro index,pager i2 '<sync-mailbox><enter-command>source $HOME/.config/mutt/accounts/2-anotheraccount.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to another account" 
-macro index,pager i3 '<sync-mailbox><enter-command>source $HOME/.config/mutt/accounts/3-someotheraccount.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to some other account" 
-macro index,pager i4 '<sync-mailbox><enter-command>source $HOME/.config/mutt/accounts/4-yetanotheraccount.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to yet another account" 
+source $HOME/.config/mutt/accounts/*.muttrc  #default account
+#macro index,pager i1 '<sync-mailbox><enter-command>source $HOME/.config/mutt/accounts/1-sampleaccount.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to sample account" 
 
 #### General Settings
 set smtp_authenticators = 'gssapi:login'
