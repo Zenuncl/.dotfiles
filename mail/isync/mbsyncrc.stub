@@ -2,37 +2,33 @@
 # Define your email accounts you want to sync here #
 ####################################################
 
-# Example Google IMAP profile ##################################################
-#
-# Change ACCOUNT_ALIAS to something meaningful (e.g. personal, work) - this should
-# match the account alias used in .config/mutt/accounts/*
-IMAPStore ACCOUNT_ALIAS-remote
+IMAPAccount gmail
+# Mail Server
 Host imap.gmail.com
 Port 993
-User myemail@gmail.com
-# NOTE that if you use 2FA you will have to generate an app password to use
-# here instead: https://support.google.com/accounts/answer/185833?hl=en
-# how to get your password ('pass' and 'gpg' are good for these)
-# using 'pass')
-PassCmd "pass my-gmail-password"
-# using 'gpg'
-#PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d my-gmail-password.gpg"
 AuthMechs LOGIN
 SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
+#CertificateFile ~/.config/mail/gmail-cert.pem
+# User Account
+User sharking@gmail.com
+PassCmd "pass mail-gmail-passwd-sharking"
 
-MaildirStore ACCOUNT_ALIAS-local
+# Mail Store Setting
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
 Subfolders Verbatim
-Path ~/.local/share/mail/ACCOUNT_ALIAS/
-Inbox ~/.local/share/mail/ACCOUNT_ALIAS/INBOX
+Path ~/.local/share/mail/gmail/
+Inbox ~/.local/share/mail/gmail/INBOX
 Flatten .
 
-Channel ACCOUNT_ALIAS
-Expunge Both
-Far :ACCOUNT_ALIAS-remote:
-Near :ACCOUNT_ALIAS-local:
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
 Patterns * ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail"
 Create Both
+Expunge Both
 SyncState *
-MaxMessages 1000
+MaxMessages 100
 ExpireUnread no
