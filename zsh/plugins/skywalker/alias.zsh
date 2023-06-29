@@ -2,6 +2,10 @@
 
 # UTC time check
 alias utc_time="TZ='Etc/UTC' date"
+alias nyc_time="TZ='Canada/Eastern' date"
+alias sha_time="TZ='Asia/Shanghai' date"
+alias par_time="TZ='Europe/Paris' date"
+alias tyo_time="TZ='Asia/Tokyo' date"
 alias utc_chrome="TZ='Etc/UTC' open -na 'Google Chrome' --args '--user-data-dir=$HOME/.chrome-testing-profile'"
 
 # System level alias
@@ -18,7 +22,6 @@ alias top="htop"
 alias ps="ps auxf"
 alias vi="vim"
 alias nvi="nvim"
-alias email="neomutt"
 alias mutt="neomutt"
 
 # File alias
