@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS=("neomutt" "glow" "isync" "msmtp" "notmuch")
+PKGS=("neomutt" "glow" "isync" "msmtp" "notmuch" "html2text")
 
 function apt_install() {
         # Install docker dependency
