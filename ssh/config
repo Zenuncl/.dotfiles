@@ -1,9 +1,14 @@
+# Include some files
+Include ~/.ssh/config.d/*
+
+
 # Global Configs
 Host *
   ForwardAgent yes
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null
+  SetEnv TERM=screen-256color
 
 Host github.com
   IdentityFile ~/.ssh/global/keys/github.pem
-
+  
