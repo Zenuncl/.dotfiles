@@ -1,6 +1,14 @@
-# Include some files
-Include ~/.ssh/config.d/*
+# Dev: Local Development Server (*.dev)(*.local) | Person VM Servers (*.vm)
+Include config.d/dev/*.conf
 
+# Prd: Productions Servers (*.prd)(*.work)
+Include config.d/prd/*.conf
+
+# Office Server (*.office)
+Include config.d/office/*.conf
+
+# Others Config (Linode, Github etc)
+Include config.d/others/*.conf
 
 # Global Configs
 Host *
@@ -9,6 +17,3 @@ Host *
   UserKnownHostsFile /dev/null
   SetEnv TERM=screen-256color
 
-Host github.com
-  IdentityFile ~/.ssh/global/keys/github.pem
-  
