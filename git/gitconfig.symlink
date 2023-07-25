@@ -63,7 +63,7 @@
 [core]
   excludesfile = !$HOME/.gitignore
   editor = vim
-  autocrlf = true
+  autocrlf = input
   eol = lf
   pager = "diff-so-fancy | less --tabs=4 -RFX"
 
