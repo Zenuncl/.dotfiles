@@ -57,9 +57,15 @@
 	new = green bold
 	whitespace = red reverse
 
+[commit]
+  gogsign = true
+
 [core]
   excludesfile = !$HOME/.gitignore
   editor = vim
+  autocrlf = true
+  eol = lf
+  whitespace = cr-at-eol
   pager = "diff-so-fancy | less --tabs=4 -RFX"
 
 [apply]
