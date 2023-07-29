@@ -23,6 +23,22 @@ alias ps="ps auxf"
 alias vi="vim"
 alias nvi="nvim"
 alias mutt="neomutt"
+alias c="clear"
+alias x="exit"
+alias h="history -20"
+alias hc="history -c"
+alias hg="history | grep"
+alias ag="alias | grep"
+alias t="htop || top"
+
+# Change directory
+alias pud="pushd"
+alias ppd="popd"
+
+# Global alias
+alias -g G="| grep"
+alias -g L="| less"
+alias -g C="| column -t"
 
 # File alias
 alias -s gz='tar -xzvf'
@@ -52,4 +68,6 @@ alias mkdir="mkdir -p"
 alias ..="cd .."
 alias ...="cd ../../"
 alias vi="vim"
-
+alias weather="curl wttr.in"
+alias ip="curl ipinfo.io"
+alias ffs-"sudo !!"
