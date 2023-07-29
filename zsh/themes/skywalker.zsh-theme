@@ -183,7 +183,7 @@ VIRTUAL_ENV_DISABLE_PROMPT=true
 
 local SKYWALKER_PROMPT_PERVIOUS='`get_exit_code`'
 local SKYWALKER_PROMPT_HEAD='╭─$(get_date_time) $(get_user_and_hostname) $(get_current_dir) $(get_dev_env) $(get_git_info)'
-local SKYWALKER_PROMPT_FOOT='╰──➤ $(get_venv_info)'
+local SKYWALKER_PROMPT_FOOT='╰──➤ $(get_venv_info) '
 
 PROMPT="$SKYWALKER_PROMPT_PERVIOUS
 $SKYWALKER_PROMPT_HEAD
