@@ -85,4 +85,4 @@ export PATH="$PATH:$HOME/.rvm/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # ssh
 eval $(ssh-agent)
-ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pemm
+ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
