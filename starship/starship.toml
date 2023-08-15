@@ -1,5 +1,5 @@
 format = '''
-$time $all
+$time $all$status$container$shell$character
 '''
 ## Line One
 # First param ─┌
@@ -48,18 +48,17 @@ disabled = false
 ## Line 2
 # Prompt: param 2 └─
 [character]
-success_symbol = " [√](bold red)"
-error_symbol = " [×](bold red)"
+success_symbol = "─➤ [√](bold green)"
+error_symbol = "─➤ [×](bold red)"
 
 # SYMBOLS
 [status]
-symbol = "🔴"
-format = '[\[$symbol$status_common_meaning$status_signal_name$status_maybe_int\]]($style)'
+format = ' [\[$symbol - $status\]]($style) '
 map_symbol = true
 disabled = false
 
 [os]
-format = " ╰─ [$symbol $name]($style) ─➤ "
+format = " ╰─ [$symbol $name]($style) ─"
 style = "bold blue"
 disabled = false
 
