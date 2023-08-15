@@ -30,10 +30,14 @@ alias hc="history -c"
 alias hg="history | grep"
 alias ag="alias | grep"
 alias t="htop || top"
+alias which="type -a"
 
 # Change directory
 alias pud="pushd"
 alias ppd="popd"
+
+# Other useful alias
+alias latex="docker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/latex"
 
 # Global alias
 alias -g G="| grep"
