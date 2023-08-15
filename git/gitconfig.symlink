@@ -8,53 +8,27 @@
   email = SharkIng@Shacas.com
   signingkey = 0417D91D14E51DA5
 
-[alias]
-  last = log -l HEAD
-  l = "log --abbrev-commit --decorate --graph --date=short --all --pretty=format:'%C(auto)%h %C(magenta)<%ad> %C(red)(%ar) %C(green)%C(italic)[%an]%C(reset) %C(blue normal bold)| %Creset%s%C(auto)%d'"
-  sign = commit -S
-  ci = commit -v
-  co = checkout
-  st = status
-  count = shortlog -sn
-  aa = add --all
-  ap = add --patch
-  cp = cherry-pick -x
-  
-  amend = commit --amend -v --date="$(date +%Y-%m-%dT%H:%M:%S)"
-
-  current = rev-parse --abbrev-ref HEAD
-  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
-  
-  # List commits that are in the upstream branch but not local yet
-  incoming = "!(git fetch --quiet && git log --pretty=format:'%C(yellow)%h %C(white)- %C(red)%an %C(white)- %C(cyan)%d%Creset %s %C(white)- %ar%Creset' ..@{u})"
-  # List commits that are in the local branch but not upstream yet
-  outgoing = "!(git fetch --quiet && git log --pretty=format:'%C(yellow)%h %C(white)- %C(red)%an %C(white)- %C(cyan)%d%Creset %s %C(white)- %ar%Creset' @{u}..)"
-
-  # Reset all changes to all submodules in the repo
-  subreset = "submodule foreach 'git reset --hard HEAD'"
-  # Pull the latest revision of all submodules in the repo
-  subup = "!f() { git submodule sync; git submodule update --init --recursive; }; f"
-
-  wtf = !$HOME/.bin/git-wtf
+[include]
+  path    = !$HOME/.gitalias
 
 [color]
-  diff = auto
-  status = auto
-  branch = auto
-  ui = true
+  diff    = auto
+  status  = auto
+  branch  = auto
+  ui      = true
 
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+	oldNormal     = red bold
+	oldHighlight  = red bold 52
+	newNormal     = green bold
+	newHighlight  = green bold 22
 
 [color "diff"]
-	meta = yellow
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
+	meta    = yellow
+	frag    = magenta bold
+	commit  = yellow bold
+	old     = red bold
+	new     = green bold
 	whitespace = red reverse
 
 [commit]
@@ -62,33 +36,33 @@
 
 [core]
   excludesfile = !$HOME/.gitignore
-  editor = vim
-  autocrlf = input
-  eol = lf
-  pager = "diff-so-fancy | less --tabs=4 -RFX"
+  editor      = vim
+  autocrlf    = input
+  eol         = lf
+  pager       = "diff-so-fancy | less --tabs=4 -RFX"
 
 [apply]
-  whitespace = nowarn
+  whitespace  = nowarn
 
 [mergetool]
-  keepBackup = false
+  keepBackup  = false
 
 [difftool]
-  prompt = false
+  prompt      = false
 
 [rebase]
-  autosquash = true
+  autosquash  = true
 
 [push]
-  default = matching
+  default     = matching
 
 [help]
   autocorrect = 1
 
 [filter "lfs"]
-  clean = git-lfs clean %f
-  smudge = git-lfs smudge %f
-  required = true
+  clean       = git-lfs clean %f
+  smudge      = git-lfs smudge %f
+  required    = true
 
 [url "git@github.com:"]
-  insteadOf = https://github.com
+  insteadOf   = https://github.com
