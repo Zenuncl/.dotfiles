@@ -29,6 +29,13 @@ plugins=(
   zsh-completions
   fzf
   vi-mode
+  docker
+  npm
+  pep8
+  pyenv
+  python
+  sudo
+  systemd
 )
 
 # Relocating some cache and history files.
@@ -86,3 +93,5 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # ssh
 eval $(ssh-agent)
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
+#starship
+eval $(starship init zsh)
