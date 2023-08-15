@@ -9,7 +9,7 @@
   signingkey = 0417D91D14E51DA5
 
 [include]
-  path    = !$HOME/.gitalias
+  path    = /home/sharking/.gitalias
 
 [color]
   diff    = auto
