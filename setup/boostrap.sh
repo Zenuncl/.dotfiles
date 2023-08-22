@@ -54,6 +54,7 @@ link_file() {
   then
     info "Backing up original files..."
     mv $dest $dest.original
+    ln -fs $1 $2
   else
     ln -fs $1 $2
   fi
