@@ -94,4 +94,5 @@ export PATH="$PATH:$HOME/.rvm/bin"
 eval $(ssh-agent)
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
 #starship
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval $(starship init zsh)

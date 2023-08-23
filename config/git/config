@@ -9,7 +9,7 @@
   signingkey = 0417D91D14E51DA5
 
 [include]
-  path    = /home/sharking/.gitalias
+  path    = /home/sharking/.config/git/gitalias
 
 [color]
   diff    = auto
@@ -35,7 +35,7 @@
   gogsign = true
 
 [core]
-  excludesfile = !$HOME/.gitignore
+  excludesfile = !$HOME/.config/git/gitignores
   editor      = vim
   autocrlf    = input
   eol         = lf
