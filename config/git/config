@@ -36,7 +36,7 @@
   gogsign = true
 
 [core]
-  excludesfile = !$HOME/.config/git/gitignores
+  excludesfile = ~/.config/git/gitignores
   editor      = vim
   autocrlf    = input
   eol         = lf
