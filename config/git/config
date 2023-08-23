@@ -9,7 +9,7 @@
   signingkey = 0417D91D14E51DA5
 
 [include]
-  path    = /home/sharking/.config/git/gitalias
+  path    = ~/.config/git/gitalias
 
 [color]
   diff    = auto
@@ -32,6 +32,7 @@
 	whitespace = red reverse
 
 [commit]
+  template = ~/.config/git/gitmessage
   gogsign = true
 
 [core]
