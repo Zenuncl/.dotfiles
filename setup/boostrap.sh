@@ -29,7 +29,7 @@ install_ohmyzsh() {
 
 check_dotfile() {
   if [ ! -d ${DOTFILES} ]; then
-    git clone git://github.com/SharkIng/.dotfiles.git ${DOTFILES}
+    git clone https://github.com/SharkIng/.dotfiles.git ${DOTFILES}
   fi
 }
 
@@ -54,6 +54,7 @@ link_file() {
   then
     info "Backing up original files..."
     mv $dest $dest.original
+    ln -fs $1 $2
   else
     ln -fs $1 $2
   fi

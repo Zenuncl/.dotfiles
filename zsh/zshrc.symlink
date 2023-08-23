@@ -29,6 +29,13 @@ plugins=(
   zsh-completions
   fzf
   vi-mode
+  docker
+  npm
+  pep8
+  pyenv
+  python
+  sudo
+  systemd
 )
 
 # Relocating some cache and history files.
@@ -71,6 +78,7 @@ fi
 # term
 export TERM=screen-256color
 # go
+source $HOME/.gvm/scripts/gvm
 export GOPATH=$HOME/dev/go
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -84,4 +92,7 @@ export PATH="$PATH:$HOME/.rvm/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # ssh
 eval $(ssh-agent)
-ssh-add $HOME/.ssh/global/keys/github.pem
+ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
+#starship
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval $(starship init zsh)

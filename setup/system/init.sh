@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Init setup to the machine, Default now support Debian and Arch Linux
 set -e
 
 # Veriables
-
+PKGS="sudo git zsh vim neovim build-essential curl wget tmux fasd ca-certificates gnupg gnupg2 openssh-server net-tools dnsutils sshpass dirmgr cifs-utils qemu-utils python python-pip python-virtualenv python-pipx"
 
 # Running Debian init command part
 function setup_static_sources_repo() {

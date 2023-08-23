@@ -1,10 +1,10 @@
-#!/bin/zsh
+#!/usr/local/env bash
 
 set -e
 
 PKGS="aws linode-cli"
 
-function pipx_install() {
+pipx_install() {
         pipx install $PKGS
 }
 

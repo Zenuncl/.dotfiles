@@ -1,0 +1,69 @@
+# Git config
+
+[hub]
+  protocol = ssh
+
+[user]
+  name = Zavier Jiang
+  email = SharkIng@Shacas.com
+  signingkey = 0417D91D14E51DA5
+
+[include]
+  path    = ~/.config/git/gitalias
+
+[color]
+  diff    = auto
+  status  = auto
+  branch  = auto
+  ui      = true
+
+[color "diff-highlight"]
+	oldNormal     = red bold
+	oldHighlight  = red bold 52
+	newNormal     = green bold
+	newHighlight  = green bold 22
+
+[color "diff"]
+	meta    = yellow
+	frag    = magenta bold
+	commit  = yellow bold
+	old     = red bold
+	new     = green bold
+	whitespace = red reverse
+
+[commit]
+  template = ~/.config/git/gitmessage
+  gogsign = true
+
+[core]
+  excludesfile = !$HOME/.config/git/gitignores
+  editor      = vim
+  autocrlf    = input
+  eol         = lf
+  pager       = "diff-so-fancy | less --tabs=4 -RFX"
+
+[apply]
+  whitespace  = nowarn
+
+[mergetool]
+  keepBackup  = false
+
+[difftool]
+  prompt      = false
+
+[rebase]
+  autosquash  = true
+
+[push]
+  default     = matching
+
+[help]
+  autocorrect = 1
+
+[filter "lfs"]
+  clean       = git-lfs clean %f
+  smudge      = git-lfs smudge %f
+  required    = true
+
+[url "git@github.com:"]
+  insteadOf   = https://github.com
