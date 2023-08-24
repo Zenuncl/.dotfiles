@@ -4,19 +4,28 @@
 set -e
 
 # Veriables
-PKGS="sudo git zsh vim neovim build-essential curl wget tmux fasd ca-certificates gnupg gnupg2 openssh-server net-tools dnsutils sshpass dirmgr cifs-utils qemu-utils python python-pip python-virtualenv python-pipx"
+ARCH_PKGS="sudo git zsh vim neovim base-devel curl wget tmux fasd ca-certificates gnupg net-tools bind sshpass cifs-utils qemu-base unzip lynx traceroute fail2ban iptables python python-pip python-virtualenv python-pipx"
+DEB_PKGS="sudo git zsh vim neovim build-essential curl wget tmux fasd ca-certificates gnupg gnupg2 openssh-server net-tools dnsutils sshpass dirmgr cifs-utils qemu-utils python python-pip python-virtualenv python-pipx"
 
 # Running Debian init command part
-function setup_static_sources_repo() {
+setup_static_sources_repo() {
 	# Use the generated debian 9 sources.list
 	if [ -f /etc/apt/sources.list ]; then
-		mv /etc/apt/sources.list{,.bak}
+		echo "Backing up apt Source file..."
+		mv /etc/apt/sources.list{,.original}
+		echo "Downloading apt Static Source file..."
+		curl -sSL -H 'Cache-Control: no-cache' -o /etc/apt/sources.list \
+			"https://github.com/SharkIng/.dotfiles/raw/master/setup/sources/deb/stable.sources.list"
+	elif [ -f /etc/pacman.d/mirrorlist ]; then
+		echo "Backing up pacman Mirror list..."
+		mv /etc/pacman.d/mirrorlist{,.original}
+		echo "Downloading Static pacman Mirror list..."
+		curl -sSL -H 'Cache-Control: no-cache' -o /etc/pacman.d/mirrorlist \
+			"https://raw.githubusercontent.com/SharkIng/.dotfiles/master/setup/sources/arch/global.mirrorlist"
 	fi
-	curl -sSL -H 'Cache-Control: no-cache' -o /etc/apt/sources.list \
-		"https://github.com/SharkIng/.dotfiles/raw/master/setup/deb/stable.sources.list"
 }
 
-function apt_install_dep() {
+apt_install_dep() {
 	# Install necessary system level dependency
 	# Upgrade and dist-upgrade
 	apt-get -y update && apt-get -y -f \
@@ -31,99 +40,48 @@ function apt_install_dep() {
 	apt-get -y update && apt-get install -y -f \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
-		sudo \
-		git \
-		zsh \
-		build-essential \
-		rsync \
-		vim \
-		tmux \
-		fasd \
-		apt-transport-https \
-		ca-certificates \
-		curl \
-		wget \
-		gnupg2 \
-		openssh-server \
-		net-tools \
-		dnsutils \
-		sshpass \
-		dirmngr \
-		cifs-utils \
-		qemu-utils \
-		python3 \
-		python3-pip \
-		python3-virtualenv
+		"${DEB_PKGS}"
 
 	# Cleanup
 	apt-get -y autoremove && \
 		apt-get -y autoclean
 }
 
-function apt_purge_dep() {
+apt_purge() {
 	# Remove uncessary packages (optional)
 	APT_PKGS=$1
 
 	if [[ ${#APT_PKGS} -ne 0 ]]; then
 		apt-get purge -y -f \
-			${APT_PKGS}
+			"${APT_PKGS}"
 	fi
 }
 
 # Running Arch Linux init command part
-function pacman_install_dep() {
+pacman_install() {
 	# Install necessary system level dependency
 	# Upgrade and dist-upgrade
 	pacman -Syu --noconfirm
 
 	# Such as: vim, tmux, git, zsh
-	pacman -S --noconfirm \
-		sudo \
-		git \
-		zsh \
-		base-devel \
-		which \
-		rsync \
-		htop \
-		coreutils \
-		vim \
-		neovim \
-		tmux \
-		ca-certificates \
-		curl \
-		fasd \
-		go \
-		wget \
-		gnupg \
-		openssh \
-		net-tools \
-		dnsutils \
-		sshpass \
-		cifs-utils \
-		qemu-base \
-		python \
-		python3 \
-		python-pip \
-		python-pipx \
-		python-virtualenv
+	pacman -S --noconfirm "${ARCH_PKGS}"
 
 	# Cleanup
 	DEPRECATED_PKGS=$(pacman -Qdttq --noconfirm)
 
-	if [[ -n "$DEPRECATED_PKGS" ]]; then
-		pacman -Rs "$DEPRECATED_PKGS"
+	if [ -n "${DEPRECATED_PKGS}" ]; then
+		pacman -Rs "${DEPRECATED_PKGS}"
 	fi
 	pacman -Sc --noconfirm
-
 }
 
-function pacman_purge_dep() {
+pacman_purge() {
 	# Remove uncessary packages (optional)
 	PAC_PKGS=$1
 
 	if [[ ${#PAC_PKGS} -ne 0 ]]; then
 		pacman -Rns \
-			${PAC_PKGS}
+			"${PAC_PKGS}"
 	fi
 }
 
@@ -143,7 +101,8 @@ if [ -f "/etc/os-release" ]; then
 	    "arch")
 		    echo "Running command for Arch Linux"
 		    # Command for Arch Linux
-		    pacman_install_dep
+				setup_static_sources_repo
+		    pacman_install
 		    ;;
 	    *)
 		    echo "Unsupported distribution: $distribution"
