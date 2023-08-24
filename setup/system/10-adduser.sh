@@ -1,16 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Init setup to the machine.
 set -e
 
-USERNAME=$1
+USERNAME="${1:-anonymous}"
 
 # Add Users
 useradd -m \
   -u 1027 \
   -s /bin/zsh \
-  -p "*" \
-  -G wheel \
+  -G "$(getent group wheel > /dev/null && echo wheel || echo sudo)" \
   ${USERNAME}
 
 echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$USERNAME
