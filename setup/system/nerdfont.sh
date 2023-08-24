@@ -16,6 +16,6 @@ git clone --filter=blob:none --sparse \
 
 # Install Font
 cd "$DIRECTORY" && \
-  git sparse-checkout add patched-fonts/$FONT
+  git sparse-checkout add patched-fonts/"$FONT"
 
 "$DIRECTORY"/install.sh "$FONT"
