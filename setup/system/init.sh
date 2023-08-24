@@ -41,7 +41,7 @@ apt_install_dep() {
 	apt-get -y update && apt-get install -y -f \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
-		"${DEFAULT_PKGS}" "${DEB_PKGS}"
+		${DEFAULT_PKGS} ${DEB_PKGS}
 
 	# Cleanup
 	apt-get -y autoremove && \
@@ -69,7 +69,7 @@ pacman_install() {
 	pacman -Syu --noconfirm
 
 	# Default Packages Such as: vim, tmux, git, zsh
-	pacman -S --noconfirm "${DEFAULT_PKGS}"
+	pacman -S --noconfirm ${DEFAULT_PKGS}
 	pacman -S --noconfirm ${ARCH_PKGS}
 
 	# Cleanup
