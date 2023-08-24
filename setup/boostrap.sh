@@ -83,10 +83,7 @@ symlink_dotfiles() {
   link_file ${DOTFILES}/config/alacritty ${HOME}/.config/alacritty
   link_file ${DOTFILES}/config/starship ${HOME}/.config/starship
   if [ ! -d "${HOME}/.config/awesome" ]; then
-    git clone --recurse-submodules --remote-submodules \
-      --depth 1 -j 2 https://github.com/lcpz/awesome-copycats.git /tmp/awesome && \
-      mv -bv /tmp/awesome/{*,.[^.]*} ${HOME}/.config/awesome; rm -rf /tmp/awesome
-    success "Successfully cloned awesome-copycat repo to ~/.config/awesome..."
+    link_file ${DOTFILES}/config/awesome ${HOME}/.config/awesome
   else
     link_file ${DOTFILES}/config/awesome/rc.lua ${HOME}/.config/awesome/rc.lua
     link_file ${DOTFILES}/config/awesome/themes/skywalker ${HOME}/.config/awesome/themes/skywalker
