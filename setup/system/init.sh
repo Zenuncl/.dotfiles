@@ -69,7 +69,7 @@ pacman_install() {
 	pacman -Syu --noconfirm
 
 	# Default Packages Such as: vim, tmux, git, zsh
-	pacman -S --noconfirm ${DEFAULT_PKGS[@]} ${ARCH_PKGS[@]}
+	pacman -S --needed --noconfirm ${DEFAULT_PKGS[@]} ${ARCH_PKGS[@]}
 
 	# Cleanup
 	DEPRECATED_PKGS=$(pacman -Qdttq --noconfirm)
