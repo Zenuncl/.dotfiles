@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DIRECTORY=$HOME/.local/nerdfont
-DEFAULT_FONT="SourceCodePro"
+FONT=="${1:-SourceCodePro}"
 
 # Check if DIRECTORY exist
 if [ ! -d "$DIRECTORY" ]; then
@@ -16,6 +16,6 @@ git clone --filter=blob:none --sparse \
 
 # Install Font
 cd "$DIRECTORY" && \
-  git sparse-checkout add patched-fonts/$DEFAULT_FONT
+  git sparse-checkout add patched-fonts/$FONT
 
-"$DIRECTORY"/install.sh "$DEFAULT_FONT"
+"$DIRECTORY"/install.sh "$FONT"
