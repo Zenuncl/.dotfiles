@@ -50,10 +50,10 @@ is_correct_repo() {
 
 link_file() {
   dest=$2
-  if [ -f $dest ] || [ -d $dest ]
+  if [ -f ${dest} ] || [ -d ${dest} ]
   then
     info "Backing up original files..."
-    mv $dest $dest.original
+    mv ${dest} ${dest}.original
     ln -fs $1 $2
   else
     ln -fs $1 $2
@@ -82,7 +82,7 @@ symlink_dotfiles() {
   link_file ${DOTFILES}/config/git ${HOME}/.config/git
   link_file ${DOTFILES}/config/alacritty ${HOME}/.config/alacritty
   link_file ${DOTFILES}/config/starship ${HOME}/.config/starship
-  if [ ! -d "${HOME}/.config/awesome"]; then
+  if [ ! -d "${HOME}/.config/awesome" ]; then
     git clone --recurse-submodules --remote-submodules \
       --depth 1 -j 2 https://github.com/lcpz/awesome-copycats.git /tmp/awesome && \
       mv -bv /tmp/awesome/{*,.[^.]*} ${HOME}/.config/awesome; rm -rf /tmp/awesome
@@ -94,21 +94,21 @@ symlink_dotfiles() {
 }
 
 symlink_dotdir() {
-  link_file ${DOTFILES}/bin $HOME/.bin
-  link_file ${DOTFILES}/ssh $HOME/.ssh
-  if [ -d "$HOME/.ssh.original/" ]; then
-    mv $HOME/.ssh.original/* $HOME/.ssh/
-    rm -rf $HOME/.ssh.original
+  link_file ${DOTFILES}/bin ${HOME}/.bin
+  link_file ${DOTFILES}/ssh ${HOME}/.ssh
+  if [ -d "${HOME}/.ssh.original/" ]; then
+    mv ${HOME}/.ssh.original/* ${HOME}/.ssh/
+    rm -rf ${HOME}/.ssh.original
     success "Copied old .ssh files to ssh directory..."
   fi
 }
 
 # Link motd file
-read -p "Do you want to setup motd? (y/n): " choice && [[ $choice == [Yy] ]] && \
+read -p "Do you want to setup motd? (y/n): " choice && [ ${choice} == [Yy] ] && \
   sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
 
 # Mike Directory
-read -p "Do you want to make dev directory? (y/n): " choice && [[ $choice == [Yy] ]] && \
+read -p "Do you want to make dev directory? (y/n): " choice && [ ${choice} == [Yy] ] && \
   mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 
 # Install system configs
