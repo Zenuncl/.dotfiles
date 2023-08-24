@@ -120,3 +120,4 @@ cat ${DOTFILES}/setup/system/25-plugins.sh | bash
 symlink_dotfiles
 symlink_dotdir
 
+chsh -s /usr/bin/zsh
