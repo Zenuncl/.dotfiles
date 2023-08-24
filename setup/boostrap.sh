@@ -104,12 +104,10 @@ symlink_dotdir() {
 }
 
 # Link motd file
-read -p "Do you want to setup motd? (y/n): " choice && [ ${choice} == [Yy] ] && \
-  sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
+sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
 
 # Mike Directory
-read -p "Do you want to make dev directory? (y/n): " choice && [ ${choice} == [Yy] ] && \
-  mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
+mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 
 # Install system configs
 if ! [ -d ${HOME}/.vim ]; then
