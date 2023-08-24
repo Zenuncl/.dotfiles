@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DIRECTORY=$HOME/.local/nerdfont
-FONT=="${1:-SourceCodePro}"
+FONT="${1:-SourceCodePro}"
 
 # Check if DIRECTORY exist
 if [ ! -d "$DIRECTORY" ]; then
