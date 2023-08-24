@@ -4,9 +4,9 @@
 set -e
 
 # Veriables
-DEFAULT_PKGS=("sudo" "git" "zsh" "vim" "neovim" "curl" "wget" "tmux" "fasd" "ca-certificates" "gnupg" "net-tools" "sshpass" "cifs-utils" "unzip" "lynx" "traceroute" "fail2ban" "iptables" "python" "python-pip" "python-virtualenv" "python-pipx")
-ARCH_PKGS=("base-devel" "openssh" "bind" "qemu-base")
-DEB_PKGS=("build-essential" "openssh-server" "dnsutils" "dirmgr" "qemu-utils")
+DEFAULT_PKGS=("sudo" "git" "zsh" "vim" "neovim" "curl" "wget" "tmux" "fasd" "ca-certificates" "gnupg" "net-tools" "sshpass" "cifs-utils" "unzip" "lynx" "traceroute" "fail2ban" "iptables")
+ARCH_PKGS=("base-devel" "openssh" "bind" "qemu-base" "python" "python-pip" "python-virtualenv" "python-pipx")
+DEB_PKGS=("build-essential" "openssh-server" "dnsutils" "qemu-utils" "python3" "python3-pip" "python3-virtualenv")
 
 # Running Debian init command part
 setup_static_sources_repo() {
