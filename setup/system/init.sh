@@ -4,8 +4,9 @@
 set -e
 
 # Veriables
-ARCH_PKGS="sudo git zsh vim neovim base-devel curl wget tmux fasd ca-certificates gnupg net-tools bind sshpass cifs-utils qemu-base unzip lynx traceroute fail2ban iptables python python-pip python-virtualenv python-pipx"
-DEB_PKGS="sudo git zsh vim neovim build-essential curl wget tmux fasd ca-certificates gnupg gnupg2 openssh-server net-tools dnsutils sshpass dirmgr cifs-utils qemu-utils python python-pip python-virtualenv python-pipx"
+DEFAULT_PKGS=("sudo" "git" "zsh" "vim" "neovim" "curl" "wget" "tmux" "fasd" "ca-certificates" "gnupg" "net-tools" "sshpass" "cifs-utils" "unzip" "lynx" "traceroute" "fail2ban" "iptables" "python" "python-pip" "python-virtualenv" "python-pipx")
+ARCH_PKGS=("base-devel" "openssh" "bind" "qemu-base")
+DEB_PKGS=("build-essential" "openssh-server" "dnsutils" "dirmgr" "qemu-utils")
 
 # Running Debian init command part
 setup_static_sources_repo() {
@@ -40,7 +41,7 @@ apt_install_dep() {
 	apt-get -y update && apt-get install -y -f \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
-		"${DEB_PKGS}"
+		"${DEFAULT_PKGS}" "${DEB_PKGS}"
 
 	# Cleanup
 	apt-get -y autoremove && \
@@ -67,8 +68,9 @@ pacman_install() {
 	# Upgrade and dist-upgrade
 	pacman -Syu --noconfirm
 
-	# Such as: vim, tmux, git, zsh
-	pacman -S --noconfirm "${ARCH_PKGS}"
+	# Default Packages Such as: vim, tmux, git, zsh
+	pacman -S --noconfirm "${DEFAULT_PKGS}"
+	pacman -S --noconfirm ${ARCH_PKGS}
 
 	# Cleanup
 	DEPRECATED_PKGS=$(pacman -Qdttq --noconfirm)
