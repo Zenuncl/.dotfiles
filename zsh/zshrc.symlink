@@ -75,8 +75,6 @@ else
   export EDITOR='vim'
 fi
 
-# term
-export TERM=screen-256color
 # go
 source $HOME/.gvm/scripts/gvm
 export GOPATH=$HOME/dev/go
