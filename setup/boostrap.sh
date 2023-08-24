@@ -76,6 +76,9 @@ symlink_dotfiles() {
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/skywalker.zsh-theme
 
   # Symlink .config subdirectories
+  if [ ! -d "${HOME}/.config" ]; then
+    mkdir -p ${HOME}/.config
+  fi
   link_file ${DOTFILES}/config/git ${HOME}/.config/git
   link_file ${DOTFILES}/config/alacritty ${HOME}/.config/alacritty
   link_file ${DOTFILES}/config/starship ${HOME}/.config/starship

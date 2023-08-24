@@ -10,6 +10,11 @@ Run add user script when needed
 ~/.dotfiles/setup/system/10-adduser.sh USERNAME
 ```
 
+Run `boostrap.sh` script to install most dotfiles
+```
+(command -v curl && curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/SharkIng/.dotfiles/master/setup/boostrap.sh | bash)
+```
+
 Install versional manager
 ```
 # Ruby
