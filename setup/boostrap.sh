@@ -74,54 +74,45 @@ symlink_dotfiles() {
   info "Symlinking oh-my-zsh custom files..."
   link_file ${DOTFILES}/zsh/plugins/skywalker ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/skywalker
   link_file ${DOTFILES}/zsh/themes/skywalker.zsh-theme ${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/themes/skywalker.zsh-theme
+
+  # Symlink .config subdirectories
+  link_file ${DOTFILES}/config/git ${HOME}/.config/git
+  link_file ${DOTFILES}/config/alacritty ${HOME}/.config/alacritty
+  link_file ${DOTFILES}/config/starship ${HOME}/.config/starship
+  if [ ! -d "${HOME}/.config/awesome"]; then
+    git clone --recurse-submodules --remote-submodules \
+      --depth 1 -j 2 https://github.com/lcpz/awesome-copycats.git /tmp/awesome && \
+      mv -bv /tmp/awesome/{*,.[^.]*} ${HOME}/.config/awesome; rm -rf /tmp/awesome 
+  else
+    link_file ${DOTFILES}/config/awesome/rc.lua ${HOME}/.config/awesome/rc.lua
+    link_file ${DOTFILES}/config/awesome/themes/skywalker ${HOME}/.config/awesome/themes/skywalker
+  fi
 }
 
 symlink_dotdir() {
   link_file ${DOTFILES}/bin $HOME/.bin
   link_file ${DOTFILES}/ssh $HOME/.ssh
-  mv $HOME/.ssh.original $HOME/.ssh/
+  if [ -d "$HOME/.ssh.original/" ]; then
+    mv $HOME/.ssh.original/* $HOME/.ssh/
+    rm -rf $HOME/.ssh.original 
+  fi
 }
 
-install_rvm() {
-  RUBY_VIERSION=3.2.2
-
-  # Install RVM
-  # Add Repo Keys
-  gpg2 --recv-keys \
-    409B6B1796C275462A1703113804BB82D39DC0E3 \
-    7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-
-  # Install rvm
-  \curl -sSL https://get.rvm.io | bash -s stable 1>&2
-}
-
-install_nvm() {
-  NODE_VIERSION=18.16.1
-  NPM_VERSION=9.5.1
-
-  # Install nvm
-  \curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-}
-
-if ! [ -d ${HOME}/.rvm ]; then
-	install_rvm
-elif ! [ -d ${HOME}/.nvm ]; then
-	install_nvm
-fi
-
-# Install docker need sudo
-sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
+# Link motd file
+read -p "Do you want to setup motd? (y/n): " choice && [[ $choice == [Yy] ]] && \
+  sudo ln -fs ${DOTFILES}/setup/motd/motd /etc/motd
 
 # Mike Directory
-mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
+read -p "Do you want to make dev directory? (y/n): " choice && [[ $choice == [Yy] ]] && \
+  mkdir -p ${HOME}/dev/{$USER,repos,go,dockers,scripts,projects,virtualenv}
 
 # Install system configs
 if ! [ -d ${HOME}/.vim ]; then
-  ${DOTFILES}/setup/system/vim.sh
+  ${DOTFILES}/setup/system/20-vim.sh
 elif ! [ -d ${HOME}/.tmux ]; then
-  ${DOTFILES}/setup/system/tmux.sh
+  ${DOTFILES}/setup/system/20-tmux.sh
 fi
-cat ${DOTFILES}/setup/system/plugins.sh | bash
+cat ${DOTFILES}/setup/system/25-plugins.sh | bash
 
 symlink_dotfiles
 symlink_dotdir
