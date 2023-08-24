@@ -60,6 +60,10 @@ apt_purge() {
 # Running Arch Linux init command part
 pacman_install() {
 	# Install necessary system level dependency
+
+	# Sync pacman repos
+	pacman -Sy --noconfirm
+
 	# Upgrade and dist-upgrade
 	pacman -Syu --noconfirm
 

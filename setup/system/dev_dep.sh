@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS=("hugo" "unzip" "jq" "pass" "lynx" "traceroute" "mtr" "fail2ban" "iptables")
+PKGS=("hugo" "mtr")
 
 function apt_install() {
         # Install docker dependency
