@@ -85,7 +85,8 @@ symlink_dotfiles() {
   if [ ! -d "${HOME}/.config/awesome"]; then
     git clone --recurse-submodules --remote-submodules \
       --depth 1 -j 2 https://github.com/lcpz/awesome-copycats.git /tmp/awesome && \
-      mv -bv /tmp/awesome/{*,.[^.]*} ${HOME}/.config/awesome; rm -rf /tmp/awesome 
+      mv -bv /tmp/awesome/{*,.[^.]*} ${HOME}/.config/awesome; rm -rf /tmp/awesome
+    success "Successfully cloned awesome-copycat repo to ~/.config/awesome..."
   else
     link_file ${DOTFILES}/config/awesome/rc.lua ${HOME}/.config/awesome/rc.lua
     link_file ${DOTFILES}/config/awesome/themes/skywalker ${HOME}/.config/awesome/themes/skywalker
@@ -97,7 +98,8 @@ symlink_dotdir() {
   link_file ${DOTFILES}/ssh $HOME/.ssh
   if [ -d "$HOME/.ssh.original/" ]; then
     mv $HOME/.ssh.original/* $HOME/.ssh/
-    rm -rf $HOME/.ssh.original 
+    rm -rf $HOME/.ssh.original
+    success "Copied old .ssh files to ssh directory..."
   fi
 }
 
