@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS=("hugo" "mtr")
+PKGS=("hugo" "mtr" "firefox" "vscode")
 
 install() {
         ~/.dotfiles/bin/pacapt -S --noconfirm ${PKGS[@]}

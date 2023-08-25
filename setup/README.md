@@ -36,3 +36,13 @@ Other scripts (90-*.sh Optional Scripts)
 (command -v curl && curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/SharkIng/.dotfiles/master/setup/system/90-nerdfont.sh | bash)
 (command -v curl && curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/SharkIng/.dotfiles/master/setup/system/90-nerdfont.sh | bash -s FONTNAME)
 ```
+
+
+# Configs
+```
+# sddm Theme setting and Profiles:
+Config location: /etc/sddm.conf.d/*
+Profile Icon location: ~/.face.icon
+
+
+```
