@@ -3,12 +3,8 @@
 [hub]
   protocol = ssh
 
-[user]
-  name = Zavier Jiang
-  email = SharkIng@Shacas.com
-  signingkey = 0417D91D14E51DA5
-
 [include]
+  path	  = ~/.config/git/gituser
   path    = ~/.config/git/gitalias
 
 [color]

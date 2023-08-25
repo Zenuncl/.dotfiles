@@ -24,6 +24,9 @@ local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
 
+-- Multi Monitor support
+local xrandr        = require("xrandr")
+
 -- }}}
 
 -- {{{ Error handling
@@ -266,6 +269,13 @@ root.buttons(mytable.join(
 -- {{{ Key bindings
 
 globalkeys = mytable.join(
+    -- xrandr Monitor management
+    awful.key({ altkey,           }, "m",
+        function ()
+            xrandr.xrandr()
+        end,
+        {description = "Manage Multi Monitors", group = "client"}
+    ),
     -- Destroy all notifications
     awful.key({ "Control",           }, "space", function() naughty.destroy_all_notifications() end,
               {description = "destroy all notifications", group = "hotkeys"}),

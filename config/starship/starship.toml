@@ -1,5 +1,5 @@
 format = '''
-$time $all$status$container$shell$character
+$time $all$os$status$container$shell$character
 '''
 ## Line One
 # First param ─┌
@@ -58,7 +58,7 @@ map_symbol = true
 disabled = false
 
 [os]
-format = " ╰─ [$symbol $name]($style) ─"
+format = " [╰─](bold red) [$symbol $name]($style) ─"
 style = "bold blue"
 disabled = false
 
