@@ -9,8 +9,9 @@
 
 /*****----- Configuration -----*****/
 configuration {
-	modi:                       "drun,run,filebrowser";
+	modi:                       "combi,drun,run,filebrowser";
     show-icons:                 false;
+    display-combi:              " Combi";
     display-drun:               " Apps";
     display-run:                " Run";
     display-filebrowser:        " Files";
