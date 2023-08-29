@@ -557,6 +557,11 @@ globalkeys = mytable.join(
         end,
         {description = "show rofi", group = "launcher"}),
     --]]
+    -- Use Rofi
+    awful.key({ altkey }, "space", function ()
+            os.execute("~/.config/rofi/scripts/launcher_t1")
+        end,
+        {description = "show rofi", group = "launcher"}),
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
