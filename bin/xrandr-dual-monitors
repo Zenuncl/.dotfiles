@@ -3,5 +3,6 @@
 xrandr \
   --verbose \
   --auto \
+  --output eDP-1 --off \
   --output DP-2-1 --mode 0x9e --primary --preferred \
   --output DP-2-2 --mode 0x9e --preferred --left-of DP-2-1
