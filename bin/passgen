@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+PASS_LENGTH=${1:-25}
+
+pass \
+  generate \
+  --clip \
+  --in-place \
+  --no-symbols \
+  draven/tmp/passgen \
+  ${PASS_LENGTH}
