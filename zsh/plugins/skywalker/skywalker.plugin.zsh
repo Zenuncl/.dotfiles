@@ -62,7 +62,3 @@ eval "$(fasd --init auto)"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 autoload -U compinit && compinit -u
-
-# Starship if exits
-[ -f "$HOME/.config/starship/startship.toml" ] && export STARSHIP_CONFIG=~/.config/starship/starship.toml
-[ -f "/usr/bin/starship" ] && eval $(starship init zsh)
