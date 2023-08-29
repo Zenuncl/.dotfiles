@@ -57,7 +57,7 @@ else
 fi
 
 # Starship if exits
-[ -f "$HOME/.config/starship/startship.toml" ] && export STARSHIP_CONFIG=~/.config/starship/starship.toml
+[ -f "$HOME/.config/starship/starship.toml" ] && export STARSHIP_CONFIG=~/.config/starship/starship.toml
 [ -f "/usr/bin/starship" ] && eval $(starship init zsh)
 
 # ssh-agent keys
