@@ -18,7 +18,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/skywalker"
-theme.wallpaper                                 = theme.dir .. "/wall.jpg"
+theme.wallpaper                                 = { theme.dir .. "/mont.png", theme.dir .. "/stars.jpg" }
 theme.font                                      = "Source Code Pro 10"
 theme.taglist_font                              = "Source Code Pro 10"
 theme.fg_normal                                 = "#747474"
@@ -255,7 +255,10 @@ function theme.at_screen_connect(s)
     s.quake = lain.util.quake({ app = awful.util.terminal })
 
     -- If wallpaper is a function, call it with the screen
-    local wallpaper = theme.wallpaper
+    --local wallpaper = theme.wallpaper[2]
+    local function wallpaper(s)
+        return theme.wallpaper[s.index]
+    end
     if type(wallpaper) == "function" then
         wallpaper = wallpaper(s)
     end
