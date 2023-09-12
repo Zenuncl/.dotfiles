@@ -31,6 +31,9 @@
   template = ~/.config/git/gitmessage
   gogsign = true
 
+[pull]
+	rebase = true
+
 [core]
   excludesfile = ~/.config/git/gitignores
   editor      = vim
@@ -63,8 +66,3 @@
 
 [url "git@github.com:"]
   insteadOf   = https://github.com
-[pull]
-	rebase = true
-[user]
-	email = SharkIng@Shacas.com
-	name = Zavier Jiang
