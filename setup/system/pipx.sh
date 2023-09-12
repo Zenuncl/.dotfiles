@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS="aws linode-cli"
+PKGS=("aws" "linode-cli")
 
 pipx_install() {
         pipx install $PKGS

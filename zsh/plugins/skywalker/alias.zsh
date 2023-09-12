@@ -32,6 +32,7 @@ alias hg="history | grep"
 alias ag="alias | grep"
 alias t="htop || top"
 alias which="type -a"
+alias curl="curlie"
 
 # Change directory
 alias pud="pushd"

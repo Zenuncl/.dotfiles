@@ -65,3 +65,6 @@
   insteadOf   = https://github.com
 [pull]
 	rebase = true
+[user]
+	email = SharkIng@Shacas.com
+	name = Zavier Jiang
