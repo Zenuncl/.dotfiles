@@ -845,3 +845,7 @@ client.connect_signal("unmanage", backham)
 tag.connect_signal("property::selected", backham)
 
 -- }}}
+
+-- {{{ Application autostart
+awful.spawn.with_shell("~/.config/awesome/autostart.sh")
+-- }}}
