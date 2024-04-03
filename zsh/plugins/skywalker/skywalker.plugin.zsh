@@ -61,8 +61,9 @@ eval "$(fasd --init auto)"
 # bash completion
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-autoload -U compinit && compinit -u
+# Load pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 
-# Starship if exits
-[ -f "$HOME/.config/starship/startship.toml" ] && export STARSHIP_CONFIG=~/.config/starship/starship.toml
-[ -f "/usr/bin/starship" ] && eval $(starship init zsh)
+autoload -U compinit && compinit -u
