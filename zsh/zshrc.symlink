@@ -42,6 +42,7 @@ plugins=(
   python
   sudo
   systemd
+  starship
 )
 
 # Relocating some cache and history files.
@@ -61,10 +62,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='vim'
 fi
-
-# Starship if exits
-[ -f "$HOME/.config/starship/starship.toml" ] && export STARSHIP_CONFIG=~/.config/starship/starship.toml
-[ -f "/usr/bin/starship" ] || [ -f "/usr/local/bin/starship" ] && eval "$(starship init zsh)"
 
 # ssh-agent keys
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
