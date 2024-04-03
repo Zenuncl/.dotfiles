@@ -18,7 +18,7 @@ export PATH=$HOME/.local/bin:$PATH
 SSH_AUTH_SOCK=$HOME/.gnupg/S.gpg-agent.ssh; export SSH_AUTH_SOCK;
 
 # ssh-agent
-[ -f "/usr/bin/ssh-agent" ] && eval $(ssh-agent)
+#[ -f "/usr/bin/ssh-agent" ] && eval $(ssh-agent)
 
 # Source plugin files
 source $ZSH_CUSTOM/plugins/skywalker/env.zsh
@@ -26,23 +26,9 @@ source $ZSH_CUSTOM/plugins/skywalker/alias.zsh
 source $ZSH_CUSTOM/plugins/skywalker/bindkey.zsh
 source $ZSH_CUSTOM/plugins/skywalker/tmuxinator.zsh
 
-# .nvm / node
-export NVM_DIR=$HOME/.nvm
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# .rvm / ruby
-[ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
 # .gvm / go
 [ -s "$HOME/.gvm/scripts/gvm" ] && source "$HOME/.gvm/scripts/gvm"
 export GOPATH=$HOME/dev/go
-
-# GOPATH
-export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin" # Add Go lang PATH
 
 # Rust env
 #source $HOME/.cargo/env
@@ -52,11 +38,7 @@ export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin" # Add Go lang PATH
 [ -f "$HOME/.env.secrets" ] && source "$HOME/.env.secrets"
 
 # Autojump source
-[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ] && source "$HOME/.autojump/etc/profile.d/autojump.sh"
-
-# fasd / fzf source
-eval "$(fasd --init auto)"
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+#[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ] && source "$HOME/.autojump/etc/profile.d/autojump.sh"
 
 # bash completion
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -65,5 +47,17 @@ eval "$(fasd --init auto)"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
+
+# Load customize starship cnfig & start starship
+if (( $+commands[starship] )); then
+  [ -f "$HOME/.config/starship/starship.toml" ] && export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
+
+  #[ -f "/usr/bin/starship" ] || [ -f "/usr/local/bin/starship" ] && eval "$(starship init zsh)"
+  unset ZSH_THEME
+  eval "$(starship init zsh)"
+else
+  echo "[oh-my-zsh] startship not found, please install it from https://starship.rs"
+fi
+
 
 autoload -U compinit && compinit -u

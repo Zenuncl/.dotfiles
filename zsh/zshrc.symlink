@@ -16,33 +16,33 @@ COMPLETION_WAITING_DOTS="true"
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HIST_STAMPS="yyyy-mm-dd"
 
-# Init Some modules before plugins
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   skywalker
+  ssh-agent
+  #gpg-agent
   git
   autojump
   zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-completions
+  fasd
   fzf
   vi-mode
   docker
+  nvm
+  rvm
+  golang
   npm
   pep8
   pyenv
   python
   sudo
   systemd
-  starship
+  #starship
 )
 
 # Relocating some cache and history files.
