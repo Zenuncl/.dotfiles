@@ -25,7 +25,7 @@ plugins=(
   ssh-agent
   #gpg-agent
   git
-  autojump
+  #autojump
   zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-completions
