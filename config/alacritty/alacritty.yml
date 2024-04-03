@@ -770,9 +770,9 @@ mouse:
 # in the order they were defined in.
 key_bindings:
   - { key: Paste,                                       action: Paste          }
-  - { key: V,          mods: Control,                   action: Paste          }
+  - { key: V,         mods: Control|Shift,              action: Paste          }
   - { key: Copy,                                        action: Copy           }
-  - { key: C,          mods: Control,                   action: Copy           }
+  - { key: C,         mods: Control|Shift,              action: Copy           }
   - { key: L,         mods: Control,                    action: ClearLogNotice }
   - { key: L,         mods: Control, mode: ~Vi|~Search, chars: "\x0c"          }
   - { key: PageUp,    mods: Shift,   mode: ~Alt,        action: ScrollPageUp   }

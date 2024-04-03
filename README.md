@@ -13,3 +13,11 @@ rvm get stable --auto-dotfiles
 # Install ruby + gem
 rvm use $RUBY_VERSION --install --default
 ```
+
+### A list of programs that not in scripts
+```
+sudo pacman -S \
+    rofi # Menu
+    remmina $ RDP
+    nitrogen # for wallpaper
+```
