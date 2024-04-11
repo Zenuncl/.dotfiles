@@ -284,6 +284,9 @@ globalkeys = mytable.join(
     awful.key({ altkey }, "p", function() os.execute("screenshot") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
+    awful.key({ modkey, "Shift" }, "4", function() awful.spawn("flameshot gui") end,
+              {description = "take a screenshot with Flameshot", group = "hotkeys"}),
+
     -- X screen locker
     awful.key({ modkey,           }, "l", function () awful.util.spawn_with_shell("~/.bin/lock") end,
               {description = "lock screen", group = "hotkeys"}),
