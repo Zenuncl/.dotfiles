@@ -127,12 +127,6 @@ mods = "Control"
 [mouse]
 hide_when_typing = true
 
-[mouse.double_click]
-threshold = 300
-
-[mouse.triple_click]
-threshold = 300
-
 [scrolling]
 history = 10000
 multiplier = 3
