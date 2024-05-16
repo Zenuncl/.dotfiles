@@ -1,0 +1,7 @@
+[DEFAULT]
+bantime = 1h
+banaction = iptables-allports
+
+[sshd]
+enabled = true
+

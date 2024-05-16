@@ -1,0 +1,9 @@
+*filter
+  # Allow specific services - Syncthing Servicess
+  # Port 22000
+  -A INPUT -p tcp --dport 22000 -m conntrack --ctstate NEW -j ACCEPT
+  -A INPUT -p udp --dport 22000 -m conntrack --ctstate NEW -j ACCEPT
+
+  # Port 21027
+  -A INPUT -p udp --dport 21027 -m conntrack --ctstate NEW -j ACCEPT
+COMMIT

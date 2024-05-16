@@ -1,0 +1,5 @@
+*filter
+  # Log and drop all other incoming traffic
+  -A INPUT -j LOG --log-prefix "DROP: "
+  -A INPUT -j DROP
+COMMIT

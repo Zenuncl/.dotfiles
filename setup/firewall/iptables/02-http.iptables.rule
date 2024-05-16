@@ -1,0 +1,5 @@
+*filter
+  # Allow both HTTP (80) and HTTPS (443) traffic for both IPv4 and IPv6 on both TCP and UDP protocols
+  -A INPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -j ACCEPT
+  -A INPUT -p udp -m multiport --dports 80,443 -m conntrack --ctstate NEW -j ACCEPT
+COMMIT

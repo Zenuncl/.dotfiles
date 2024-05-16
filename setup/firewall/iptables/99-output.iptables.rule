@@ -1,0 +1,4 @@
+*filter
+  # Allow all outgoing traffic
+  -A OUTPUT -j ACCEPT
+COMMIT

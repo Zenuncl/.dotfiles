@@ -1,0 +1,13 @@
+*filter
+  # Allow all loopback (localhost) traffic
+  -A INPUT -i lo -j ACCEPT
+
+  # Allow established and related incoming connections
+  -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+  # Allow ICMP (ping) requests
+  -A INPUT -p icmp -m icmp --icmp-type 8 -m conntrack --ctstate NEW -j DROP
+
+  # Allow SSH (replace 22 with the actual SSH port)
+  -A INPUT -p tcp -m multiport --dports 22,2222,22222 -m set --match-set sshd src -j ACCEPT
+COMMIT
