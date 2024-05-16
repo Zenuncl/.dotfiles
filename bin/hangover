@@ -1,0 +1,55 @@
+#!/bin/bash 
+
+
+# This is a hacker-script based on repo
+# https://github.com/NARKOZ/hacker-scripts
+
+# Exit early if any session with my username is found
+# Ignore the tmux or screeen session
+if who | grep -v -E '(tmux|screen)' | grep -w $USER; then
+  exit 1
+fi
+
+
+# Phone Numbers (from environment variable)
+MY_NUMBER=''
+TO_NUMBER=''
+
+
+EXCUSES=(
+    'Locked out'
+    'Pipes broke'
+    'Food poisoning'
+    'Not feeling well'
+    'Working hard'
+    'Gotta ship this feature'
+    'Someone fucked the system again'
+)
+
+
+
+rand=$[ $RANDOM % ${#EXCUSES[@]} ]
+
+RANDOM_EXCUSE=${EXCUSES[$rand]}
+MESSAGE="Gonna work from home. "$RANDOM_EXCUSE
+
+
+# Send Text message
+function send_sms_message() {
+  RESPONSE=`curl -fSs -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN" \
+    -d "From=$MY_NUMBER" -d "To=$HER_NUMBER" -d "Body=$MESSAGE" \
+    "https://api.twilio.com/2010-04-01/Accounts/$TWILIO_ACCOUNT_SID/Messages"`
+
+
+  # Log errors
+  if [ $? -gt 0 ]; then
+    echo "Failed to send SMS: $RESPONSE"
+    exit 1
+  fi
+}
+
+
+# Send Slack message
+function send_slack_message() {
+
+}

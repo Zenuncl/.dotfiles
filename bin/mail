@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Define the process name to check
+BRIDGE="protonmail-bridge"
+
+# Check if the process is running
+if pgrep -f "$BRIDGE" >/dev/null; then
+  echo "Process: "$BRIDGE" is already running."
+else
+  echo "Process: "$BRIDGE" is not running. Starting it..."
+  nohup protonmail-bridge --noninteractive > ~/.cache/logs/protonbridge.log 2>&1 &
+  echo "Process started."
+fi
+
+# Run syncmail
+echo "Syncing mails with "$BRIDGE"."
+mutt-mailsync
+
+# Start mutt
+echo "Starting NeoMutt."
+neomutt
+
+
+

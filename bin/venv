@@ -1,0 +1,35 @@
+#!/bin/bash
+
+VIRTUALENV_DIR="$HOME/dev/virtualenv"
+
+# Check if a virtual environment name is provided as a command-line argument
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <virtualenv_name>"
+  exit 1
+fi
+
+# Virtual environment name specified as the first command-line argument
+VIRTUALENV=$1
+
+# Full path to the virtual environment directory
+VIRTUALENV_PATH="$VIRTUALENV_DIR/$VIRTUALENV"
+echo $VIRTUALENV_PATH
+if [ -d "$VIRTUALENV_PATH" ]; then
+  # Virtualenv exists, so activate the python virtual environment
+  source "$VIRTUALENV_PATH/bin/activate"
+  echo "The Python virtual environment: $VIRTUALENV activated."
+else
+  # Virtual environment does not exist, ask for confirmation to create it
+  read -p "Virtual environment '$VIRTUALENV' does not exist. Do you want to create it? (yes/no): " choice
+  case "$choice" in
+    [yY]|[yY][eE][sS])
+      # Create the virtual environment
+      /usr/bin/virtualenv "$VIRTUALENV_PATH"
+      source "$VIRTUALENV_PATH/bin/activate"
+      echo "Virtual environment '$VIRTUALENV' created and activated."
+      ;;
+    *)
+      echo "Exiting without creating the virtual environment."
+      ;;
+  esac
+fi

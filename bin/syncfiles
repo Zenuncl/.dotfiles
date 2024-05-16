@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Define the process name to check
+BRIDGE="syncthing"
+
+# Check if the process is running
+if pgrep -f "$BRIDGE" >/dev/null; then
+  echo "Process: "$BRIDGE" is already running."
+else
+  echo "Process: "$BRIDGE" is not running. Starting it..."
+  nohup syncthing > ~/.cache/logs/syncthing.log 2>&1 &
+  echo "Process started."
+fi
+
+
+
