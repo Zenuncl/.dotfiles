@@ -35,6 +35,7 @@ plugins=(
   docker
   nvm
   rvm
+  rust
   golang
   npm
   pep8

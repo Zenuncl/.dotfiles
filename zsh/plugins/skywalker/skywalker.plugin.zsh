@@ -59,5 +59,6 @@ else
   echo "[oh-my-zsh] startship not found, please install it from https://starship.rs"
 fi
 
+[ -s "$HOME/.rsvm/rsvm.sh" ] && source "$HOME/.rsvm/rsvm.sh" # This loads RSVM
 
 autoload -U compinit && compinit -u
