@@ -33,6 +33,8 @@ alias ag="alias | grep"
 alias t="htop || top"
 alias which="type -a"
 alias curl="curlie"
+alias zj="start-zellij"
+
 
 # Change directory
 alias pud="pushd"
