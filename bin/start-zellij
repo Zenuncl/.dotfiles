@@ -1,0 +1,6 @@
+if command -v zellij-runner &> /dev/null;
+then
+  ZELLIJ_RUNNER_LAYOUTS_DIR=${HOME}/.config/zellij/layouts ZELLIJ_RUNNER_BANNERS_DIR=${HOME}/.config/zellij/banners ZELLIJ_RUNNER_ROOT_DIR=${HOME}/dev/ zellij-runner
+else
+  zellij attach
+fi
