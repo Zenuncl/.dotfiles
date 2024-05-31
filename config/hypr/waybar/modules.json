@@ -3,18 +3,18 @@
     "on-click": "activate",
     "active-only": false,
     "all-outputs": true,
-    "format": "{icon}",
+    "format": "{icon} | {name}",
     "format-icons": {
-      "1": "",
-      "2": "",
-      "3": " ",
-      "4": "",
-      "5": "",
-      "6": "",
-      "7": "",
+      "main": "",
+      "terminal": "",
+      "web": " ",
+      "app": "",
+      "dev": "",
+      "love": "",
+      "files": "",
       "focused": "",
       "urgent": "",
-      "active": "",
+      "active": "",
       "default": ""
     },
     "persistent-workspaces": {
@@ -48,7 +48,6 @@
       "(.*) - Outlook": "$1",
       "(.*) Microsoft Teams": "$1",
       "(.*) alacritty": "",
-      "(.*) Zellij": "",
       "(.*) code": "󰨞"
     },
     "separate-outputs": true
@@ -111,24 +110,33 @@
   },
 
   "cpu": {
-    "format": "/ CPU {usage}% ",
+    "format": "/   CPU {usage}% ",
     "on-click": "alacritty -e htop"
   },
 
   "memory": {
-    "format": "/ RAM {}% ",
+    "format": "/   RAM {}% ",
     "on-click": "alacritty -e htop"
   },
 
+  "temperature": {
+      "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+      "interval": 1,
+      "format": "/ {icon}  {temperatureC}°C",
+      "format-icons": ["", "", "", "", ""],
+      "critical-threshold": 70
+  },
   "disk": {
     "interval": 30,
-    "format": "DISK {percentage_used}% ",
+    "format": "󰋊 DISK {percentage_used}% ",
     "path": "/",
     "on-click": "alacritty -e htop"
   }, 
 
   "hyprland/language": {
-    "format": "/ K {short}"
+    "format": "{long}",
+    "format-en": "EN",
+    "format-cn": "CN"
   },
 
   "group/hardware": {
@@ -142,7 +150,8 @@
       "custom/system",
       "disk",
       "cpu",
-      "memory"
+      "memory",
+      "temperature"
     ]
   },
 
