@@ -164,6 +164,7 @@ window#waybar.empty #window {
 #custom-settings, 
 #custom-wallpaper, 
 #custom-system,
+#custom-worldclock,
 #custom-waybarthemes {
     margin-right: 23px;
     font-size: 20px;
@@ -315,7 +316,7 @@ window#waybar.empty #window {
  * Clock
  * ----------------------------------------------------- */
 
-#clock {
+#clock, #custom-china, #custom-utc {
     background-color: @backgrounddark;
     font-size: 16px;
     color: @textcolor1;

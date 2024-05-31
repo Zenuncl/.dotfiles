@@ -104,6 +104,37 @@
     "format-alt": "{:%Y-%m-%d}"
   },
 
+  "custom/worldclock": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "custom/china": {
+    "format": "{}",
+    "exec": "TZ=America/Vancouver date \"+%H:%M %Z\"",
+    "interval": 30
+  },
+
+  "custom/utc": {
+    "format": "{}",
+    "exec": "TZ=Etc/UTC date \"+%H:%M %Z\"",
+    "interval": 30
+  },
+
+  "group/worldclock": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "not-memory",
+      "transition-left-to-right": false
+    },        
+    "modules": [
+      "custom/worldclock",
+      "custom/utc",
+      "custom/china"
+    ]
+  },
+
   "custom/system": {
     "format": "",
     "tooltip": false
