@@ -32,7 +32,7 @@ export GOPATH=$HOME/dev/go
 
 # Rust env
 #source $HOME/.cargo/env
-export PATH=$HOME/.cargo/bin/:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 
 # Load Global env
 [ -f "$HOME/.env" ] && source "$HOME/.env"
