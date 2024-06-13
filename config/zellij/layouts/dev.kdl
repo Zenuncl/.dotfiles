@@ -1,0 +1,41 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+          plugin location="zjstatus"
+        }
+        children
+        pane size=2 borderless=true {
+          plugin location="status-bar"
+        }
+    }
+    tab_template name="strider_tab" {
+        pane size=1 borderless=true {
+          plugin location="zjstatus"
+        }
+        pane split_direction="Vertical" {
+            pane size="15%" {
+                plugin location="strider"
+            }
+            children
+        }
+        pane size=2 borderless=true {
+          plugin location="status-bar"
+        }
+    }
+    tab name="System" cwd="$HOME/dev/" {
+      pane command="btop"
+    }
+    strider_tab name="Workspace" cwd="$HOME/dev/" {
+        pane split_direction="vertical" {
+            pane
+            pane
+        }
+    }
+    tab name="SSH" split_direction="horizontal" cwd="$HOME/.ssh/" {
+        pane split_direction="vertical" {
+            pane
+            pane
+        }
+    }
+
+}
