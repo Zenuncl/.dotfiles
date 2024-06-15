@@ -24,7 +24,8 @@
   cim   = commit --message
   f     = fetch --prune --multiple
   fa    = fetch --prune --all
-  l     = "log --abbrev-commit --decorate --graph --date=short --all --pretty=format:'%C(auto)%h %C(magenta)<%ad> %C(red)(%ar) %C(green)%C(italic)[%an]%C(reset) %C(blue normal bold)| %Creset%s%C(auto)%d'"
+  l     = log --abbrev-commit --decorate --graph --date=short --all --pretty=format:'%C(auto)%h %C(magenta)<%ad> %C(red)(%ar) %C(green)%C(italic)[%an]%C(reset) %C(blue normal bold)| %Creset%s%C(auto)%d'
+  lo    = log --graph --abbrev-commit --decorate --pretty=format:'%C(blue)%h%C(reset) %C(green)(%ar)%C(reset) - %s %C(italic)- %an%C(reset)%C(magenta bold)%d%C(reset)' --all
   lg    = log --graph --cherry-mark --topo-order --date=relative --decorate --submodule --irreversible-delete --find-copies --find-renames --stat --minimal
   ll    = log --graph --cherry-mark --topo-order --date=relative --decorate --submodule --irreversible-delete --find-copies --find-renames --stat --minimal --patch
   lu    = log --graph --cherry-mark --topo-order --date=relative --decorate --submodule --irreversible-delete --find-copies --find-renames --stat --minimal HEAD..@{upstream}
