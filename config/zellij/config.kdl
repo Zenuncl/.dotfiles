@@ -121,6 +121,7 @@ keybinds clear-defaults=true {
             SwitchToMode "Normal"
         }
         bind "m" { ToggleMouseMode; }
+        bind "q" { Quit; }
     }
     tmux {
         bind "[" { SwitchToMode "Scroll"; }
@@ -159,6 +160,24 @@ keybinds clear-defaults=true {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
+        bind "Alt y" {
+          LaunchOrFocusPlugin "zjpane" {
+            floating true
+            move_to_focused_tab true
+          }
+        }
+        bind "Alt u" {
+          LaunchOrFocusPlugin "zjroom" {
+            floating true
+            ignore_case true
+          }
+        }
+        bind "Alt f" {
+          LaunchOrFocusPlugin "zjmonocle" {
+            floating true
+          }
+          SwitchToMode "Normal"
+        }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
@@ -197,6 +216,53 @@ plugins {
     }
     filepicker location="zellij:strider" {
         cwd "/"
+    }
+    zjpane location="file:$HOME/.config/zellij/plugins/zjpane.wasm"
+    zjmonocle location="file:$HOME/.config/zellij/plugins/mnocle.wasm"
+    zjroom location="file:$HOME/.config/zellij/plugins/room.wasm"
+    zjstatus location="file:$HOME/.config/zellij/plugins/zjstatus.wasm" {
+        format_left   "{mode} #[fg=#89B4FA,bold]{session}"
+        format_center "{tabs}"
+        format_right  "{command_git_branch} {datetime} {notifications}"
+        format_space  ""
+
+        border_enabled  "false"
+        border_char     "─"
+        border_format   "#[fg=#6C7086]{char}"
+        border_position "top"
+
+        hide_frame_for_single_pane "true"
+
+        mode_normal        "#[bg=#89B4FA] {name} "
+        mode_locked        "#[bg=#89B4FA] {name} "
+        mode_resize        "#[bg=#89B4FA] {name} "
+        mode_pane          "#[bg=#89B4FA] {name} "
+        mode_tab           "#[bg=#89B4FA] {name} "
+        mode_scroll        "#[bg=#89B4FA] {name} "
+        mode_enter_search  "#[bg=#89B4FA] {name} "
+        mode_search        "#[bg=#89B4FA] {name} "
+        mode_rename_tab    "#[bg=#89B4FA] {name} "
+        mode_rename_pane   "#[bg=#89B4FA] {name} "
+        mode_session       "#[bg=#89B4FA] {name} "
+        mode_move          "#[bg=#89B4FA] {name} "
+        mode_prompt        "#[bg=#89B4FA] {name} "
+        mode_tmux          "#[bg=#ffc387] {name} "
+
+        tab_normal   "#[fg=#6C7086] {name} "
+        tab_active   "#[fg=#9399B2,bold,italic] {name} "
+
+        command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+        command_git_branch_format      "#[fg=blue] {stdout} "
+        command_git_branch_interval    "10"
+        command_git_branch_rendermode  "static"
+
+        notification_format_unread           "#[fg=#89B4FA,bg=#181825,blink]  #[fg=#89B4FA,bg=#181825] {message} "
+        notification_format_no_notifications "#[fg=#89B4FA,bg=#181825,dim]   "
+        notification_show_interval           "10"
+
+        datetime        "#[fg=#6C7086,bold] {format} "
+        datetime_format "%Aa %b %d, %Y %H:%M:%S %Z"
+        datetime_timezone "Etc/UTC"
     }
 }
 
@@ -265,7 +331,7 @@ theme "catppuccin-macchiato"
 // The name of the default layout to load on startup
 // Default: "default"
 //
-default_layout "default"
+default_layout "startup"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal
@@ -279,7 +345,7 @@ default_mode "normal"
 //   - true (default)
 //   - false
 //
-mouse_mode false
+mouse_mode true
 
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
@@ -306,12 +372,12 @@ scroll_buffer_size 100000
 //   - system (default)
 //   - primary
 //
-copy_clipboard "primary"
+copy_clipboard "system"
 
 // Enable or disable automatic copy (and clear) of selection when releasing mouse
 // Default: true
 //
-copy_on_select false
+copy_on_select true
 
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
@@ -327,11 +393,11 @@ copy_on_select false
 
 // The folder in which Zellij will look for layouts
 //
-// layout_dir "/path/to/my/layout_dir"
+// layout_dir "$HOME/.config/zellij/layouts"
 
 // The folder in which Zellij will look for themes
 //
-// theme_dir "/path/to/my/theme_dir"
+// theme_dir "$HOME/.config/zellij/themes"
 
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals
