@@ -5,7 +5,6 @@ package fzf
 package https://github.com/danhper/fish-ssh-agent
 package https://github.com/jhillyerd/plugin-git
 package https://github.com/jorgebucaran/autopair.fish
-package https://github.com/sixbyone/fish-starship
 package nvm
 package pyenv
 package python

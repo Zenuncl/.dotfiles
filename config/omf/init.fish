@@ -12,5 +12,7 @@ set --global --export PATH    $PATH \
 source $HOME/.config/omf/custom/alias.fish
 source $HOME/.config/omf/custom/function.fish
 
+# Load Starship plugin
+source $HOME/.config/omf/custom/starship.fish
 
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
