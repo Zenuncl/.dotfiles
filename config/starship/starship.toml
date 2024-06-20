@@ -58,7 +58,7 @@ map_symbol = true
 disabled = false
 
 [os]
-format = " [╰─](bold red) [$symbol $name]($style) ─"
+format = " [╰─](bold red) [$symbol $name]($style) "
 style = "bold blue"
 disabled = false
 
@@ -85,6 +85,14 @@ version_format = "v${raw}"
 format = "via [ Node.js $version](bold green) "
 detect_files = ["package.json", ".node-version"]
 detect_folders = ["node_modules"]
+
+[shell]
+fish_indicator = '󰈺 ─'
+powershell_indicator = '_ ─'
+zsh_indicator = '󰘳 ─'
+unknown_indicator = 'mystery shell'
+style = 'cyan bold'
+disabled = false
 
 # Nerd Font Symbol
 [elixir]
