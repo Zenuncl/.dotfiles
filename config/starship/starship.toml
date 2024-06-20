@@ -20,7 +20,7 @@ show_always = true
 [hostname]
 format = "[$hostname]($style) in "
 style = "bold green"
-trim_at = ".naedge."
+trim_at = ""
 ssh_only = false
 disabled = false
 
