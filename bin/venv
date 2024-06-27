@@ -1,35 +1,98 @@
 #!/bin/bash
 
-VIRTUALENV_DIR="$HOME/dev/virtualenv"
+# Define the base path for virtual environments
+BASE_VIRTUALENV_PATH="${HOME}/dev/virtualenv"
 
-# Check if a virtual environment name is provided as a command-line argument
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 <virtualenv_name>"
-  exit 1
+# Check if a virtual environment program is installed
+if ! command -v virtualenv &> /dev/null; then
+    echo "virtualenv is not installed. Please install it using: pip install virtualenv"
+    exit 1
 fi
 
-# Virtual environment name specified as the first command-line argument
-VIRTUALENV=$1
+# Function to create the virtual environment
+create_venv() {
+    VIRTUALENV_NAME="$1"
+    VIRTUALENV_PATH="$BASE_VIRTUALENV_PATH/$VIRTUALENV_NAME"
+    if [ ! -d "$VIRTUALENV_PATH" ]; then
+        read -p "Virtual environment '$VIRTUALENV_NAME' does not exist at '$VIRTUALENV_PATH'. Do you want to create it? (yes/no): " choice
+        case "$choice" in
+          [yY]|[yY][eE][sS])
+            # Create the virtual environment
+            echo "Creating virtual environment at $VIRTUALENV_PATH"
+            $(which virtualenv) "$VIRTUALENV_PATH"
+            ;;
+          *)
+            echo "Exiting without creating the virtual environment '$VIRTUALENV_NAME'."
+            ;;
+        esac
+    else
+        echo "Virtual environment '$VIRTUALENV_NAME' already exists at $VIRTUALENV_PATH"
+    fi
+}
 
-# Full path to the virtual environment directory
-VIRTUALENV_PATH="$VIRTUALENV_DIR/$VIRTUALENV"
-echo $VIRTUALENV_PATH
-if [ -d "$VIRTUALENV_PATH" ]; then
-  # Virtualenv exists, so activate the python virtual environment
-  source "$VIRTUALENV_PATH/bin/activate"
-  echo "The Python virtual environment: $VIRTUALENV activated."
-else
-  # Virtual environment does not exist, ask for confirmation to create it
-  read -p "Virtual environment '$VIRTUALENV' does not exist. Do you want to create it? (yes/no): " choice
-  case "$choice" in
-    [yY]|[yY][eE][sS])
-      # Create the virtual environment
-      /usr/bin/virtualenv "$VIRTUALENV_PATH"
-      source "$VIRTUALENV_PATH/bin/activate"
-      echo "Virtual environment '$VIRTUALENV' created and activated."
-      ;;
+# Function to activate the virtual environment
+activate_venv() {
+    VIRTUALENV_NAME="$1"
+    VIRTUALENV_PATH="$BASE_VIRTUALENV_PATH/$VIRTUALENV_NAME"
+    if [ -d "$VIRTUALENV_PATH" ]; then
+        # Virtualenv exists, so activate the python virtual environment
+        echo "Activating virtual environment '$VIRTUALENV_NAME' at $VIRTUALENV_PATH"
+        # Source the activate script
+        source "$VIRTUALENV_PATH/bin/activate"
+        echo "The Python virtual environment: '$VIRTUALENV_NAME' activated."
+    else
+        echo "Virtual environment '$VIRTUALENV_NAME' does not exist at $VIRTUALENV_PATH"
+    fi
+}
+
+# Function to deactivate the virtual environment
+deactivate_venv() {
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "No virtual environment is currently activated"
+    else
+        echo "Deactivating virtual environment"
+        # Deactivate the virtual environment
+        deactivate
+    fi
+}
+
+
+# Default function to handle create and activate
+create_and_or_activate_venv() {
+    VIRTUALENV_NAME="$1"
+    VIRTUALENV_PATH="$BASE_VIRTUALENV_PATH/$VIRTUALENV_NAME"
+    if [ ! -d "$VIRTUALENV_PATH" ]; then
+        create_venv "$VIRTUALENV_NAME"
+    fi
+    activate_venv "$VIRTUALENV_NAME"
+}
+
+# Main script logic
+case "$1" in
+    create|c)
+        if [ -z "$2" ]; then
+            echo "Usage: $0 create <venv_name>"
+            exit 1
+        fi
+        create_venv "$2"
+        ;;
+    activate|a)
+        if [ -z "$2" ]; then
+            echo "Usage: $0 activate <venv_name>"
+            exit 1
+        fi
+        activate_venv "$2"
+        ;;
+    deactivate|d)
+        deactivate_venv
+        ;;
     *)
-      echo "Exiting without creating the virtual environment."
-      ;;
-  esac
-fi
+        if [ -z "$1" ]; then
+            echo "Usage: $0 {create|activate|deactivate} [venv_name]"
+            echo "Or provide only the virtual environment name to create and activate it by default."
+            exit 1
+        else
+            create_and_or_activate_venv "$1"
+        fi
+        ;;
+esac
