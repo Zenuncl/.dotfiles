@@ -88,3 +88,5 @@
   insteadOf   = https://github.com
 [safe]
 	directory = /etc/bird
+[init]
+	defaultBranch = main
