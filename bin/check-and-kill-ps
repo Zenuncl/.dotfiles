@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROCESS_NAME=$1
+ps auxf | grep '${PROCESS_NAME}' | awk '{print $2}' | xargs kill
+
