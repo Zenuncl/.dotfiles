@@ -1,15 +1,15 @@
-
+ 
 package bang-bang
 package foreign-env
 package fzf
 package https://github.com/danhper/fish-ssh-agent
 package https://github.com/jhillyerd/plugin-git
-package https://github.com/jorgebucaran/autopair.fish
-package nvm
-package pyenv
+package https://github.com/jorgebucaran/autopair.fish.git
+#package nvm
+#package pyenv
 package python
 package rustup
-package rvm
+#package rvm
 package sudope
 package z
 theme default
