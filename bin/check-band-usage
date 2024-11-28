@@ -1,3 +1,5 @@
 #!/bin/bash
-ifconfig eth0 | grep 'RX bytes' | awk '{print $2 $3}' | cut -d: -f2 | sed 's/ //g'
-ifconfig eth0 | grep 'TX bytes' | awk '{print $2 $3}' | cut -d: -f2 | sed 's/ //g'
+/usr/sbin/ifconfig $(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ') | \
+  grep 'RX ' | grep 'bytes ' | awk '{print "RX: " $5/1000/1000/1000 "GB"}' 
+/usr/sbin/ifconfig $(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ') | \
+  grep 'TX ' | grep 'bytes ' | awk '{print "TX: " $5/1000/1000/1000 "GB"}' 

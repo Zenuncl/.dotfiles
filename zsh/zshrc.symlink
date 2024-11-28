@@ -66,3 +66,6 @@ fi
 
 # ssh-agent keys
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

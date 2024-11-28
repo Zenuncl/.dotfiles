@@ -9,7 +9,7 @@ package https://github.com/jorgebucaran/autopair.fish.git
 #package pyenv
 package python
 package rustup
-#package rvm
+package rvm
 package sudope
 package z
 theme default
