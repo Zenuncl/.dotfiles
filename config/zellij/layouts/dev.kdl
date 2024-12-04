@@ -25,7 +25,7 @@ layout {
     tab name="System" cwd="$HOME/dev/" {
       pane command="btop"
     }
-    strider_tab name="Workspace" cwd="$HOME/dev/" {
+    strider_tab name="Files" cwd="$HOME/dev/" {
         pane split_direction="vertical" {
             pane
             pane
@@ -37,5 +37,10 @@ layout {
             pane
         }
     }
-
+    tab name="Workspace" split_direction="horizontal" cwd="$HOME/dev/" {
+        pane split_direction="vertical" {
+            pane
+            pane
+        }
+    }
 }
