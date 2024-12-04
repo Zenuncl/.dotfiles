@@ -3,11 +3,6 @@ set --global --export LC_ALL        en_US.UTF-8
 set --global --export LANG          en_US.UTF-8
 set --global --export LC_CTYPE      en_US.UTF-8
 
-# Runtime Variable
-set --global --export RUBY_VERSION  3.2.2
-set --global --export NODE_VERSION  18.16.1
-set --global --export GO_VERSION    1.20.5
-
 set --global --export DOTFILES      $HOME/.dotfiles
 set --global --export WORKSPACE     $HOME/dev
 set --global --export PROJECT       $HOME/dev/projects
