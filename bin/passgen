@@ -7,5 +7,5 @@ pass \
   --clip \
   --in-place \
   --no-symbols \
-  draven/tmp/passgen \
+  $(whoami)/tmp/passgen \
   ${PASS_LENGTH}
