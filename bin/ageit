@@ -29,8 +29,12 @@ MODE=""
 while [[ "$1" != "" ]]; do
     case $1 in
         --encrypt ) MODE="encrypt"
+                    FILE=$2
+                    shift
                     ;;
         --decrypt ) MODE="decrypt"
+                    FILE=$2
+                    shift
                     ;;
         --help ) usage
                  ;;
@@ -46,19 +50,25 @@ if [ -z "$MODE" ]; then
     usage
 fi
 
-# Get recipient's address from user or use default
-read -p "Enter recipient's address (leave empty to use default): " RECIPIENT
-RECIPIENT=${RECIPIENT:-$DEFAULT_RECIPIENT}
 
 # Handle encryption
 if [ "$MODE" == "encrypt" ]; then
+    # Get recipient's address from user or use default
+    read -p "Enter recipient's address (leave empty to use default): " RECIPIENT
+    RECIPIENT=${RECIPIENT:-$DEFAULT_RECIPIENT}
     OUTPUT_FILE="${FILE}.age"
-    tar czf - "$FILE" | age -r "$RECIPIENT" > "$OUTPUT_FILE"
+    if [ $RECIPIENT == "default" ]; then
+      tar czf - "$FILE" | age --recipients-file ${HOME}/.secrets/age-recipients.txt > "$OUTPUT_FILE"
+    else
+      tar czf - "$FILE" | age --recipient "$RECIPIENT" > "$OUTPUT_FILE"
+    fi
     echo "Encrypted file: $OUTPUT_FILE"
 
 # Handle decryption
 elif [ "$MODE" == "decrypt" ]; then
     DECRYPTED_FILE="${FILE%.age}"
-    age --decrypt -i key.txt -o "$DECRYPTED_FILE" "$FILE"
+    read -p "Please enter the location of your keyfile: " KEYFILE
+    age --decrypt --identity ${KEYFILE} --output "$DECRYPTED_FILE" "$FILE"
+    tar xzf "$DECRYPTED_FILE"
     echo "Decrypted file: $DECRYPTED_FILE"
 fi
