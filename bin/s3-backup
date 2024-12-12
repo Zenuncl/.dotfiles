@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DIR=$1
+function backup_to_s3() {
+  BACKUP_DIR=$1
+  aws --profile web \
+    s3 sync \
+    "${BACKUP_DIR}" \
+    s3://webs-data/$(hostname --alias | awk '{print $1}')"${BACKUP_DIR}"
+}
+
+backup_to_s3 ${DIR}
