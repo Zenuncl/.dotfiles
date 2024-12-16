@@ -17,7 +17,7 @@ source $HOME/.config/omf/custom/function.fish
 source $HOME/.config/omf/custom/starship.fish
 
 # Load curlie plugin
-source $HOME/.config/envman/load.fish
+#source $HOME/.config/envman/load.fish
 source $HOME/.config/omf/custom/mise.fish
 
 ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
