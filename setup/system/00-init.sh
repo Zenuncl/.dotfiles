@@ -3,7 +3,7 @@
 # Init setup to the machine, Default now support Debian and Arch Linux
 set -e
 
-# Veriables
+# Variables
 DEFAULT_PKGS=("sudo" "git" "zsh" "vim" "neovim" "curl" "wget" "tmux" "fasd" "ca-certificates" "gnupg" "net-tools" "sshpass" "cifs-utils" "unzip" "lynx" "traceroute" "fail2ban" "iptables")
 ARCH_PKGS=("base-devel" "openssh" "bind" "qemu-base" "python" "python-pip" "python-virtualenv" "python-pipx")
 DEB_PKGS=("build-essential" "openssh-server" "dnsutils" "qemu-utils" "python3" "python3-pip" "python3-virtualenv")
