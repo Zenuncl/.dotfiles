@@ -7,10 +7,15 @@ TTL=60
 # Load system hostname setting
 HOSTNAME=$(hostnamectl hostname)
 
-# Fetch the current public IP address
+# Fetch the current public IP address.  Some ipinfo endpoints return JSON
+# while others return just the IP string.  Attempt to parse JSON first and
+# fall back to the raw value if parsing fails.
 IPINFO=$(curl -s https://ipinfo.io/what-is-my-ip)
-
-IP=$(echo $IPINFO | jq '.ip' | sed 's/"//g')
+if IP=$(echo "$IPINFO" | jq -r '.ip' 2>/dev/null); then
+  :
+else
+  IP=$(echo "$IPINFO" | tr -d '\n')
+fi
 
 #validate IP address (makes sure Route 53 doesn't get updated with a malformed payload)
 if [[ ! $IP =~ ^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$ ]]; then
