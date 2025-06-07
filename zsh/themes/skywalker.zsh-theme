@@ -73,7 +73,7 @@ rev_parse_find() {
     done
     return 1
 }
-# Get development envrioment
+# Get development environment
 
 iscommand() { command -v "$1" > /dev/null; }
 prompt_node_version() {
