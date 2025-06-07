@@ -21,3 +21,12 @@ sudo pacman -S \
     remmina $ RDP
     nitrogen # for wallpaper
 ```
+
+### Running BATS tests
+
+Install the `bats` executable and then run:
+
+```
+bats tests
+```
+
