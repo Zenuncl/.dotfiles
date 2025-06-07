@@ -2,6 +2,6 @@
 
 timestamp="$(date +%Y%m%d%H%M%S)"
 targetbase="$HOME/.local/screenshots"
-mkdir -p $targetbase
-[ -d $targetbase ] || exit 1
-scrot $targetbase/$timestamp.png
+mkdir -p "$targetbase"
+[ -d "$targetbase" ] || exit 1
+scrot "$targetbase/$timestamp.png"
