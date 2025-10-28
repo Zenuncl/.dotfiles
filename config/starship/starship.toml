@@ -18,9 +18,10 @@ show_always = true
 
 # Second param
 [hostname]
-format = "[$hostname]($style) in "
+format = "[$hostname]($style) [$ssh_symbol](bold blue) in "
 style = "bold green"
-trim_at = ""
+trim_at = "."
+ssh_symbol = "󰣀"
 ssh_only = false
 disabled = false
 
