@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Function to check if a command is installed
+check_command_installed() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "Error: $1 is not installed."
+        exit 1
+    fi
+}
+
+# Function to display usage information
+usage() {
+    echo "Usage: $0 lock | search <item-name> [--help]"
+    echo "  lock          Lock 1Password"
+    echo "  get           Show item from 1Password"
+    echo "  --help        Display this help message"
+    exit 1
+}
+
+# Check if age-keygen and age are installed
+check_command_installed "bw"
+
+ACTION=""
+SEARCH_ITEM=""
+while [[ "$1" != "" ]]; do
+    case $1 in
+        lock )    ACTION="lock"
+                  ;;
+        get )     ACTION="get"
+                  SEARCH_ITEM=$2
+                  shift
+                  ;;
+        --help )  usage
+                  ;;
+        * ) usage
+            ;;
+    esac
+    shift
+done
+
+if [ -z "$ACTION" ]; then
+  echo "Error: No Action is specified."
+  usage
+fi
+
+if [ "$ACTION" == "get" ]; then
+  echo "Logging in to Bitwarden account..."
+  #echo ""
+  bw --pretty list items --search ${SEARCH_ITEM}
+  echo ""
+  #read -p "Please enter the item's ID: " ITEM_ID
+  #echo ""
+  #bw get item ${ITEM_ID}
+fi
+
+if [ "$ACTION" == "lock" ]; then
+  echo "Logging out (Lock) from Bitwarden account..."
+  bw lock
+  if [ $? -eq 0 ]; then
+    echo "Successfully Locked Bitwarden."
+  fi
+fi
+
