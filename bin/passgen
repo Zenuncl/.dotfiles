@@ -1,11 +1,43 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-PASS_LENGTH=${1:-25}
+# Check for gshuf availability
+if command -v gshuf &> /dev/null; then
+    SHUF="gshuf"  # Use gshuf on macOS
+else
+    SHUF="shuf"   # Use shuf on Linux
+fi
 
-pass \
-  generate \
-  --clip \
-  --in-place \
-  --no-symbols \
-  $(whoami)/tmp/passgen \
-  ${PASS_LENGTH}
+# Define the number of words and random choices
+NUM_WORDS=4
+NUMBERS=(2 7 8)
+PUNCTUATIONS=("!" "?")
+
+# Get a unique list of random words, excluding those with apostrophes
+if command -v awk &> /dev/null; then
+    WORDS=$($SHUF -n 100 /usr/share/dict/words | awk '!/\047/' | $SHUF -n $NUM_WORDS)
+else
+    echo "awk is required but it's not installed."
+    exit 1
+fi
+
+# Randomly capitalize one of the selected words
+WORD_ARRAY=($WORDS)
+RANDOM_INDEX=$((RANDOM % NUM_WORDS))
+WORD_ARRAY[$RANDOM_INDEX]=$(echo "${WORD_ARRAY[$RANDOM_INDEX]}" | tr '[:lower:]' '[:upper:]')
+
+# Select a random separator
+SEPARATOR=$($SHUF -e "." "-" -n 1)
+
+# Join words into a single string using the chosen separator
+FINAL_WORDS=$(IFS=$SEPARATOR; echo "${WORD_ARRAY[*]}")
+
+# Select a random number and punctuation
+NUMBER=${NUMBERS[$RANDOM % ${#NUMBERS[@]}]}
+PUNCTUATION=${PUNCTUATIONS[$RANDOM % ${#PUNCTUATIONS[@]}]}
+
+# Build the final passphrase
+FINAL_PASSWORD="$FINAL_WORDS$SEPARATOR$NUMBER$PUNCTUATION"
+
+# Output the final password
+echo "$FINAL_PASSWORD"
+
