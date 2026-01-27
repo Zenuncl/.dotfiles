@@ -20,7 +20,7 @@ show_always = true
 [hostname]
 format = "[$hostname]($style) [$ssh_symbol](bold blue) in "
 style = "bold green"
-trim_at = "."
+trim_at = ".atlas."
 ssh_symbol = "󰣀"
 ssh_only = false
 disabled = false
