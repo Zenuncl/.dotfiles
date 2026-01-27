@@ -1,14 +1,8 @@
 # Dev: Local Development Server (*.dev)(*.local) | Person VM Servers (*.vm)
-Include config.d/dev/*.conf
-
 # Prd: Productions Servers (*.prd)(*.work)
-Include config.d/prd/*.conf
-
 # Office Server (*.office)
-Include config.d/office/*.conf
-
 # Others Config (Linode, Github etc)
-Include config.d/others/*.conf
+Include config.d/*.conf
 
 # Global Configs
 Host *
@@ -17,3 +11,6 @@ Host *
   UserKnownHostsFile /dev/null
   SetEnv TERM=xterm-256color
 
+# Github Configs
+Host github.com
+  IdentityFile ~/.ssh/secrets/keys.sec/github.ed25519.pem
