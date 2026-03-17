@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Bootstrap script — safe to pipe directly from GitHub:
+#   curl -fsSL https://raw.githubusercontent.com/Zenuncl/.dotfiles/master/setup/bootstrap.sh | sudo bash
 set -euo pipefail
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -10,16 +12,22 @@ warn()  { echo -e "${YELLOW}[WARN]${NC}  $*"; }
 error() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
 
 ask() {
-    # ask <prompt> — returns 0 (yes) or 1 (no)
     local prompt="$1"
     while true; do
-        read -r -p "$(echo -e "${YELLOW}?${NC} ${prompt} [y/N] ")" answer
+        read -r -p "$(echo -e "${YELLOW}?${NC} ${prompt} [y/N] ")" answer </dev/tty
         case "${answer,,}" in
             y|yes) return 0 ;;
             n|no|"") return 1 ;;
             *) echo "Please answer y or n." ;;
         esac
     done
+}
+
+prompt() {
+    # prompt <message> <default> — prints value to stdout
+    local msg="$1" default="$2" value
+    read -r -p "$(echo -e "${YELLOW}?${NC} ${msg} [${default}]: ")" value </dev/tty
+    echo "${value:-${default}}"
 }
 
 must_be_root() {
@@ -36,12 +44,75 @@ check_os() {
         error "Cannot detect OS — /etc/os-release not found. Only Debian-like systems are supported."
         exit 1
     fi
+    # shellcheck source=/dev/null
     source /etc/os-release
     if [[ "${ID_LIKE:-}" != *debian* ]] && [[ "${ID}" != "debian" ]] && [[ "${ID}" != "ubuntu" ]]; then
         error "Unsupported OS: ${PRETTY_NAME:-${ID}}. Only Debian-like systems are supported."
         exit 1
     fi
     info "Detected OS: ${PRETTY_NAME:-${ID}}"
+}
+
+# ─── Constants ────────────────────────────────────────────────────────────────
+
+DOTFILES_REPO="https://github.com/Zenuncl/.dotfiles.git"
+DOTFILES_DIR=".dotfiles"
+
+DOCKER_INSTALLED=false
+
+# ─── Step 1: Ensure user exists ───────────────────────────────────────────────
+
+ensure_user() {
+    TARGET_USER=$(prompt "Username to set up" "anonymous")
+    TARGET_UID=$(prompt "UID" "1027")
+
+    if id "${TARGET_USER}" &>/dev/null; then
+        info "User '${TARGET_USER}' already exists."
+        TARGET_HOME=$(getent passwd "${TARGET_USER}" | cut -d: -f6)
+        return 0
+    fi
+
+    info "User '${TARGET_USER}' not found — creating…"
+
+    local sudo_group
+    sudo_group=$(getent group wheel &>/dev/null && echo wheel || echo sudo)
+
+    useradd -m \
+        -u "${TARGET_UID}" \
+        -s /bin/fish \
+        -G "${sudo_group}" \
+        "${TARGET_USER}"
+
+    TARGET_HOME=$(getent passwd "${TARGET_USER}" | cut -d: -f6)
+    info "User '${TARGET_USER}' created (home: ${TARGET_HOME})."
+
+    if ask "Grant '${TARGET_USER}' passwordless sudo?"; then
+        local sudoers_file="/etc/sudoers.d/${TARGET_USER}"
+        echo "${TARGET_USER} ALL=(ALL) NOPASSWD: ALL" > "${sudoers_file}"
+        chmod 0440 "${sudoers_file}"
+        info "Sudoers entry written to ${sudoers_file}"
+    fi
+}
+
+# ─── Step 2: Ensure dotfiles are cloned ───────────────────────────────────────
+
+ensure_dotfiles() {
+    local dotfiles_path="${TARGET_HOME}/${DOTFILES_DIR}"
+
+    if [[ -d "${dotfiles_path}/.git" ]]; then
+        info "Dotfiles already cloned at ${dotfiles_path}."
+        return 0
+    fi
+
+    if [[ -d "${dotfiles_path}" ]]; then
+        warn "${dotfiles_path} exists but is not a git repo — removing and re-cloning."
+        rm -rf "${dotfiles_path}"
+    fi
+
+    info "Cloning dotfiles from ${DOTFILES_REPO}…"
+    git clone "${DOTFILES_REPO}" "${dotfiles_path}"
+    chown -R "${TARGET_USER}:${TARGET_USER}" "${dotfiles_path}"
+    info "Dotfiles cloned to ${dotfiles_path}."
 }
 
 # ─── APT packages ─────────────────────────────────────────────────────────────
@@ -64,8 +135,6 @@ install_packages() {
 }
 
 # ─── Docker ───────────────────────────────────────────────────────────────────
-
-DOCKER_INSTALLED=false
 
 install_docker() {
     ask "Install Docker (via get.docker.com)?" || return 0
@@ -98,55 +167,6 @@ install_neovim() {
     info "Neovim installed to /opt/nvim-linux-x86_64"
 }
 
-# ─── User creation ────────────────────────────────────────────────────────────
-
-create_user() {
-    ask "Create a new system user?" || return 0
-
-    # Username
-    read -r -p "$(echo -e "${YELLOW}?${NC} Username [anonymous]: ")" NEW_USER
-    NEW_USER="${NEW_USER:-anonymous}"
-
-    # UID
-    read -r -p "$(echo -e "${YELLOW}?${NC} UID [1027]: ")" NEW_UID
-    NEW_UID="${NEW_UID:-1027}"
-
-    if id "${NEW_USER}" &>/dev/null; then
-        warn "User '${NEW_USER}' already exists — skipping useradd."
-    else
-        # Prefer 'wheel' group if it exists, otherwise fall back to 'sudo'
-        local sudo_group
-        sudo_group=$(getent group wheel &>/dev/null && echo wheel || echo sudo)
-
-        info "Creating user '${NEW_USER}' (uid=${NEW_UID}, shell=fish, group=${sudo_group})…"
-        useradd -m \
-            -u "${NEW_UID}" \
-            -s /bin/fish \
-            -G "${sudo_group}" \
-            "${NEW_USER}"
-    fi
-
-    # Passwordless sudo
-    if ask "Grant '${NEW_USER}' passwordless sudo?"; then
-        local sudoers_file="/etc/sudoers.d/${NEW_USER}"
-        echo "${NEW_USER} ALL=(ALL) NOPASSWD: ALL" > "${sudoers_file}"
-        chmod 0440 "${sudoers_file}"
-        info "Sudoers entry written to ${sudoers_file}"
-    fi
-
-    # Docker group — only if Docker was installed in this run or is already present
-    if getent group docker &>/dev/null; then
-        if ask "Add '${NEW_USER}' to the 'docker' group?"; then
-            usermod -aG docker "${NEW_USER}"
-            info "Added '${NEW_USER}' to docker group."
-        fi
-    elif [[ "${DOCKER_INSTALLED}" == true ]]; then
-        warn "Docker group not found even though Docker was just installed — skipping usermod."
-    else
-        info "Docker group not present; skipping docker group assignment."
-    fi
-}
-
 # ─── SSH config ───────────────────────────────────────────────────────────────
 
 configure_sshd() {
@@ -156,39 +176,14 @@ configure_sshd() {
     local conf_file="${conf_dir}/custom.conf"
     mkdir -p "${conf_dir}"
 
-    # Prompt for SSH port
-    read -r -p "$(echo -e "${YELLOW}?${NC} SSH port [2222]: ")" SSH_PORT
-    SSH_PORT="${SSH_PORT:-2222}"
-
-    # Prompt for the user that is allowed password login
-    read -r -p "$(echo -e "${YELLOW}?${NC} User allowed password login [anonymous]: ")" PASSWD_USER
-    PASSWD_USER="${PASSWD_USER:-anonymous}"
+    local ssh_port passwd_user
+    ssh_port=$(prompt "SSH port" "2222")
+    passwd_user=$(prompt "User allowed password login" "anonymous")
 
     cat > "${conf_file}" <<EOF
-# Custom SSHD configuration — generated by setup.sh
-# Use SSH on None Standar Port
-# Default:
-#Port 22
-Port ${SSH_PORT}
+# Custom SSHD configuration — generated by bootstrap.sh
 
-# Relocate HostKeys
-# Default:
-#HostKey /etc/ssh/ssh_host_rsa_key
-#HostKey /etc/ssh/ssh_host_ecdsa_key
-#HostKey /etc/ssh/ssh_host_ed25519_key
-
-# Authentication:
-# Permit Root Login
-# Default:
-#PermitRootLogin prohibit-password
-
-# Expect .ssh/authorized_keys2 to be disregarded by default in future.
-# Default:
-#AuthorizedKeysFile     .ssh/authorized_keys .ssh/authorized_keys2
-
-# To disable tunneled clear text passwords, change to no here!
-# Default:
-#PasswordAuthentication yes
+Port ${ssh_port}
 
 # Authentication
 PermitRootLogin prohibit-password
@@ -196,7 +191,7 @@ PasswordAuthentication no
 PermitEmptyPasswords no
 
 # Allow password login only for the specified user
-Match User ${PASSWD_USER}
+Match User ${passwd_user}
     PasswordAuthentication yes
 Match all
 
@@ -214,68 +209,39 @@ EOF
     fi
 }
 
-# ─── Dotfile symlinks ─────────────────────────────────────────────────────────
+# ─── Symlinks ─────────────────────────────────────────────────────────────────
 
 setup_dotlinks() {
-    ask "Create dotfile symlinks under ~/.config?" || return 0
+    ask "Create dotfile symlinks?" || return 0
 
-    # Determine target home directory
-    local target_home="${HOME}"
-    if [[ $EUID -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]]; then
-        target_home=$(getent passwd "${SUDO_USER}" | cut -d: -f6)
-    fi
-
-    local dotfiles="${target_home}/.dotfiles"
-    if [[ ! -d "${dotfiles}" ]]; then
-        warn "Dotfiles directory not found at ${dotfiles} — skipping symlinks."
-        return 0
-    fi
-
-    local config_dir="${target_home}/.config"
+    local dotfiles="${TARGET_HOME}/${DOTFILES_DIR}"
+    local config_dir="${TARGET_HOME}/.config"
     mkdir -p "${config_dir}"
 
-    for target in nvim starship omf git; do
-        local src="${dotfiles}/config/${target}"
-        local dst="${config_dir}/${target}"
-        if [[ -e "${src}" ]]; then
-            if [[ -e "${dst}" ]] && [[ ! -L "${dst}" ]]; then
-                warn "${dst} already exists and is not a symlink — skipping."
-            else
-                ln -sfn "${src}" "${dst}"
-                info "Linked ${dst} -> ${src}"
-            fi
-        else
-            warn "Source ${src} not found — skipping."
+    _link() {
+        local src="$1" dst="$2"
+        if [[ ! -e "${src}" ]]; then
+            warn "Source not found: ${src} — skipping."
+            return
         fi
+        if [[ -e "${dst}" ]] && [[ ! -L "${dst}" ]]; then
+            warn "${dst} exists and is not a symlink — skipping."
+            return
+        fi
+        ln -sfn "${src}" "${dst}"
+        info "Linked ${dst} -> ${src}"
+    }
+
+    # ~/.config/* links
+    for target in nvim starship omf git; do
+        _link "${dotfiles}/config/${target}" "${config_dir}/${target}"
     done
 
-    # ~/.bin — user scripts
-    local bin_src="${dotfiles}/bin"
-    local bin_dst="${target_home}/.bin"
-    if [[ -e "${bin_src}" ]]; then
-        if [[ -e "${bin_dst}" ]] && [[ ! -L "${bin_dst}" ]]; then
-            warn "${bin_dst} exists and is not a symlink — skipping bin link."
-        else
-            ln -sfn "${bin_src}" "${bin_dst}"
-            info "Linked ${bin_dst} -> ${bin_src}"
-        fi
-    else
-        warn "bin source not found at ${bin_src} — skipping."
-    fi
+    # ~/.bin
+    _link "${dotfiles}/bin" "${TARGET_HOME}/.bin"
 
-    # /etc/motd — system-wide message of the day
-    local motd_src="${dotfiles}/setup/motd/motd"
-    local motd_dst="/etc/motd"
-    if [[ -e "${motd_src}" ]]; then
-        if [[ -e "${motd_dst}" ]] && [[ ! -L "${motd_dst}" ]]; then
-            warn "${motd_dst} exists and is not a symlink — skipping motd link."
-        else
-            ln -sfn "${motd_src}" "${motd_dst}"
-            info "Linked ${motd_dst} -> ${motd_src}"
-        fi
-    else
-        warn "motd source not found at ${motd_src} — skipping."
-    fi
+    # /etc/motd
+    _link "${dotfiles}/setup/motd/motd" "/etc/motd"
 }
 
 # ─── Oh My Fish ───────────────────────────────────────────────────────────────
@@ -286,9 +252,25 @@ install_omf() {
     local tmp_install
     tmp_install=$(mktemp)
     curl -fsSL https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install -o "${tmp_install}"
-    fish "${tmp_install}" --path=~/.local/share/omf --config=~/.config/omf --noninteractive
+    sudo -u "${TARGET_USER}" fish "${tmp_install}" \
+        --path="${TARGET_HOME}/.local/share/omf" \
+        --config="${TARGET_HOME}/.config/omf" \
+        --noninteractive
     rm -f "${tmp_install}"
     info "Oh My Fish installed."
+}
+
+# ─── Docker group (after docker is installed) ─────────────────────────────────
+
+add_docker_group() {
+    if ! getent group docker &>/dev/null; then
+        info "Docker group not present — skipping."
+        return 0
+    fi
+    if ask "Add '${TARGET_USER}' to the 'docker' group?"; then
+        usermod -aG docker "${TARGET_USER}"
+        info "Added '${TARGET_USER}' to docker group."
+    fi
 }
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
@@ -298,20 +280,27 @@ main() {
     check_os
 
     echo
-    info "=== Debian system setup ==="
+    info "=== Bootstrap: Debian system setup ==="
     echo
 
+    # Phase 1 — identity & dotfiles (must happen first)
+    ensure_user
+    ensure_dotfiles
+
+    # Phase 2 — system setup
     install_packages
     install_docker
     install_mise
     install_neovim
-    create_user
     configure_sshd
     setup_dotlinks
     install_omf
 
+    # Phase 3 — docker group (after docker install)
+    add_docker_group
+
     echo
-    info "=== Setup complete ==="
+    info "=== Bootstrap complete. Log in as '${TARGET_USER}' to start. ==="
 }
 
 main "$@"
