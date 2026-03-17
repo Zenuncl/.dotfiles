@@ -251,6 +251,7 @@ install_omf() {
 
     local tmp_install
     tmp_install=$(mktemp)
+    chmod 644 "${tmp_install}"
     curl -fsSL https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install -o "${tmp_install}"
     sudo -u "${TARGET_USER}" fish "${tmp_install}" \
         --path="${TARGET_HOME}/.local/share/omf" \
