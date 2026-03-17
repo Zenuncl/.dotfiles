@@ -1,0 +1,44 @@
+name: zeus
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy_proxy
+    networks:
+      caddy-network:
+        ipv4_address: 172.20.11.5
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /opt/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /opt/docker/caddy/data:/data
+      - /opt/docker/caddy/config:/config
+    restart: unless-stopped
+
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    environment:
+      - PUID=1027
+      - PGID=1000
+    networks:
+      caddy-network:
+        ipv4_address: 172.20.11.50
+    volumes:
+      - /home/zenuncl/.config/syncthing:/var/syncthing
+      - /home/zenuncl/sync:/home/zenuncl/sync
+    ports:
+      - 127.0.0.1:8384:8384   # Web UI
+      - 22000:22000/tcp        # TCP file transfers
+      - 22000:22000/udp        # QUIC file transfers
+      - 21027:21027/udp        # Receive local discovery broadcasts
+    restart: unless-stopped
+
+networks:
+  caddy-network:
+    name: caddy-network
+    driver: bridge
+    external: false
+    ipam:
+      config:
+        - subnet: 172.20.11.0/24
