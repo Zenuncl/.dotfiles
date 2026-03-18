@@ -1,4 +1,0 @@
-#!/bin/bash
-CHECK_PATH=$1
-
-find ${CHECK_PATH} -type f -size +1000M

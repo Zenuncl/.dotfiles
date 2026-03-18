@@ -1,5 +1,0 @@
-#!/bin/bash
-/usr/sbin/ifconfig $(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ') | \
-  grep 'RX ' | grep 'bytes ' | awk '{print "RX: " $5/1000/1000/1000 "GB"}' 
-/usr/sbin/ifconfig $(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ') | \
-  grep 'TX ' | grep 'bytes ' | awk '{print "TX: " $5/1000/1000/1000 "GB"}' 

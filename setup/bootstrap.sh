@@ -239,10 +239,11 @@ setup_dotlinks() {
         _link "${dotfiles}/config/${target}" "${config_dir}/${target}"
     done
 
-    # ~/.bin
-    _link "${dotfiles}/bin" "${TARGET_HOME}/.bin"
-
-    # /etc/motd
+    # /etc/motd — back up existing real file before symlinking
+    if [[ -f "/etc/motd" ]] && [[ ! -L "/etc/motd" ]]; then
+        mv /etc/motd /etc/motd.bak
+        info "Existing /etc/motd backed up to /etc/motd.bak"
+    fi
     _link "${dotfiles}/setup/motd/motd" "/etc/motd"
 }
 
