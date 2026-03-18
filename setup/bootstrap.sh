@@ -149,8 +149,10 @@ install_docker() {
 install_mise() {
     ask "Install mise (runtime version manager)?" || return 0
 
-    info "Installing mise…"
-    curl -fsSL https://mise.run | sh
+    info "Installing mise as '${TARGET_USER}'…"
+    # Must run as TARGET_USER — mise installs to ~/.local/bin/mise
+    # su -l gives a clean login environment (correct HOME, no root SSH vars)
+    su -l "${TARGET_USER}" -s /bin/bash -c 'curl -fsSL https://mise.run | sh'
 }
 
 # ─── Neovim ───────────────────────────────────────────────────────────────────
@@ -252,11 +254,12 @@ install_omf() {
     local tmp_install
     tmp_install=$(mktemp)
     chmod 644 "${tmp_install}"
+    chown "${TARGET_USER}" "${tmp_install}"
     curl -fsSL https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install -o "${tmp_install}"
-    sudo -u "${TARGET_USER}" fish "${tmp_install}" \
-        --path="${TARGET_HOME}/.local/share/omf" \
-        --config="${TARGET_HOME}/.config/omf" \
-        --noninteractive
+    # su -l gives a clean login env — clears root's SSH_AUTH_SOCK / GIT_SSH_COMMAND
+    # so git inside OMF installer uses HTTPS, not SSH
+    su -l "${TARGET_USER}" -s /bin/bash -c \
+        "fish '${tmp_install}' --path='${TARGET_HOME}/.local/share/omf' --config='${TARGET_HOME}/.config/omf' --noninteractive"
     rm -f "${tmp_install}"
     info "Oh My Fish installed."
 }
