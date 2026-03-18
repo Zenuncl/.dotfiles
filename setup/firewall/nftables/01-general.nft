@@ -1,0 +1,24 @@
+# General input rules: loopback, connection tracking, ICMP, SSH
+#
+# NOTE: The original iptables rule restricted SSH to an ipset (sshd allowlist).
+# That has been converted to accept-from-any; fail2ban handles brute-force banning.
+# To restrict SSH to specific IPs, add them to the ssh_allow set and uncomment
+# the set-based rule below instead.
+
+# -- Loopback --
+add rule inet filter input iif "lo" accept comment "allow loopback"
+
+# -- Connection tracking --
+add rule inet filter input ct state related,established accept comment "allow established/related"
+add rule inet filter input ct state invalid drop comment "drop invalid state"
+
+# -- ICMP (drop inbound echo-request / ping) --
+add rule inet filter input ip  protocol icmp  icmp  type echo-request drop comment "drop IPv4 ping"
+add rule inet filter input ip6 nexthdr  icmpv6 icmpv6 type echo-request drop comment "drop IPv6 ping"
+
+# -- SSH --
+# Option A (current): accept SSH from any source, rely on fail2ban for banning
+add rule inet filter input tcp dport { 22, 2222, 22222 } ct state new accept comment "allow SSH"
+
+# Option B: restrict to named set (uncomment and populate ssh_allow set to use)
+# add rule inet filter input tcp dport { 22, 2222, 22222 } ip saddr @ssh_allow accept comment "allow SSH from allowlist"

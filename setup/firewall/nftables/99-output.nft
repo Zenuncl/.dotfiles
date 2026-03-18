@@ -1,0 +1,2 @@
+# Allow all outbound traffic
+add rule inet filter output accept comment "allow all outbound"

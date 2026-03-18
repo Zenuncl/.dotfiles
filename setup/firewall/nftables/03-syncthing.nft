@@ -1,0 +1,4 @@
+# Syncthing — sync port (TCP+UDP 22000) and local discovery (UDP 21027)
+add rule inet filter input tcp dport 22000 ct state new accept comment "allow Syncthing sync TCP"
+add rule inet filter input udp dport 22000 ct state new accept comment "allow Syncthing sync UDP"
+add rule inet filter input udp dport 21027 ct state new accept comment "allow Syncthing local discovery"

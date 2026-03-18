@@ -1,0 +1,4 @@
+# Log and drop all remaining inbound traffic (must be loaded last in input chain)
+# Rate-limited to avoid log flooding.
+add rule inet filter input limit rate 5/minute burst 10 packets log prefix "nft DROP: " flags all comment "log dropped packets (rate limited)"
+add rule inet filter input drop comment "default drop"
