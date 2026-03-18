@@ -1,74 +1,124 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Function to check if a command is installed
-check_command_installed() {
-    if ! command -v "$1" &> /dev/null; then
-        echo "Error: $1 is not installed."
-        exit 1
-    fi
-}
+# Default paths — override via env vars
+AGE_RECIPIENTS_FILE="${AGE_RECIPIENTS_FILE:-${HOME}/.secrets/age/age-recipients.txt}"
+AGE_KEYFILE="${AGE_KEYFILE:-}"
 
-# Function to display usage information
 usage() {
-    echo "Usage: $0 --file <file> --encrypt | --decrypt [--help]"
-    echo "  --encrypt        Encrypt the specified file"
-    echo "  --decrypt        Decrypt the specified file"
-    echo "  --help           Display this help message"
+    cat <<EOF
+Usage: $(basename "$0") --encrypt <file|dir> [--recipient <pubkey>]
+       $(basename "$0") --decrypt <file.age> [--keyfile <identity>]
+
+Options:
+  --encrypt <file|dir>    Encrypt a file or directory (.age output)
+  --decrypt <file.age>    Decrypt an age-encrypted file
+  --recipient <pubkey>    Recipient public key (encrypt; overrides default)
+  --keyfile <path>        Identity file (decrypt; overrides \$AGE_KEYFILE)
+  --help                  Show this help
+
+Environment:
+  AGE_KEYFILE             Default identity file for decryption
+  AGE_RECIPIENTS_FILE     Default recipients file (default: ~/.secrets/age/age-recipients.txt)
+EOF
     exit 1
 }
 
-# Check if age-keygen and age are installed
-check_command_installed "age"
+if ! command -v age &>/dev/null; then
+    echo "Error: 'age' is not installed." >&2
+    exit 1
+fi
 
-# Default recipient's address
-DEFAULT_RECIPIENT="default"
+# ─── Parse arguments ──────────────────────────────────────────────────────────
 
-# Parse command line arguments
-FILE=""
 MODE=""
-while [[ "$1" != "" ]]; do
+FILE=""
+RECIPIENT=""
+KEYFILE_ARG=""
+
+while [[ $# -gt 0 ]]; do
     case $1 in
-        --encrypt ) MODE="encrypt"
-                    FILE=$2
-                    shift
-                    ;;
-        --decrypt ) MODE="decrypt"
-                    FILE=$2
-                    shift
-                    ;;
-        --help ) usage
-                 ;;
-        * ) usage
-            ;;
+        --encrypt)  MODE="encrypt"; FILE="${2:?'--encrypt requires a file/dir'}"; shift ;;
+        --decrypt)  MODE="decrypt"; FILE="${2:?'--decrypt requires a file'}";     shift ;;
+        --recipient) RECIPIENT="${2:?'--recipient requires a value'}";             shift ;;
+        --keyfile)  KEYFILE_ARG="${2:?'--keyfile requires a path'}";              shift ;;
+        --help)     usage ;;
+        *)          echo "Unknown option: $1" >&2; usage ;;
     esac
     shift
 done
 
-# Check if the mode (encrypt or decrypt) is specified
-if [ -z "$MODE" ]; then
-    echo "Error: Mode (encrypt or decrypt) is not specified."
-    usage
-fi
+[[ -z "${MODE}" ]] && { echo "Error: specify --encrypt or --decrypt." >&2; usage; }
+[[ -z "${FILE}" ]] && { echo "Error: no file specified." >&2; usage; }
 
+# ─── Encrypt ──────────────────────────────────────────────────────────────────
 
-# Handle encryption
-if [ "$MODE" == "encrypt" ]; then
-    # Get recipient's address from user or use default
-    read -p "Enter recipient's address (leave empty to use default): " RECIPIENT
-    RECIPIENT=${RECIPIENT:-$DEFAULT_RECIPIENT}
-    OUTPUT_FILE="${FILE}.age"
-    if [ $RECIPIENT == "default" ]; then
-      tar czf - "$FILE" | age --recipients-file ${HOME}/.secrets/age-recipients.txt > "$OUTPUT_FILE"
+if [[ "${MODE}" == "encrypt" ]]; then
+    [[ -e "${FILE}" ]] || { echo "Error: '${FILE}' not found." >&2; exit 1; }
+
+    FILEDIR="$(dirname "${FILE}")"
+    BASE="$(basename "${FILE}")"
+
+    # Build age recipient args
+    if [[ -n "${RECIPIENT}" ]]; then
+        AGE_ARGS=(--recipient "${RECIPIENT}")
+        echo "Encrypting for recipient: ${RECIPIENT}"
+    elif [[ -f "${AGE_RECIPIENTS_FILE}" ]]; then
+        AGE_ARGS=(--recipients-file "${AGE_RECIPIENTS_FILE}")
+        echo "Encrypting using recipients file: ${AGE_RECIPIENTS_FILE}"
     else
-      tar czf - "$FILE" | age --recipient "$RECIPIENT" > "$OUTPUT_FILE"
+        read -rp "Enter recipient public key (age1...): " RECIPIENT
+        [[ -z "${RECIPIENT}" ]] && { echo "Error: recipient required." >&2; exit 1; }
+        AGE_ARGS=(--recipient "${RECIPIENT}")
     fi
-    echo "Encrypted file: $OUTPUT_FILE"
 
-# Handle decryption
-elif [ "$MODE" == "decrypt" ]; then
-    DECRYPTED_FILE="${FILE%.age}"
-    read -p "Please enter the location of your keyfile: " KEYFILE
-    age --decrypt --identity ${KEYFILE} --output "$DECRYPTED_FILE" "$FILE"
-    tar xzf "$DECRYPTED_FILE"
-    echo "Decrypted file: $DECRYPTED_FILE"
+    if [[ -d "${FILE}" ]]; then
+        # Directory — tar (gzip) first, then encrypt
+        # Naming: test-dir -> test-dir.gz.tar -> test-dir.gz.tar.age
+        TAR_OUTPUT="${FILEDIR}/${BASE}.gz.tar"
+        OUTPUT="${TAR_OUTPUT}.age"
+        echo "Directory detected — archiving to ${TAR_OUTPUT}…"
+        tar czf "${TAR_OUTPUT}" -C "${FILEDIR}" "${BASE}"
+        echo "Encrypting to ${OUTPUT}…"
+        age "${AGE_ARGS[@]}" --output "${OUTPUT}" "${TAR_OUTPUT}"
+        rm -f "${TAR_OUTPUT}"
+    else
+        # Plain file — encrypt directly; saved alongside original
+        OUTPUT="${FILEDIR}/${BASE}.age"
+        echo "File detected — encrypting to ${OUTPUT}…"
+        age "${AGE_ARGS[@]}" --output "${OUTPUT}" "${FILE}"
+    fi
+
+    echo "Encrypted: ${OUTPUT}"
+
+# ─── Decrypt ──────────────────────────────────────────────────────────────────
+
+elif [[ "${MODE}" == "decrypt" ]]; then
+    [[ -f "${FILE}" ]] || { echo "Error: '${FILE}' not found." >&2; exit 1; }
+
+    # Resolve identity file: --keyfile > $AGE_KEYFILE > prompt
+    if [[ -n "${KEYFILE_ARG}" ]]; then
+        KEYFILE="${KEYFILE_ARG}"
+    elif [[ -n "${AGE_KEYFILE}" ]]; then
+        KEYFILE="${AGE_KEYFILE}"
+        echo "Using keyfile: ${KEYFILE}"
+    else
+        read -rp "Enter path to identity (key) file: " KEYFILE
+        [[ -z "${KEYFILE}" ]] && { echo "Error: keyfile required." >&2; exit 1; }
+    fi
+
+    [[ -f "${KEYFILE}" ]] || { echo "Error: keyfile '${KEYFILE}' not found." >&2; exit 1; }
+
+    DECRYPTED="${FILE%.age}"
+    age --decrypt --identity "${KEYFILE}" --output "${DECRYPTED}" "${FILE}"
+    echo "Decrypted: ${DECRYPTED}"
+
+    # Extract only if it's a gzip tar (created with tar czf)
+    MIME="$(file --mime-type -b "${DECRYPTED}")"
+    if [[ "${MIME}" == "application/gzip" || "${MIME}" == "application/x-gzip" ]]; then
+        echo "Detected gzip tar archive, extracting…"
+        tar xzf "${DECRYPTED}" && rm -f "${DECRYPTED}"
+    else
+        echo "Not a tar archive (${MIME}), leaving as-is."
+    fi
 fi
