@@ -7,3 +7,5 @@
 # Python
 *.pyc
 
+# Claude Code
+**/.claude/settings.local.json
