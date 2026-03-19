@@ -292,3 +292,7 @@ tmux_conf_copy_to_os_clipboard=false
 
 # move status line to top
 #set -g status-position top
+
+# disable status line and enable keybind toggle
+set -g status off
+bind n set-option status
