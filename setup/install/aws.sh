@@ -32,7 +32,7 @@ curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_ARCH}.zip.sig" -
 
 if command -v gpg &>/dev/null; then
     info "Verifying signature…"
-    gpg --keyserver hkps://keys.openpgp.org \
+    gpg --keyserver hkps://keyserver.ubuntu.com \
         --recv-keys FB5DB77FD5C118B80511ADA8A6310ACC4672475C 2>/dev/null || true
     gpg --verify "${SIG}" "${ZIP}" 2>/dev/null \
         && info "Signature OK." \
@@ -47,6 +47,6 @@ info "Extracting…"
 unzip -q "${ZIP}" -d "${TMP_DIR}"
 
 info "Installing / updating AWS CLI…"
-"${TMP_DIR}/aws/install" --update
+"${TMP_DIR}/aws/install" --update --install-dir ${HOME}/.local/share/aws --bin-dir ${HOME}/.local/bin
 
 info "Done. $(aws --version)"
