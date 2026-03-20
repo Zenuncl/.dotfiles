@@ -127,11 +127,11 @@ install_packages() {
 
     info "Installing base packages…"
     apt install -y \
-        sudo git git-delta fish vim curl wget tmux fasd \
-        ca-certificates gnupg net-tools sshpass cifs-utils unzip \
-        lynx traceroute fail2ban iptables build-essential \
-        openssh-server dnsutils qemu-utils bat starship whois \
-        htop rsync rclone fzf
+        sudo git git-delta fish vim curl wget tmux \
+        ca-certificates gnupg build-essential sshpass unzip \
+        whois net-tools dnsutils traceroute fail2ban iptables \
+        openssh-server qemu-utils cifs-utils bat starship \
+        lynx htop rsync rclone fzf fd-find fasd
 }
 
 # ─── Docker ───────────────────────────────────────────────────────────────────
