@@ -5,7 +5,6 @@ set --global fish_greeting
 set --global --export EDITOR  /usr/bin/nvim
 
 set --global --export PATH    $HOME/.bin \
-                              $GOPATH/bin \
                               $PATH
 
 # Load Custom files

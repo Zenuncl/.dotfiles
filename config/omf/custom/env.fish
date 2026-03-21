@@ -8,7 +8,7 @@ set --global --export WORKSPACE     $HOME/dev
 set --global --export PROJECT       $HOME/dev/projects
 
 # GOPATH
-set --global --export GOPATH        $HOME/dev/go
+#set --global --export GOPATH        $HOME/dev/go
 
 # PATH
 set --global --export PATH          $PATH \
@@ -20,10 +20,10 @@ set --global --export PATH          $PATH \
                                     /sbin \
                                     $HOME/.local/bin \
                                     $HOME/.bin \
-                                    $GOPATH/bin
 
 # Load global .env variable if exist
 if test -f $HOME/.secrets/.env
+  echo (set_color green)"✓ Secrets ENV Exist, Loaded..."(set_color normal)
   while read -l line
     # 1. Skip comments and empty lines
     if not string match -q -r '^#|^$' "$line"
