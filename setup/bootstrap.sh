@@ -37,6 +37,10 @@ must_be_root() {
     fi
 }
 
+# Run a command as TARGET_USER with a clean login environment.
+# Usage: as_user "some command with args"
+as_user() { su -l "${TARGET_USER}" -s /bin/bash -c "$*"; }
+
 # ─── OS Check ─────────────────────────────────────────────────────────────────
 
 check_os() {
@@ -94,6 +98,18 @@ ensure_user() {
     fi
 }
 
+# ─── Step 1b: Ensure git is available ────────────────────────────────────────
+
+ensure_git() {
+    if command -v git &>/dev/null; then
+        return 0
+    fi
+    info "git not found — installing (required for dotfiles clone)…"
+    apt-get update -qq
+    apt-get install -y git
+    info "git installed."
+}
+
 # ─── Step 2: Ensure dotfiles are cloned ───────────────────────────────────────
 
 ensure_dotfiles() {
@@ -110,8 +126,7 @@ ensure_dotfiles() {
     fi
 
     info "Cloning dotfiles from ${DOTFILES_REPO}…"
-    git clone "${DOTFILES_REPO}" "${dotfiles_path}"
-    chown -R "${TARGET_USER}:${TARGET_USER}" "${dotfiles_path}"
+    as_user "git clone '${DOTFILES_REPO}' '${dotfiles_path}'"
     info "Dotfiles cloned to ${dotfiles_path}."
 }
 
@@ -121,12 +136,21 @@ install_packages() {
     ask "Update & upgrade APT packages and install base tools?" || return 0
 
     info "Running apt update / upgrade / dist-upgrade…"
-    apt update
-    apt -y upgrade
-    apt -y dist-upgrade
+    info "Note: existing config files will be kept (--force-confold) — no interactive prompts."
+    DEBIAN_FRONTEND=noninteractive apt update
+    DEBIAN_FRONTEND=noninteractive apt -y \
+        -o Dpkg::Options::="--force-confold" \
+        -o Dpkg::Options::="--force-confdef" \
+        upgrade
+    DEBIAN_FRONTEND=noninteractive apt -y \
+        -o Dpkg::Options::="--force-confold" \
+        -o Dpkg::Options::="--force-confdef" \
+        dist-upgrade
 
     info "Installing base packages…"
-    apt install -y \
+    DEBIAN_FRONTEND=noninteractive apt install -y \
+        -o Dpkg::Options::="--force-confold" \
+        -o Dpkg::Options::="--force-confdef" \
         sudo git git-delta fish vim curl wget tmux \
         ca-certificates gnupg build-essential sshpass unzip \
         whois net-tools dnsutils traceroute fail2ban iptables \
@@ -150,9 +174,8 @@ install_mise() {
     ask "Install mise (runtime version manager)?" || return 0
 
     info "Installing mise as '${TARGET_USER}'…"
-    # Must run as TARGET_USER — mise installs to ~/.local/bin/mise
-    # su -l gives a clean login environment (correct HOME, no root SSH vars)
-    su -l "${TARGET_USER}" -s /bin/bash -c 'curl -fsSL https://mise.run | sh'
+    # Runs as TARGET_USER — mise installs to ~/.local/bin/mise
+    as_user 'curl -fsSL https://mise.run | sh'
 }
 
 # ─── Neovim ───────────────────────────────────────────────────────────────────
@@ -218,9 +241,12 @@ setup_dotlinks() {
 
     local dotfiles="${TARGET_HOME}/${DOTFILES_DIR}"
     local config_dir="${TARGET_HOME}/.config"
-    mkdir -p "${config_dir}"
 
-    _link() {
+    # Create ~/.config as TARGET_USER so ownership is correct
+    sudo -u "${TARGET_USER}" mkdir -p "${config_dir}"
+
+    # Link a source into a destination, running as TARGET_USER
+    _link_as_user() {
         local src="$1" dst="$2"
         if [[ ! -e "${src}" ]]; then
             warn "Source not found: ${src} — skipping."
@@ -230,21 +256,22 @@ setup_dotlinks() {
             warn "${dst} exists and is not a symlink — skipping."
             return
         fi
-        ln -sfn "${src}" "${dst}"
+        sudo -u "${TARGET_USER}" ln -sfn "${src}" "${dst}"
         info "Linked ${dst} -> ${src}"
     }
 
-    # ~/.config/* links
+    # ~/.config/* links — owned by TARGET_USER
     for target in nvim starship omf git; do
-        _link "${dotfiles}/config/${target}" "${config_dir}/${target}"
+        _link_as_user "${dotfiles}/config/${target}" "${config_dir}/${target}"
     done
 
-    # /etc/motd — back up existing real file before symlinking
+    # /etc/motd — system file, requires root
     if [[ -f "/etc/motd" ]] && [[ ! -L "/etc/motd" ]]; then
         mv /etc/motd /etc/motd.bak
         info "Existing /etc/motd backed up to /etc/motd.bak"
     fi
-    _link "${dotfiles}/setup/motd/motd" "/etc/motd"
+    ln -sfn "${dotfiles}/setup/motd/motd" "/etc/motd"
+    info "Linked /etc/motd -> ${dotfiles}/setup/motd/motd"
 }
 
 # ─── Oh My Fish ───────────────────────────────────────────────────────────────
@@ -252,15 +279,11 @@ setup_dotlinks() {
 install_omf() {
     ask "Install Oh My Fish?" || return 0
 
-    local tmp_install
-    tmp_install=$(mktemp)
-    chmod 644 "${tmp_install}"
-    chown "${TARGET_USER}" "${tmp_install}"
+    local tmp_install="/tmp/omf_install.fish"
     curl -fsSL https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install -o "${tmp_install}"
-    # su -l gives a clean login env — clears root's SSH_AUTH_SOCK / GIT_SSH_COMMAND
-    # so git inside OMF installer uses HTTPS, not SSH
-    su -l "${TARGET_USER}" -s /bin/bash -c \
-        "fish '${tmp_install}' --path='${TARGET_HOME}/.local/share/omf' --config='${TARGET_HOME}/.config/omf' --noninteractive"
+    chmod +x "${tmp_install}"
+    # Runs as TARGET_USER — clean login env avoids SSH_AUTH_SOCK / GIT_SSH_COMMAND leaking
+    as_user "fish '${tmp_install}' --path='${TARGET_HOME}/.local/share/omf' --config='${TARGET_HOME}/.config/omf' --noninteractive"
     rm -f "${tmp_install}"
     info "Oh My Fish installed."
 }
@@ -290,6 +313,7 @@ main() {
 
     # Phase 1 — identity & dotfiles (must happen first)
     ensure_user
+    ensure_git
     ensure_dotfiles
 
     # Phase 2 — system setup
