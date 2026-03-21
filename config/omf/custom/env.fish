@@ -22,16 +22,18 @@ set --global --export PATH          $PATH \
                                     $HOME/.bin \
                                     $GOPATH/bin
 
-# Load global .env variable
-while read -l line
-  # 1. Skip comments and empty lines
-  if not string match -q -r '^#|^$' "$line"
-      # 2. Split into key and value
-      set -l item (string split -m 1 '=' $line)
-      set -l key $item[1]
-      set -l val $item[2]
-
-      # 3. Use eval to expand variables like $HOME
-      eval set -gx $key $val
-  end
-end < $HOME/.secrets/.env
+# Load global .env variable if exist
+if test -f $HOME/.secrets/.env
+  while read -l line
+    # 1. Skip comments and empty lines
+    if not string match -q -r '^#|^$' "$line"
+        # 2. Split into key and value
+        set -l item (string split -m 1 '=' $line)
+        set -l key $item[1]
+        set -l val $item[2]
+  
+        # 3. Use eval to expand variables like $HOME
+        eval set -gx $key $val
+    end
+  end < $HOME/.secrets/.env
+end

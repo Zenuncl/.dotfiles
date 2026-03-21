@@ -20,4 +20,5 @@ source $HOME/.config/omf/custom/starship.fish
 #source $HOME/.config/envman/load.fish
 source $HOME/.config/omf/custom/mise.fish
 
-ssh-add $HOME/.ssh/secrets/keys.sec/github.ed25519.pem
+# Load SSH Keys to ssh-agent with ssh-add
+source $HOME/.config/omf/custom/ssh.fish
