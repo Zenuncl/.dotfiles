@@ -3,6 +3,78 @@
 # Converted from bin/ shell scripts + original dotenv helper
 # =============================================================================
 
+# ─── mem ──────────────────────────────────────────────────────────────────
+# Load a memory.log file which can temp remember some information
+# Usage: dotenv add
+# Usage: dotenv expiring
+# Usage: dotenv <string> to search and get
+
+function mem
+    set FILE $WORKSPACE/$USER/memory.log
+
+    mkdir -p (dirname $FILE)
+    test -f $FILE; or touch $FILE
+
+    function _preview
+        echo {} | awk -F" \\| " '{
+            printf "📅 Date     : %s\n", $1
+            printf "📦 Type     : %s\n", $2
+            printf "🏷️  Tag      : %s\n", $3
+            printf "⏰ Expiry   : %s\n", $4
+            printf "📌 Value    : %s\n", $5
+        }'
+    end
+
+    switch $argv[1]
+
+        case add
+            set -e argv[1]
+            set entry (string join " " $argv)
+            echo (date "+%F")" | $entry" >> $FILE
+
+        case expiring
+            cat $FILE | awk -F" \\| " '
+                function to_epoch(d) {
+                    cmd = "date -d " d " +%s"
+                    cmd | getline out
+                    close(cmd)
+                    return out
+                }
+                {
+                    exp = $4
+                    gsub("exp:", "", exp)
+                    now = systime()
+                    if (to_epoch(exp) - now < 1209600)
+                        print $0
+                }
+            ' | fzf --preview '_preview'
+
+        case '*'
+            set query (string join " " $argv)
+
+            if type -q fzf
+                if test -n "$query"
+                    set selected (rg $query $FILE | fzf --preview '_preview')
+                else
+                    set selected (cat $FILE | fzf --preview '_preview')
+                end
+
+                if test -n "$selected"
+                    set value (echo $selected | awk -F" \\| " '{print $5}')
+
+                    if type -q pbcopy
+                        echo $value | pbcopy
+                    else if type -q xclip
+                        echo $value | xclip -selection clipboard
+                    end
+
+                    echo $selected
+                end
+            else
+                cat $FILE
+            end
+    end
+end
 
 # ─── dotenv ──────────────────────────────────────────────────────────────────
 # Load a .env file into the current fish session
