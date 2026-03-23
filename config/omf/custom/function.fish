@@ -15,15 +15,9 @@ function mem
     mkdir -p (dirname $FILE)
     test -f $FILE; or touch $FILE
 
-    function _preview
-        echo {} | awk -F" \\| " '{
-            printf "📅 Date     : %s\n", $1
-            printf "📦 Type     : %s\n", $2
-            printf "🏷️  Tag      : %s\n", $3
-            printf "⏰ Expiry   : %s\n", $4
-            printf "📌 Value    : %s\n", $5
-        }'
-    end
+    # fzf --preview runs in sh — FS must escape | (regex OR), expiry is optional/last
+    # Field order: date | type | tag | value | expiry(optional)
+    set -l preview "echo {} | awk -F' \\| ' '{printf \"📅 Date     : %s\\n📦 Type     : %s\\n🏷️ Tag      : %s\\n📌 Value    : %s\\n\", \$1, \$2, \$3, \$4; if (\$5 != \"\") printf \"⏰ Expiry   : %s\\n\", \$5}'"
 
     switch $argv[1]
 
@@ -41,26 +35,26 @@ function mem
                     return out
                 }
                 {
-                    exp = $4
+                    exp = $5
                     gsub("exp:", "", exp)
                     now = systime()
                     if (to_epoch(exp) - now < 1209600)
                         print $0
                 }
-            ' | fzf --preview '_preview'
+            ' | fzf --preview $preview
 
         case '*'
             set query (string join " " $argv)
 
             if type -q fzf
                 if test -n "$query"
-                    set selected (rg $query $FILE | fzf --preview '_preview')
+                    set selected (rg $query $FILE | fzf --preview $preview)
                 else
-                    set selected (cat $FILE | fzf --preview '_preview')
+                    set selected (cat $FILE | fzf --preview $preview)
                 end
 
                 if test -n "$selected"
-                    set value (echo $selected | awk -F" \\| " '{print $5}')
+                    set value (echo $selected | awk -F" \\| " '{print $4}')
 
                     if type -q pbcopy
                         echo $value | pbcopy
