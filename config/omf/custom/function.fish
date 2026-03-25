@@ -590,7 +590,7 @@ end
 #   venv deactivate|d      Deactivate current venv
 
 function venv --description "Manage Python virtual environments"
-    set -l base "$HOME/dev/virtualenv"
+    set -g base "$HOME/dev/env/python"
 
     if not type -q virtualenv
         echo "Error: 'virtualenv' is not installed. Run: pip install virtualenv" >&2
@@ -599,6 +599,7 @@ function venv --description "Manage Python virtual environments"
 
     # ── helpers ───────────────────────────────────────────────────────────
     function __venv_create -a name
+        echo $base
         set -l path "$base/$name"
         if test -d $path
             echo "Virtual environment '$name' already exists at $path"
@@ -660,6 +661,7 @@ function venv --description "Manage Python virtual environments"
             __venv_create $argv[1]
             and __venv_activate $argv[1]
     end
+    set -e path
 end
 
 
@@ -703,36 +705,77 @@ end
 # One word is randomly capitalised; separator is random (. or -)
 # Usage: passgen
 
-function passgen --description "Generate a random memorable passphrase"
-    if not test -f /usr/share/dict/words
-        echo "Error: /usr/share/dict/words not found." >&2; return 1
+function passgen --description "Generate a password/token — usage: passgen [mem|token|rand]"
+    set -l mode (test (count $argv) -gt 0; and echo $argv[1]; or echo mem)
+
+    switch $mode
+
+        case mem
+            if not test -f /usr/share/dict/words
+                echo "Error: /usr/share/dict/words not found." >&2; return 1
+            end
+            if not type -q shuf
+                echo "Error: 'shuf' is not installed." >&2; return 1
+            end
+
+            # Total parts 5–7: 1 digits block + (total-1) words
+            # random MIN MAX returns an integer in [MIN, MAX] inclusive
+            set -l total_parts (random 5 7)
+            set -l num_words   (math $total_parts - 1)
+
+            # Sample words — exclude those containing apostrophes (octal 047)
+            set -l words (shuf -n 100 /usr/share/dict/words | awk '!/\047/' | shuf -n $num_words)
+
+            if test (count $words) -lt $num_words
+                echo "Error: not enough words sampled from dictionary." >&2; return 1
+            end
+
+            # Randomly capitalise one word (fish arrays are 1-indexed)
+            set -l cap_idx (random 1 $num_words)
+            set words[$cap_idx] (string upper $words[$cap_idx])
+
+            # Build 4–6 digit number using digits 2-9 only
+            set -l num_digits (random 4 6)
+            set -l digits
+            for i in (seq $num_digits)
+                set -a digits (random choice 2 3 4 5 6 7 8 9)
+            end
+            set -l number (string join "" $digits)
+
+            # Insert number at a random position — not first, not last
+            # valid: position 1 … (num_words-1), i.e. after word 1 up to before last word
+            set -l max_pos (math $num_words - 1)
+            set -l insert_pos (random 1 $max_pos)
+            set -l parts
+            for i in (seq $num_words)
+                set -a parts $words[$i]
+                if test $i -eq $insert_pos
+                    set -a parts $number
+                end
+            end
+
+            set -l sep   (random choice - .)
+            set -l punct (random choice "!" "?")
+            echo "Memorable Password: "(string join $sep $parts)$punct
+
+        case token
+            if not type -q openssl
+                echo "Error: 'openssl' is not installed." >&2; return 1
+            end
+            echo "Token (hex 64): "(openssl rand -hex 64)
+
+        case rand
+            if not type -q pwgen
+                echo "Error: 'pwgen' is not installed." >&2; return 1
+            end
+            echo "Random Password (64): "(pwgen -s 64 1)
+
+        case '*'
+            echo "Usage: passgen [mem|token|rand]" >&2
+            echo "  mem   — memorable word-based passphrase (default)" >&2
+            echo "  token — openssl hex 64 token" >&2
+            echo "  rand  — pwgen 64-char random password" >&2
+            return 1
+
     end
-    if not type -q shuf
-        echo "Error: 'shuf' is not installed." >&2; return 1
-    end
-
-    set -l num_words 4
-    set -l numbers   2 7 8
-    set -l puncts    "!" "?"
-
-    # Sample words — exclude those containing apostrophes (octal 047)
-    set -l words (shuf -n 100 /usr/share/dict/words | awk '!/\047/' | shuf -n $num_words)
-
-    if test (count $words) -lt $num_words
-        echo "Error: not enough words sampled from dictionary." >&2; return 1
-    end
-
-    # Randomly capitalise one word (fish arrays are 1-indexed)
-    set -l cap_idx (math (random) % $num_words + 1)
-    set words[$cap_idx] (string upper $words[$cap_idx])
-
-    # Random separator and join words
-    set -l sep (random choice . -)
-    set -l phrase (string join $sep $words)
-
-    # Random number and punctuation
-    set -l number (random choice $numbers)
-    set -l punct  (random choice $puncts)
-
-    echo "$phrase$sep$number$punct"
 end
