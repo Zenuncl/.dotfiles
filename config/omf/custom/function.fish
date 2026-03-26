@@ -779,3 +779,33 @@ function passgen --description "Generate a password/token — usage: passgen [me
 
     end
 end
+
+# ─── world_time ───────────────────────────────────────────────────────────────
+# Display current time in UTC and 5 popular locations
+# Usage: world_time
+
+function world_time --description "Show current time across major timezones"
+    set -l fmt "%Y-%m-%d %H:%M %Z"
+
+    set -l locations \
+        "UTC / GMT"                 "UTC" \
+        "US Los Angeles (-7)"       "America/Los_Angeles" \
+        "CA Toronto (-4)"           "Canada/Eastern" \
+        "EU Paris (+1)"             "Europe/Paris" \
+        "AE Dubai (+4)"             "Asia/Dubai" \
+        "CN Hong Kong (+8)"         "Asia/Hong_Kong" \
+        "JP Tokyo (+9)"             "Asia/Tokyo" \
+        "AU Sydney (+11)"           "Australia/Sydney"
+
+    printf "%-20s  %s\n" "Location" "Local Time"
+    printf "%-20s  %s\n" "--------------" "-------------------"
+
+    set -l i 1
+    while test $i -le (count $locations)
+        set -l label $locations[$i]
+        set -l tz    $locations[(math $i + 1)]
+        set -l time  (TZ=$tz date +"$fmt")
+        printf "%-20s  %s\n" $label $time
+        set i (math $i + 2)
+    end
+end

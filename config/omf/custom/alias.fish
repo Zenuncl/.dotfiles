@@ -5,10 +5,8 @@ alias fishp="fish --private"
 
 # UTC time check
 alias utc_time="TZ='Etc/UTC' date"
-alias nyc_time="TZ='Canada/Eastern' date"
-alias sha_time="TZ='Asia/Shanghai' date"
-alias par_time="TZ='Europe/Paris' date"
-alias tyo_time="TZ='Asia/Tokyo' date"
+alias yyz_time="TZ='Canada/Eastern' date"
+alias pek_time="TZ='Asia/Shanghai' date"
 
 # System level alias
 alias less="less --raw-control-chars" # -R preserves ANSI color escape sequences in output
