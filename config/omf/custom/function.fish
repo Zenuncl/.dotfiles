@@ -834,8 +834,11 @@ function s3_backup --description "Sync a local directory to S3 under hostname/di
         return 1
     end
 
-    # Short hostname (e.g. "web01") as path prefix
-    set -l host  (hostname -s)
+    # Prefer hostname alias (-a); fall back to short hostname (-s)
+    set -l host (hostname -a 2>/dev/null | awk '{print $1}')
+    if test -z "$host"
+        set host (hostname -s)
+    end
     set -l base  (basename $local_dir)
     set -l s3dst "s3://$bucket/$host/$base"
 
