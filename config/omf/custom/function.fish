@@ -809,3 +809,38 @@ function world_time --description "Show current time across major timezones"
         set i (math $i + 2)
     end
 end
+
+# ─── s3_backup ───────────────────────────────────────────────────────────────
+# Backup a local directory to S3, scoped under a short hostname alias
+# Usage: s3_backup <local_dir> [s3_bucket]
+#   local_dir  — path to sync (required)
+#   s3_bucket  — bucket name (default: webs-data)
+function s3_backup --description "Sync a local directory to S3 under hostname/dir"
+    if not type -q aws
+        echo "s3_backup: error: 'aws' CLI not found. Install it or check your PATH." >&2
+        return 1
+    end
+
+    if test (count $argv) -lt 1
+        echo "Usage: s3_backup <local_dir> [s3_bucket]" >&2
+        return 1
+    end
+
+    set -l local_dir $argv[1]
+    set -l bucket    (test (count $argv) -ge 2; and echo $argv[2]; or echo "webs-data")
+
+    if not test -d $local_dir
+        echo "s3_backup: error: '$local_dir' is not a directory." >&2
+        return 1
+    end
+
+    # Short hostname (e.g. "web01") as path prefix
+    set -l host  (hostname -s)
+    set -l base  (basename $local_dir)
+    set -l s3dst "s3://$bucket/$host/$base"
+
+    echo "Syncing $local_dir -> $s3dst"
+    aws --profile web s3 sync $local_dir $s3dst
+end
+
+
