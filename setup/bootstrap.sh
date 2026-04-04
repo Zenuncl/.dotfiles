@@ -286,6 +286,12 @@ install_omf() {
     as_user "fish '${tmp_install}' --path='${TARGET_HOME}/.local/share/omf' --config='${TARGET_HOME}/.config/omf' --noninteractive"
     rm -f "${tmp_install}"
     info "Oh My Fish installed."
+
+    # Remove the fresh config dir OMF just created so setup_dotlinks can symlink it
+    if [[ -d "${TARGET_HOME}/.config/omf" ]] && [[ ! -L "${TARGET_HOME}/.config/omf" ]]; then
+        rm -rf "${TARGET_HOME}/.config/omf"
+        info "Removed OMF-generated config dir — will be replaced by dotfiles symlink."
+    fi
 }
 
 # ─── Docker group (after docker is installed) ─────────────────────────────────
@@ -322,8 +328,8 @@ main() {
     install_mise
     install_neovim
     configure_sshd
-    setup_dotlinks
-    install_omf
+    install_omf      # before dotlinks — installs fresh (no SSH packages in config yet)
+    setup_dotlinks   # symlinks ~/.config/omf after OMF clears its generated dir
 
     # Phase 3 — docker group (after docker install)
     add_docker_group
