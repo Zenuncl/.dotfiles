@@ -152,7 +152,7 @@ function check-large-files --description "Find files > 1 GB under <path>"
         echo "Usage: check-large-files <path>" >&2
         return 1
     end
-    find $argv[1] -type f -size +1000M
+    find $argv[1] -xdev -type f -size +1000M -printf '%s %p\n' 2>/dev/null | sort -rn | head -50 | numfmt --to=iec --field=1 --padding=10
 end
 
 
