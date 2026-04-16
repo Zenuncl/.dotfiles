@@ -9,6 +9,7 @@ set --global --export PATH    $HOME/.bin \
 
 # Load Custom files
 source $HOME/.config/omf/custom/env.fish
+source $HOME/.config/omf/custom/path.fish
 source $HOME/.config/omf/custom/alias.fish
 source $HOME/.config/omf/custom/function.fish
 

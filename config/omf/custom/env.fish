@@ -9,15 +9,3 @@ set --global --export PROJECT       $HOME/dev/projects
 
 # GOPATH
 #set --global --export GOPATH        $HOME/dev/go
-
-# PATH
-set --global --export PATH          $PATH \
-                                    /usr/local/bin \
-                                    /usr/local/sbin \
-                                    /usr/bin \
-                                    /usr/sbin \
-                                    /bin \
-                                    /sbin \
-                                    $HOME/.local/bin \
-                                    $HOME/.bin \
-
