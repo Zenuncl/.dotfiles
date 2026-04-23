@@ -2,7 +2,7 @@
 set --global fish_greeting
 
 # Environment variable
-set --global --export EDITOR  /usr/bin/nvim
+set --global --export EDITOR  /usr/local/bin/nvim
 
 set --global --export PATH    $HOME/.bin \
                               $PATH
