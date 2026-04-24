@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Clean up quoted text before editing a reply.
+# Usage in neomuttrc: set editor = "mutt-trim %s; nvim ... %s"
+set -euo pipefail
+[[ $# -ge 1 ]] || exit 0
+
+perl -i -0777 -pe '
+    s/^-- \n.*//ms;        # strip signature block
+    s/^>\s*>\s*/>> /mg;    # normalize nested quotes "> > " → ">> "
+    s/\n{3,}/\n\n/g;       # collapse 3+ blank lines to 2
+    s/[^\S\n]+$//mg;        # strip trailing whitespace per line
+' "$1"

@@ -1,0 +1,29 @@
+# ─── Account: Gmail (example) ─────────────────────────────────────────────────
+#
+# Copy this file to create a real account config:
+#   cp example.muttrc personal.muttrc
+#
+# Then update neomuttrc to source it:
+#   source $HOME/.config/mutt/accounts/personal.muttrc
+#
+# For multi-account, add F-key macros in binds.muttrc to switch.
+
+set realname  = "Your Name"
+set from      = "you@gmail.com"
+set sendmail  = "msmtp -a gmail"
+
+set folder    = "~/.local/share/mail/gmail"
+set spoolfile = "+Inbox"
+set record    = "+Sent"
+set postponed = "+Drafts"
+set trash     = "+Trash"
+
+set header_cache     = ~/.cache/mutt/gmail/headers
+set message_cachedir = ~/.cache/mutt/gmail/bodies
+set mbox_type        = Maildir
+
+# Mailboxes to show in sidebar
+mailboxes =Inbox =Sent =Drafts =Trash =Archive
+
+# Account-specific sync macro (override the generic `o`)
+macro index o "<shell-escape>mbsync --config ~/.config/isync/mbsyncrc gmail && notmuch new<enter>" "sync gmail"

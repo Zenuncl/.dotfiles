@@ -1,0 +1,84 @@
+# ─── Catppuccin Mocha — NeoMutt color scheme ─────────────────────────────────
+#
+#   Palette (256-color approximations):
+#     Text     189    Overlay0  243    Green   151    Blue    111
+#     Subtext0 146    Surface2  240    Yellow  223    Mauve   183
+#     Subtext1 152    Surface1  238    Peach   216    Teal    116
+#     Overlay2 248    Surface0  236    Red     211    Sky     117
+#     Overlay1 245    Base      234    Maroon  217    Lavender 147
+#
+#   Background uses `default` (transparent) so it inherits your terminal theme.
+
+# ─── General ──────────────────────────────────────────────────────────────────
+
+color normal        color189    default
+color error         color211    default
+color message       color151    default
+color warning       color223    default
+color search        color234    color223
+color progress      color111    color236
+color prompt        color111    default
+
+# ─── Status bar ───────────────────────────────────────────────────────────────
+
+color status        color152    color236
+
+# ─── Index (message list) ────────────────────────────────────────────────────
+
+color index         color189    default    "~N"           # new
+color index         color189    default    "~U"           # unread
+color index         color243    default    "~R"           # read
+color index         color211    default    "~D"           # deleted
+color index         color223    default    "~F"           # flagged
+color index         color183    default    "~T"           # tagged
+color index         color243    default    "~v~(!~N)"     # collapsed thread (read)
+color index         color111    default    "~v~(~N)"      # collapsed thread (has new)
+
+color index_author  color116    default    "~N|~U"        # author — unread
+color index_author  color243    default    "~R"           # author — read
+color index_subject color189    default    "~N|~U"        # subject — unread
+color index_subject color245    default    "~R"           # subject — read
+color index_date    color243    default                   # date column
+
+color indicator     color189    color238                  # selected row
+color tree          color238    default                   # thread tree arrows
+
+# ─── Sidebar ─────────────────────────────────────────────────────────────────
+
+color sidebar_indicator  color111    color236
+color sidebar_highlight  color189    color236
+color sidebar_new        color151    default
+color sidebar_ordinary   color243    default
+color sidebar_flagged    color216    default
+color sidebar_divider    color238    default
+color sidebar_unread     color189    default
+
+# ─── Headers ──────────────────────────────────────────────────────────────────
+
+color hdrdefault    color243    default
+color header        color111    default    "^(From|To|Cc):"
+color header        color151    default    "^Subject:"
+color header        color243    default    "^Date:"
+
+# ─── Body ─────────────────────────────────────────────────────────────────────
+
+color quoted        color183    default    # quote level 1
+color quoted1       color117    default    # quote level 2
+color quoted2       color151    default    # quote level 3
+color quoted3       color216    default    # quote level 4
+color signature     color243    default
+color bold          color189    default
+color underline     color189    default
+color attachment    color223    default
+
+# URLs and emails
+color body          color111    default    "(https?|ftp)://[^ >\")\t]+"
+color body          color116    default    "[-a-z_0-9.]+@[-a-z_0-9.]+"
+
+# ─── Compose view ────────────────────────────────────────────────────────────
+
+color compose header            color189    default
+color compose security_encrypt  color151    default
+color compose security_sign     color151    default
+color compose security_both     color151    default
+color compose security_none     color211    default
