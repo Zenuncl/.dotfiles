@@ -61,7 +61,7 @@ hdr_order from: to: cc: date: subject:
 set date_format      = "%a %d %b %H:%M"
 set index_format     = "  %zc %zs  %-30.30L  %@attachment_info@  %?M?(%M) ?%-30.100s %> %D  "
 set pager_format     = " %n %T %s%*  %{!%d %b · %H:%M} %?X?  %X? %P "
-set status_format    = " %D %?u?  %u ?%?R?  %R ?%?d?  %d ?%?F?  %F ?%?p?  %p ? %> %P "
+# status_format is set per-account by gen.sh (shows tab bar)
 set compose_format   = " Compose  [size: %l  attachments: %a] %>"
 set attach_format    = "%u%D  %T%-75.75d  %5s · %m/%M"
 
@@ -97,7 +97,8 @@ set sidebar_folder_indent = yes
 set sidebar_indent_string = "  "
 set sidebar_divider_char  = "│"
 set sidebar_next_new_wrap = yes
-set sidebar_non_empty_mailbox_only = yes
+# Change to `yes` to hide empty folders (Drafts, Trash when empty)
+set sidebar_non_empty_mailbox_only = no
 set sidebar_format        = " %D%?F? [%F]?%* %?N?%N/?%S "
 
 # ─── Notmuch integration ─────────────────────────────────────────────────────
@@ -126,6 +127,15 @@ set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 # ─── Editor ───────────────────────────────────────────────────────────────────
 
 set editor = "$HOME/.config/mutt/scripts/mutt-trim %s; nvim +':set textwidth=72' +':set wrapmargin=0' +':set wrap' +':set spell' %s"
+
+# ─── GPG / PGP ────────────────────────────────────────────────────────────────
+
+set crypt_use_gpgme  = yes
+set crypt_autopgp    = yes
+set crypt_autosmime  = no
+set pgp_self_encrypt = yes
+set crypt_autosign   = no            # toggle with Alt-s (see binds)
+# set pgp_default_key = "YOUR_KEY_ID"
 
 # ─── Auto-sync on idle ───────────────────────────────────────────────────────
 

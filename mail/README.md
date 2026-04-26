@@ -55,6 +55,36 @@ mail/
 | `F2/F3…` | switch accounts | `M` (compose) | markdown → HTML |
 | `P` (attach) | view patch as diff | `Ctrl-l` | extract URLs |
 
+## GPG key fetching
+
+GPG can auto-fetch sender public keys via WKD and keyservers. Add to
+`~/.gnupg/gpg.conf`:
+
+```
+auto-key-locate wkd,keyserver
+keyserver hkps://keys.openpgp.org
+auto-key-retrieve
+```
+
+This makes GPG automatically look up keys when you encrypt to someone:
+WKD first (domain-based), then keys.openpgp.org as fallback.
+
+To manually fetch a specific key:
+
+```bash
+gpg --locate-keys sender@example.com
+```
+
+Set your default signing key in neomuttrc:
+
+```
+set pgp_default_key = "YOUR_KEY_ID"
+```
+
+GPG keybindings in neomutt:
+- `p` in compose menu → PGP menu (sign / encrypt / both / clear)
+- `Alt-s` in index/pager → toggle auto-sign on/off
+
 ## Display filter (not implemented)
 
 The v1.0.0 config included a `display_filter` that cleaned up emails before
