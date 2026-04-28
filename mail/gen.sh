@@ -31,11 +31,13 @@ done
 # ─── Parse one account conf ──────────────────────────────────────────────────
 
 load_account() {
-    ACCOUNT="" FULLNAME="" EMAIL="" PASS_ENTRY=""
+    ACCOUNT="" FULLNAME="" EMAIL="" PASS_ENTRY="" FROM_ADDRESS=""
     TYPE="generic" IMAP_HOST="" IMAP_PORT="993" SMTP_HOST="" SMTP_PORT="587"
 
     # shellcheck source=/dev/null
     source "$1"
+
+    FROM_ADDRESS="${FROM_ADDRESS:-${EMAIL}}"
 
     [[ "${TYPE}" == "gmail" ]] && {
         IMAP_HOST="${IMAP_HOST:-imap.gmail.com}"
@@ -198,7 +200,7 @@ HDR
 account ${ACCOUNT}
 host    ${SMTP_HOST}
 port    ${SMTP_PORT}
-from    ${EMAIL}
+from    ${FROM_ADDRESS}
 user    ${EMAIL}
 passwordeval "pass show ${PASS_ENTRY}"
 EOF
@@ -245,7 +247,7 @@ gen_mutt() {
 
 set my_account = "${ACCOUNT}"
 set realname   = "${FULLNAME}"
-set from       = "${EMAIL}"
+set from       = "${FROM_ADDRESS}"
 set sendmail   = "msmtp -a ${ACCOUNT}"
 
 set folder    = "${MAIL_ROOT}/${ACCOUNT}"
