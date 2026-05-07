@@ -1,92 +1,95 @@
 # Git config
 
 [hub]
-  protocol = ssh
+    protocol = ssh
 
 [include]
-  path	  = ~/.config/git/gituser
-  path    = ~/.config/git/gitalias
+    path	  = ~/.config/git/gituser
+    path    = ~/.config/git/gitalias
 
 [color]
-  diff    = auto
-  status  = auto
-  branch  = auto
-  ui      = true
+    diff    = auto
+    status  = auto
+    branch  = auto
+    ui      = true
 
 [color "diff-highlight"]
-	oldNormal     = red bold
-	oldHighlight  = red bold 52
-	newNormal     = blue bold
-	newHighlight  = blue bold 22
+    oldNormal     = red bold
+    oldHighlight  = red bold 52
+    newNormal     = blue bold
+    newHighlight  = blue bold 22
 
 [color "diff"]
-	meta    = yellow
-	frag    = magenta bold
-	commit  = yellow bold
-	old     = red bold
-	new     = blue bold
-	whitespace = red reverse
+    meta    = yellow
+    frag    = magenta bold
+    commit  = yellow bold
+    old     = red bold
+    new     = blue bold
+    whitespace = red reverse
 
 [commit]
-  template = ~/.config/git/gitmessage
-  gogsign = true
+    template = ~/.config/git/gitmessage
+    gpgsign = true
+
+[format]
+    signOff = true
 
 [pull]
-	rebase = true
+    rebase = true
 
 [core]
-  excludesfile = ~/.config/git/gitignores
-  editor      = vim
-  autocrlf    = input
-  eol         = lf
-  pager       = delta
+    excludesfile = ~/.config/git/gitignores
+    editor      = vim
+    autocrlf    = input
+    eol         = lf
+    pager       = delta
 
 [interactive]
-  diffFilter  = delta --color-only
+    diffFilter  = delta --color-only
 
 [apply]
-  whitespace  = nowarn
+    whitespace  = nowarn
 
 [mergetool]
-  keepBackup  = false
+    keepBackup  = false
 
 [difftool]
-  prompt      = false
+    prompt      = false
 
 [diff]
-  colorMoved  = default
+    colorMoved  = default
 
 [delta]
-  navigate	= true
-  line-numbers	= true
-  side-by-side	= true
-  dark		= true
-  hyperlinks	= true
-  hyperlinks-file-link-format = "file-line://{path}:{line}"
+    navigate	= true
+    line-numbers	= true
+    side-by-side	= true
+    dark		= true
+    hyperlinks	= true
+    hyperlinks-file-link-format = "file-line://{path}:{line}"
 
 [diff-so-fancy]
-  stripLeadingS
+    stripLeadingS
 
 [merge]
-  conflictstyle = diff3
+    conflictstyle = diff3
 
 [rebase]
-  autosquash  = true
+    autosquash  = true
 
 [push]
-  default     = matching
+    default     = matching
 
 [help]
-  autocorrect = 1
+    autocorrect = 1
 
 [filter "lfs"]
-  clean       = git-lfs clean %f
-  smudge      = git-lfs smudge %f
-  required    = true
+    clean       = git-lfs clean %f
+    smudge      = git-lfs smudge %f
+    required    = true
 
 [url "git@github.com:"]
-  insteadOf   = https://github.com
+    insteadOf   = https://github.com
 [safe]
-	directory = /etc/bird
+    directory = /etc/bird
 [init]
-	defaultBranch = main
+    defaultBranch = main
