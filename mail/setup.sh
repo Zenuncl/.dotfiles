@@ -3,8 +3,6 @@
 #   bash ~/.dotfiles/mail/setup.sh
 set -euo pipefail
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
-
 RED='\033[0;31m'; YELLOW='\033[1;33m'; GREEN='\033[0;32m'; NC='\033[0m'
 
 info()  { echo -e "${GREEN}[INFO]${NC}  $*"; }
@@ -23,20 +21,13 @@ ask() {
     done
 }
 
-# ─── Paths ────────────────────────────────────────────────────────────────────
-
 DOTFILES_MAIL="${HOME}/.dotfiles/mail"
 CONFIG_DIR="${HOME}/.config"
 MAIL_DIR="${HOME}/.local/share/mail"
-CACHE_DIR="${HOME}/.cache/mutt"
 STATE_DIR="${HOME}/.local/state/msmtp"
 
-# ─── Package install ─────────────────────────────────────────────────────────
-
 install_packages() {
-    # Required
-    local pkgs=(neomutt isync notmuch msmtp lynx pandoc)
-    # Optional (password manager, URL extraction, diff viewer)
+    local pkgs=(aerc isync notmuch msmtp lynx pandoc)
     local opt_pkgs=(pass urlscan git-delta)
 
     if command -v apt-get &>/dev/null; then
@@ -48,10 +39,10 @@ install_packages() {
         info "Detected Nix — use nix profile or add to your flake/config:"
         echo
         echo "  nix profile:"
-        echo "    nix profile install nixpkgs#{neomutt,isync,notmuch,msmtp,lynx,pass,urlscan,pandoc,delta,glow}"
+        echo "    nix profile install nixpkgs#{aerc,isync,notmuch,msmtp,lynx,pass,urlscan,pandoc,delta,glow}"
         echo
         echo "  flake / home-manager:"
-        echo "    home.packages = with pkgs; [ neomutt isync notmuch msmtp lynx pass urlscan pandoc delta glow ];"
+        echo "    home.packages = with pkgs; [ aerc isync notmuch msmtp lynx pass urlscan pandoc delta glow ];"
         echo
         warn "Nix packages not installed automatically — add them yourself."
         return 0
@@ -61,13 +52,11 @@ install_packages() {
         sudo pacman -Sy --needed --noconfirm "${pkgs[@]}" "${opt_pkgs[@]}"
     else
         error "Unsupported package manager. Install manually:"
-        echo "  neomutt isync notmuch msmtp lynx pass urlscan pandoc git-delta glow"
+        echo "  aerc isync notmuch msmtp lynx pass urlscan pandoc git-delta glow"
         return 1
     fi
     info "Packages installed."
 }
-
-# ─── Symlinks ─────────────────────────────────────────────────────────────────
 
 link() {
     local src="$1" dst="$2"
@@ -86,7 +75,7 @@ link() {
 setup_symlinks() {
     mkdir -p "${CONFIG_DIR}"
 
-    link "${DOTFILES_MAIL}/mutt"    "${CONFIG_DIR}/mutt"
+    link "${DOTFILES_MAIL}/aerc"    "${CONFIG_DIR}/aerc"
     link "${DOTFILES_MAIL}/isync"   "${CONFIG_DIR}/isync"
     link "${DOTFILES_MAIL}/msmtp"   "${CONFIG_DIR}/msmtp"
     link "${DOTFILES_MAIL}/notmuch" "${CONFIG_DIR}/notmuch"
@@ -95,19 +84,13 @@ setup_symlinks() {
     info "Symlinks created."
 }
 
-# ─── Directories ──────────────────────────────────────────────────────────────
-
 setup_directories() {
     mkdir -p "${MAIL_DIR}"
-    mkdir -p "${CACHE_DIR}"
     mkdir -p "${STATE_DIR}"
 
     info "Created ${MAIL_DIR}  (maildir root)"
-    info "Created ${CACHE_DIR}  (neomutt cache)"
     info "Created ${STATE_DIR}  (msmtp logs)"
 }
-
-# ─── Main ─────────────────────────────────────────────────────────────────────
 
 main() {
     echo
@@ -119,18 +102,15 @@ main() {
         exit 1
     fi
 
-    # Phase 1 — packages
-    if ask "Install packages (neomutt, isync, notmuch, msmtp, lynx, pass, urlscan)?"; then
+    if ask "Install packages (aerc, isync, notmuch, msmtp, lynx, pass, urlscan)?"; then
         install_packages
     fi
 
-    # Phase 2 — symlinks
-    if ask "Create config symlinks (~/.config/{mutt,isync,msmtp,notmuch})?"; then
+    if ask "Create config symlinks (~/.config/{aerc,isync,msmtp,notmuch,glow})?"; then
         setup_symlinks
     fi
 
-    # Phase 3 — directories
-    if ask "Create mail & cache directories?"; then
+    if ask "Create mail directories?"; then
         setup_directories
     fi
 
@@ -145,13 +125,13 @@ main() {
     echo "    3. pass insert email/gmail"
     echo "    4. bash ~/.dotfiles/mail/gen.sh"
     echo "    5. mbsync --config ~/.config/isync/mbsyncrc --all && notmuch new"
-    echo "    6. neomutt"
+    echo "    6. aerc"
     echo
     echo "  Option B — manual (edit example files directly):"
     echo "    1. cp ~/.config/isync/mbsyncrc.example   ~/.config/isync/mbsyncrc"
     echo "    2. cp ~/.config/msmtp/config.example      ~/.config/msmtp/config"
-    echo "    3. cp ~/.config/mutt/accounts/example.muttrc ~/.config/mutt/accounts/personal.muttrc"
-    echo "    4. Edit each file, then uncomment the source line in neomuttrc"
+    echo "    3. cp ~/.config/aerc/accounts.conf.example ~/.config/aerc/accounts.conf"
+    echo "    4. Edit each file, then: chmod 600 ~/.config/aerc/accounts.conf"
     echo
     echo "  notmuch uses XDG default: ~/.config/notmuch/default/config (no env var needed)"
 }

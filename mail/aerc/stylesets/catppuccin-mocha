@@ -1,0 +1,117 @@
+# ─── Catppuccin Mocha — aerc styleset ─────────────────────────────────────────
+#
+# Ported from the neomutt colors.muttrc (256-color) to true-color hex.
+#
+#   Palette:
+#     Rosewater #f5e0dc  Flamingo  #f2cdcd  Pink     #f5c2e7  Mauve    #cba6f7
+#     Red       #f38ba8  Maroon    #eba0ac  Peach    #fab387  Yellow   #f9e2af
+#     Green     #a6da95  Teal      #94e2d5  Sky      #89dceb  Sapphire #74c7ec
+#     Blue      #89b4fa  Lavender  #b4befe  Text     #cdd6f4  Subtext1 #bac2de
+#     Subtext0  #a6adc8  Overlay2  #9399b2  Overlay1 #7f849c  Overlay0 #6c7086
+#     Surface2  #585b70  Surface1  #45475a  Surface0 #313244  Base     #1e1e2e
+#     Mantle    #181825  Crust     #11111b
+#
+#   Background uses `default` (transparent) so it inherits your terminal theme.
+
+*.default = true
+*.selected.reverse = toggle
+
+# ─── General ──────────────────────────────────────────────────────────────────
+
+default.fg = #cdd6f4
+error.fg = #f38ba8
+error.bold = true
+warning.fg = #f9e2af
+success.fg = #a6da95
+
+# ─── Title & header ──────────────────────────────────────────────────────────
+
+title.fg = #cdd6f4
+title.bold = true
+header.fg = #6c7086
+header.bold = true
+
+# ─── Status bar ──────────────────────────────────────────────────────────────
+
+statusline_default.fg = #bac2de
+statusline_default.bg = #313244
+statusline_error.fg = #f38ba8
+statusline_error.bg = #313244
+statusline_warning.fg = #f9e2af
+statusline_warning.bg = #313244
+statusline_success.fg = #a6da95
+statusline_success.bg = #313244
+
+# ─── Message list ────────────────────────────────────────────────────────────
+
+msglist_default.fg = #cdd6f4
+msglist_unread.fg = #cdd6f4
+msglist_unread.bold = true
+msglist_read.fg = #6c7086
+msglist_deleted.fg = #f38ba8
+msglist_flagged.fg = #f9e2af
+msglist_marked.fg = #cba6f7
+msglist_result.fg = #89b4fa
+msglist_pill.fg = #1e1e2e
+msglist_pill.bg = #89b4fa
+
+# ─── Folder list (sidebar) ──────────────────────────────────────────────────
+
+dirlist_default.fg = #6c7086
+dirlist_unread.fg = #a6da95
+dirlist_unread.bold = true
+dirlist_recent.fg = #cdd6f4
+
+# ─── Tabs ────────────────────────────────────────────────────────────────────
+
+tab.fg = #6c7086
+tab.bg = #313244
+tab.selected.fg = #cdd6f4
+tab.selected.bg = #45475a
+tab.selected.bold = true
+
+# ─── Border ──────────────────────────────────────────────────────────────────
+
+border.fg = #45475a
+
+# ─── Selector / prompt ──────────────────────────────────────────────────────
+
+selector_default.fg = #cdd6f4
+selector_focused.fg = #89b4fa
+selector_focused.bold = true
+selector_chooser.fg = #cdd6f4
+
+# ─── Completion ──────────────────────────────────────────────────────────────
+
+completion_default.fg = #cdd6f4
+completion_default.bg = #1e1e2e
+completion_gutter.bg = #313244
+completion_pill.fg = #1e1e2e
+completion_pill.bg = #cba6f7
+
+# ─── Body / pager ───────────────────────────────────────────────────────────
+
+body_default.fg = #cdd6f4
+quoted_1.fg = #cba6f7
+quoted_2.fg = #89dceb
+quoted_3.fg = #a6da95
+quoted_4.fg = #fab387
+signature.fg = #6c7086
+
+# ─── Diff ────────────────────────────────────────────────────────────────────
+
+diff_meta.fg = #f9e2af
+diff_meta.bold = true
+diff_chunk.fg = #89b4fa
+diff_chunk_func.fg = #cba6f7
+diff_add.fg = #a6da95
+diff_del.fg = #f38ba8
+
+# ─── Misc ────────────────────────────────────────────────────────────────────
+
+url.fg = #89b4fa
+url.underline = true
+part_mimetype.fg = #cba6f7
+part_filename.fg = #cdd6f4
+part_switcher.fg = #a6adc8
+spinner.fg = #89b4fa
