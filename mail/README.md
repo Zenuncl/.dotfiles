@@ -1,6 +1,6 @@
 # Mail
 
-aerc email setup with native IMAP/SMTP, pass, and Glow.
+aerc email setup with native IMAP/SMTP and pass.
 
 ## Quick start
 
@@ -49,18 +49,15 @@ mail/
 ├── gen.sh              ← generates aerc/accounts.conf from accounts/*.conf
 ├── oauth.sh            ← one-time: device-code OAuth2 flow → stores token in pass
 ├── setup.sh            ← one-time: install packages + create symlinks
-├── aerc/               → ~/.config/aerc
-│   ├── aerc.conf          main config (UI, filters, compose, viewer)
-│   ├── binds.conf         vim-style + Gmail keybindings
-│   ├── accounts.conf      generated — IMAP source + SMTP outgoing
-│   ├── accounts.conf.example  reference for manual setup
-│   ├── stylesets/
-│   │   └── catppuccin-mocha   Catppuccin Mocha theme (true-color)
-│   └── filters/
-│       └── ical           ICS calendar invite renderer
-└── glow/               → ~/.config/glow
-    ├── glow.yml           Glow config
-    └── catppuccin-macchiato.json  Glow color theme
+└── aerc/               → ~/.config/aerc
+    ├── aerc.conf          main config (UI, filters, compose, viewer)
+    ├── binds.conf         vim-style + Gmail keybindings
+    ├── accounts.conf      generated — IMAP source + SMTP outgoing
+    ├── accounts.conf.example  reference for manual setup
+    ├── stylesets/
+    │   └── catppuccin-mocha   Catppuccin Mocha theme (true-color)
+    └── filters/
+        └── ical           ICS calendar invite renderer
 ```
 
 ## Keybindings
@@ -138,6 +135,6 @@ In aerc compose, use `:sign` and `:encrypt` commands.
 | MIME type | Handler |
 |-----------|---------|
 | `text/html` | lynx (inline rendering) |
+| `text/markdown` | pandoc → lynx (markdown → HTML → rendered text) |
 | `text/calendar`, `application/ics` | built-in ICS renderer |
-| `text/markdown` | glow (Catppuccin theme) |
 | `text/x-diff`, `text/x-patch` | delta (colorized) |

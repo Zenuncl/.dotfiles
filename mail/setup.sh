@@ -26,7 +26,7 @@ CONFIG_DIR="${HOME}/.config"
 
 install_packages() {
     local pkgs=(aerc lynx pandoc)
-    local opt_pkgs=(pass urlscan git-delta glow)
+    local opt_pkgs=(pass urlscan git-delta)
 
     if command -v apt-get &>/dev/null; then
         info "Detected Debian/Ubuntu — using apt"
@@ -37,10 +37,10 @@ install_packages() {
         info "Detected Nix — use nix profile or add to your flake/config:"
         echo
         echo "  nix profile:"
-        echo "    nix profile install nixpkgs#{aerc,lynx,pass,urlscan,pandoc,delta,glow}"
+        echo "    nix profile install nixpkgs#{aerc,lynx,pass,urlscan,pandoc,delta}"
         echo
         echo "  flake / home-manager:"
-        echo "    home.packages = with pkgs; [ aerc lynx pass urlscan pandoc delta glow ];"
+        echo "    home.packages = with pkgs; [ aerc lynx pass urlscan pandoc delta ];"
         echo
         warn "Nix packages not installed automatically — add them yourself."
         return 0
@@ -50,7 +50,7 @@ install_packages() {
         sudo pacman -Sy --needed --noconfirm "${pkgs[@]}" "${opt_pkgs[@]}"
     else
         error "Unsupported package manager. Install manually:"
-        echo "  aerc lynx pass urlscan pandoc git-delta glow"
+        echo "  aerc lynx pass urlscan pandoc git-delta"
         return 1
     fi
     info "Packages installed."
@@ -74,7 +74,6 @@ setup_symlinks() {
     mkdir -p "${CONFIG_DIR}"
 
     link "${DOTFILES_MAIL}/aerc"    "${CONFIG_DIR}/aerc"
-    link "${DOTFILES_MAIL}/glow"    "${CONFIG_DIR}/glow"
 
     info "Symlinks created."
 }
@@ -89,11 +88,11 @@ main() {
         exit 1
     fi
 
-    if ask "Install packages (aerc, lynx, pass, urlscan, pandoc, delta, glow)?"; then
+    if ask "Install packages (aerc, lynx, pandoc, pass, urlscan, delta)?"; then
         install_packages
     fi
 
-    if ask "Create config symlinks (~/.config/{aerc,glow})?"; then
+    if ask "Create config symlinks (~/.config/aerc)?"; then
         setup_symlinks
     fi
 
