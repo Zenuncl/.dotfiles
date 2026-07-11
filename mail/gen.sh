@@ -7,6 +7,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ACCOUNTS_DIR="${SCRIPT_DIR}/accounts"
 AERC_DIR="${SCRIPT_DIR}/aerc"
 
+FOLDERS_SORT="INBOX,Sent,Drafts,Archive,Junk,Spam,Trash"
+
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
 info() { echo -e "${GREEN}✓${NC} $*"; }
 die()  { echo -e "${RED}✗${NC} $*" >&2; exit 1; }
@@ -87,12 +89,14 @@ EOF
 copy-to           = [Gmail]/Sent Mail
 archive           = [Gmail]/All Mail
 postpone          = [Gmail]/Drafts
+folders-sort      = INBOX,[Gmail]/Sent Mail,[Gmail]/Drafts,[Gmail]/All Mail,[Gmail]/Spam,Trash
 EOF
         else
-            cat >> "$out" <<'EOF'
+            cat >> "$out" <<EOF
 copy-to           = Sent
 archive           = Archive
 postpone          = Drafts
+folders-sort      = ${FOLDERS_SORT}
 EOF
         fi
 
