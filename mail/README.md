@@ -13,6 +13,33 @@ bash mail/gen.sh                                          # generate accounts.co
 aerc                                                      # launch
 ```
 
+## OAuth accounts (Gmail, Outlook)
+
+aerc has built-in OAuth2 support — no third-party tools needed. Refresh
+tokens are stored in `pass`, same as regular passwords.
+
+```bash
+cp accounts/example.conf accounts/gmail.conf
+nvim accounts/gmail.conf                       # set AUTH=google-oauth, CLIENT_ID, etc.
+bash oauth.sh accounts/gmail.conf              # device-code flow (headless OK)
+# → open the URL on any device, enter the code
+# → refresh token saved to pass automatically
+bash gen.sh                                    # regenerate accounts.conf
+aerc
+```
+
+**Google**: create a GCP project → APIs & Services → Credentials → OAuth 2.0
+Client ID (type: TVs and Limited Input devices). Set app to "In production"
+for non-expiring refresh tokens.
+
+**Microsoft**: create an Azure app → Authentication → Allow public client
+flows = Yes → API permissions: IMAP.AccessAsUser.All, SMTP.Send, offline_access.
+Or use Thunderbird's public client_id: `9e5f94bc-e8a4-4e73-b8be-63364c29d753`.
+
+**Protonmail**: requires protonmail-bridge running locally. Use TYPE=generic
+with IMAP_HOST=127.0.0.1, IMAP_PORT=1143, SMTP_HOST=127.0.0.1, SMTP_PORT=1025,
+and the bridge-generated password in `pass`.
+
 ## Structure
 
 ```
@@ -20,6 +47,7 @@ mail/
 ├── accounts/           ← one .conf per account (single source of truth)
 │   └── example.conf       template — copy and fill in
 ├── gen.sh              ← generates aerc/accounts.conf from accounts/*.conf
+├── oauth.sh            ← one-time: device-code OAuth2 flow → stores token in pass
 ├── setup.sh            ← one-time: install packages + create symlinks
 ├── aerc/               → ~/.config/aerc
 │   ├── aerc.conf          main config (UI, filters, compose, viewer)

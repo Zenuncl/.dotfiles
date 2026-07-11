@@ -22,7 +22,9 @@ done
 
 load_account() {
     ACCOUNT="" FULLNAME="" EMAIL="" PASS_ENTRY="" FROM_ADDRESS=""
-    TYPE="generic" IMAP_HOST="" IMAP_PORT="993" SMTP_HOST="" SMTP_PORT="587"
+    TYPE="generic" AUTH="password"
+    IMAP_HOST="" IMAP_PORT="993" SMTP_HOST="" SMTP_PORT="587"
+    CLIENT_ID="" CLIENT_SECRET="" OAUTH_TENANT="common"
 
     # shellcheck source=/dev/null
     source "$1"
@@ -56,11 +58,25 @@ gen_aerc() {
         local smtp_scheme="smtp"
         [[ "${SMTP_PORT}" == "465" ]] && smtp_scheme="smtps"
 
+        local query=""
+        case "${AUTH}" in
+            google-oauth)
+                imap_scheme+="+oauthbearer"; smtp_scheme+="+oauthbearer"
+                query="?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}"
+                query+="&token_endpoint=https%3A%2F%2Foauth2.googleapis.com%2Ftoken"
+                ;;
+            microsoft-oauth)
+                imap_scheme+="+xoauth2"; smtp_scheme+="+xoauth2"
+                query="?client_id=${CLIENT_ID}"
+                query+="&token_endpoint=https%3A%2F%2Flogin.microsoftonline.com%2F${OAUTH_TENANT}%2Foauth2%2Fv2.0%2Ftoken"
+                ;;
+        esac
+
         cat >> "$out" <<EOF
 [${ACCOUNT}]
-source            = ${imap_scheme}://${user_encoded}@${IMAP_HOST}:${IMAP_PORT}
+source            = ${imap_scheme}://${user_encoded}@${IMAP_HOST}:${IMAP_PORT}${query}
 source-cred-cmd   = pass show ${PASS_ENTRY}
-outgoing          = ${smtp_scheme}://${user_encoded}@${SMTP_HOST}:${SMTP_PORT}
+outgoing          = ${smtp_scheme}://${user_encoded}@${SMTP_HOST}:${SMTP_PORT}${query}
 outgoing-cred-cmd = pass show ${PASS_ENTRY}
 default           = INBOX
 from              = ${FULLNAME} <${FROM_ADDRESS}>
