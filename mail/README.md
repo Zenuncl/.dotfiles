@@ -73,8 +73,8 @@ mail/
 | `c` | compose | `/` | search (server-side IMAP) |
 | `r` | reply | `a` | reply all |
 | `f` | forward | `e` | archive |
-| `d` | move to trash | `s/S` | flag/unflag |
-| `x` | mark/toggle | `Space` | toggle threads |
+| `d` | move to trash | `m` | move to folder |
+| `s/S` | flag/unflag | `x` | mark/toggle |
 | `!` | move to spam | `Ctrl-l` | extract URLs |
 
 ### Message viewer
