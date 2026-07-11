@@ -1,0 +1,72 @@
+# Catppuccin Macchiato
+#
+#   Rosewater #f5e0dc  Flamingo  #f2cdcd  Pink     #f5c2e7  Mauve    #c6a0f6
+#   Red       #ed8796  Maroon    #ee99a0  Peach    #f5a97f  Yellow   #eed49f
+#   Green     #a6da95  Teal      #8bd5ca  Sky      #91d7e3  Sapphire #7dc4e4
+#   Blue      #8aadf4  Lavender  #b7bdf8  Text     #cad3f5  Subtext1 #b8c0e0
+#   Subtext0  #a5adcb  Overlay2  #939ab7  Overlay1 #8087a2  Overlay0 #6e738d
+#   Surface2  #5b6078  Surface1  #494d64  Surface0 #363a4f  Base     #24273a
+#   Mantle    #1e2030  Crust     #181926
+
+*.default = true
+*.selected.reverse = toggle
+
+default.fg = #cad3f5
+error.fg = #ed8796
+error.bold = true
+warning.fg = #eed49f
+success.fg = #a6da95
+
+title.fg = #cad3f5
+title.bold = true
+header.fg = #6e738d
+header.bold = true
+
+statusline_default.fg = #b8c0e0
+statusline_default.bg = #363a4f
+statusline_error.fg = #ed8796
+statusline_error.bg = #363a4f
+statusline_warning.fg = #eed49f
+statusline_warning.bg = #363a4f
+statusline_success.fg = #a6da95
+statusline_success.bg = #363a4f
+
+msglist_default.fg = #cad3f5
+msglist_unread.fg = #cad3f5
+msglist_unread.bold = true
+msglist_read.fg = #6e738d
+msglist_deleted.fg = #ed8796
+msglist_flagged.fg = #eed49f
+msglist_marked.fg = #c6a0f6
+msglist_result.fg = #8aadf4
+msglist_pill.fg = #24273a
+msglist_pill.bg = #8aadf4
+
+dirlist_default.fg = #6e738d
+dirlist_unread.fg = #a6da95
+dirlist_unread.bold = true
+dirlist_recent.fg = #cad3f5
+
+tab.fg = #6e738d
+tab.bg = #363a4f
+tab.selected.fg = #cad3f5
+tab.selected.bg = #494d64
+tab.selected.bold = true
+
+border.fg = #494d64
+
+selector_default.fg = #cad3f5
+selector_focused.fg = #8aadf4
+selector_focused.bold = true
+selector_chooser.fg = #cad3f5
+
+completion_default.fg = #cad3f5
+completion_default.bg = #24273a
+completion_gutter.bg = #363a4f
+completion_pill.fg = #24273a
+completion_pill.bg = #c6a0f6
+
+part_mimetype.fg = #c6a0f6
+part_filename.fg = #cad3f5
+part_switcher.fg = #a5adcb
+spinner.fg = #8aadf4
