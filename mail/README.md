@@ -101,6 +101,17 @@ mail/
 | `d` | detach file |
 | `q` / `n` | abort |
 
+## Message flags
+
+| Icon | Meaning | Icon | Meaning |
+|------|---------|------|---------|
+| `N` | new/unread | `!` | flagged/starred |
+| `O` | old (read) | `*` | marked (selected) |
+| `r` | replied | `X` | deleted |
+| `f` | forwarded | `d` | draft |
+| `a` | attachment | `[s]` | signed (valid) |
+| `[e]` | encrypted | `[s!]` | signature invalid |
+
 ## Markdown compose
 
 aerc converts markdown to HTML via `[multipart-converters]`.
