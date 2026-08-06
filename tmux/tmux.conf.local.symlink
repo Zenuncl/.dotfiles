@@ -484,8 +484,11 @@ bind n set-option status
 # enable passthrough for clipboard (OSC 52) from TUI apps like opencode
 set -g allow-passthrough on
 
-# use csi-u encoding so Shift+Enter is distinguishable from Enter
+# enable extended keys + csi-u encoding so Shift+Enter is distinguishable from Enter
+# (oh-my-tmux auto-detects via TERM_PROGRAM but Zellij doesn't propagate it)
+set -g extended-keys on
 set -g extended-keys-format csi-u
+set -as terminal-features ',*:extkeys'
 
 # ------------------------------------------------------------------------------
 
