@@ -65,6 +65,7 @@ alias vi   = ^nvim
 alias vim  = ^nvim
 alias nvi  = ^nvim
 alias mutt = ^neomutt
+alias nauk = ^aerc
 
 # ─── Network / web ───────────────────────────────────────────────────────────
 alias weather = ^curl wttr.in

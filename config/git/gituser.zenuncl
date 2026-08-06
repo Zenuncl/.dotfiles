@@ -1,4 +1,10 @@
 [user]  
-  name = Zavier Jiang
-  email = Zavi@Zenuncl.com
-  signingkey = 0417D91D14E51DA5
+    name = Zavier Jiang
+    email = zavi@zenuncl.com
+    signingkey = BE312DD771777777
+
+[sendemail]
+    smtpserver = smtp.office365.com
+    smtpuser = zavi@zenuncl.com
+    smtpencryption = tls
+    smtpserverport = 587
