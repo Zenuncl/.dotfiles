@@ -31,6 +31,21 @@ return {
     end,
     -- opts = {},
   },
+  {
+    "obsidian-nvim/obsidian.nvim",
+    version = "*", -- use latest release, remove to use latest commit
+    ---@module 'obsidian'
+    ---@type obsidian.config
+    opts = {
+        legacy_commands = false, -- this will be removed in 4.0.0
+        workspaces = {
+            {
+                name = "ZenNotes",
+                path = "~/dev/repos/sr.ht/notes/",
+            },
+        },
+    },
+  },
 
   -- These are some examples, uncomment them if you want to see them work!
   -- {
